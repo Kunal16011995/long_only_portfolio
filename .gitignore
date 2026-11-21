@@ -23,8 +23,13 @@ ENV/
 .env
 .env.local
 
-# Data and generated outputs
+# Data caches (all strategy caches)
 data_cache/
+data_cache_*/
+*/data_cache/
+*/data_cache_*/
+
+# Live runtime state and logs
 live/state/
 live/logs/
 *.log
@@ -35,6 +40,7 @@ live/logs/
 portfolio_blend_variations.csv
 portfolio_blend_variations_monthly.csv
 signal_blend_variations.csv
+final_compare_*.csv
 
 # Jupyter
 .ipynb_checkpoints/
