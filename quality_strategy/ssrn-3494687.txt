@@ -1,0 +1,1406 @@
+Implementing a Systematic Long-only Quality Strategy in the Hong
+Kong Market
+Rajan Raju
+November 2019
+ABSTRACT
+We believe investors should be willing to pay a higher price for higher quality companies. We
+build a composite quality score, including one which incorporates publicly available ESG scores, us-
+ing ‘off-the-shelf’ criteria and publicly available financial data and show that a quarterly-rebalanced,
+long-onlyportfoliooftop-decilestocksselectedusingourscoreinHongKongsignificantlyoutperforms
+the Hang Seng Composite LargeCap Index (HSLI) - both in terms of absolute returns (by 2.87% pa)
+and risk adjusted returns - while having an moderate annual turnover (a mean turnover of 42.15%).
+We show that our quality score predicts the persistence of quality for up to 3 years and there is a
+weak relationship between the price multiple and the quality score. Furthermore, we demonstrate
+that quality needs to be reviewed regularly - and the moderate turnover ensures this. In the absence
+of cheap ETFs to get systematic exposure to quality, the systematic long-only strategy using ‘off-the-
+shelf’ criteria provides a practical, executable systematic investment methodology that exposes an
+investor to quality in the Hong Kong market. We show that socially conscious investors can generate
+risk adjusted returns in excess of the HSLI in the Hong Kong market using a systematic strategy.
+Keywords— Accounting Variables, ESG, Factors, Growth, Hong Kong, Investing, Profitability, Quality,
+Quantitative, Safety, Systematic
+1
+Electronic copy available at: https://ssrn.com/abstract=3494687
+1 Introduction and Literature Review
+“It’s far better to buy a wonderful company at a fair price than a fair company at a wonderful
+price.” - Warren Buffet
+We recognize that factor investing is a rational and robust investment methodology for long term
+investors. Factors are investment styles that deliver outsize returns over the long run. Stocks have
+exposure to style factors like value, momentum, and quality. However, factors are not a one way
+street - they do have risk, can under-perform and suffer from drawdowns in the ‘short run’1. Equities
+and bonds are instances of factors whose risk premiums are obtained by simply buying them (long-
+only positions), hence referred to as ‘static factors’. Most factor strategies follow Fama and French’s
+(1993) seminal work on factors and build long-short market-neutral portfolios based on a universe of
+all securities in the relevant market irrespective of market liquidity. These are ‘dynamic’ factor port-
+folios as they are rebalanced regularly. While factor theory is robust, the practical implementation
+immediately runs into real world problems. Specifically, we flag two. First, short selling is restricted
+andoftennotpermittedforretailinvestors. Alternativemechanismstoshortsellingareexpensiveand
+come with execution risks that are not accounted for in factor theory. The counter-point to not being
+able to go short is that a long-only portfolio is an ‘unbalanced’ portfolio and has market exposures as
+distinct from a market-neutral portfolio. Second, market liquidity is a real constraint and therefore
+practicalimplementationsoftendeliverdifferent(andoftenlower)returnsthanwhatthetheorywould
+suggest.
+Accessing factors cheaply is nigh impossible for most non-institutional investors in Hong Kong as
+there are no ETFs which offer such specific factor exposure, and mutual funds are not tailored specif-
+ically for such targeted exposure. For a self-directed investor, any Do-It-Yourself factor-exposure
+portfolio would need to be easy to administer, have reasonable turnover rates and take advantage of
+the low/no cost brokerages that are a result of the growth of FinTech in the financial industry. Added
+to this, with the declining cost and increasing access of structured financial information, we believe
+that investors will be able to access and use data from financial reports and price data from exchanges
+to build and manage their investment portfolios.
+It seems appropriate, therefore, to examine if a systematic long-only portfolio constructed using
+the same methodology used by academia to evaluate formal factors and using publicly available data
+intheHongKongmarketwillgeneratelongtermriskadjustedreturnsinexcessofamarketportfolio2.
+For our purposes, we will choose a universe of large stocks listed in Hong Kong intentionally thereby
+reducing governance and fair-disclosure related risk3.
+SincetheworkofFamaandFrench(1993),anumberofacademicpapershavestudiedreturn-based
+anomalies. Jagadeesh and Titman (1993) document out-performance of ‘strategies that buy stocks
+with perform well in the past and sell stocks which have performed poorly’. Piotroski (2000) showed
+the out-performance of a ‘simple accounting-based fundamental analysis strategy, when applied to a
+broadportfolioofhighbook-to-marketfirms’. Mohanram(2005)documentsgrowingfirmsoutperform
+firms with poor growth; Richardson, Sloan, Soliman and Tuna (2005) document firms with high ac-
+cruals tend to underperform those with low accruals; Penman, Richardson and Tuna (2007) document
+the high alpha of firms with low leverage; Ang, Hodrick, Xing and Zhang (2008) document stocks with
+recent past high idiosyncratic volatility have low future average returns; Novy-Marx (2013) document
+1Time horizons are all relative. The value factor, for instance, has been under-performing for over a decade!
+2This working paper extends the analysis done for the Indian market. See Raju (2019)
+3Even though Hong Kong has a robust disclosure regime there is additional risk inherent in small cap firms that
+require investors using systematic, quantitative models to control such ‘out-of-model’ risks as robustly as possible.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+outperformance of stocks with high profitability; Frazzini and Pedersen (2014) demonstrate that low
+beta is associated with high alpha for stocks. While these papers appear disconnected and different
+in their focus, like Asness et al (2018), we believe that the search for causes of outperformance of
+stock returns is the common binding thread across all this work. We ‘stand on the shoulders of giants’
+toexplorebuildingalong-onlyfactordrivenportfoliowhichcanbewithinthereachofaretailinvestor.
+Qualityhasitsrootsinfundamentalanalysis(Graham,2006)buthasbecomepopularasasystem-
+atic investment style in recent years. Quality as a factor refers to the tendency of high-quality stocks
+(typically defined as having more stable earnings, stronger balance sheets and higher margins) to out-
+perform low-quality stocks, over a long time horizon. This tendency is well-documented in financial
+literature although the actual measures to define ‘quality’ vary widely. Of all the factors, quality is
+perhaps the hardest to define as there is no consensus on the best way to measure it. Company’s
+earnings, debt levels, cash flows and other measures have all been shown to have explanatory power in
+relationtoastock’sperformance. Beyondtheliteraturedescribedabove, Asnessetal(2018)construct
+a comprehensive quality measure called Quality Minus Junk (QMJ) and show that the QMJ premium
+is large and persistent globally.
+There is also enough academic research to show the challenges with quality as a factor for us to
+retain a healthy scepticism on using it blindly. For instance, Kalesnik and Kose (2014) argue “quality
+is not a factor that reliably commands a premium in its own right. Nonetheless, value investing con-
+ditioned upon certain indicators of company quality is a promising strategy”. So we need to have a
+robust assessment of the predictive power of our quality score and any alpha generated by a portfolio
+built using our quality score.
+The rest of the paper is set out as follows: Section 2 outlines the data we use. Section 3 defines
+our quality measure. Section 4 analyses the capability of our quality measure to predict persistence
+of quality (Section 4.1); the weak relationship we find between our quality measure and the price
+multiple investors pay for quality (Section 4.2) and the returns associated with a long-only, quarterly-
+rebalanced systematic portfolio (Section 4.3). We show that such a portfolio delivers better long term
+risk adjusted returns than the Hang Seng Composite LargeCap Index4. Section 5 concludes.
+2 Data
+All data is from Refinitiv. Annual fundamental accounting data including enterprise value is gathered
+every month-end. The latter is computed by Refinitiv. We take standardized accounting data from
+Refinitiv rather than ‘as reported’ by companies. This allows for some consistency in the use of the
+accountingdata. Accountingdataistakenfromthemonthitispublished. Wedonotlagdatafurther.
+Unlike financial data, Environmental, Social and Governance (ESG) data disclosure is unstruc-
+tured and can be published at any time of the year. Refinitiv’s Thomson Reuters ESG database
+built largely from corporate, public reporting (annual reports, corporate social responsibility reports,
+company websites, and global media sources) covers over 7,000 companies globally, and includes 400+
+ESG metrics. The database continues to grow - and over time could, we hope, cover all listed com-
+panies. Despite the issues around coverage and methodology, we use Refinitiv’s database to compute
+ESG metrics.
+Price data is daily close prices for the purposes of analysis and portfolio construction and daily
+4There are ETFs tracking the CSI Hong Kong 100 index accessible to all investors.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+open prices for investment/rebalancing. For stocks that have been delisted, we rely on price data
+available on Refinitiv5. All returns are price returns in Hong Kong Dollars unless stated otherwise.
+OuruniverseistheconstituentsstocksoftheHangSengCompositeLargeCapIndex(HSLI)Index.
+We update the HSLI Index every month end.
+We compute our first portfolio using data at the last day of trading in March 2012.
+3 Defining Quality
+We adapt the approach taken by Asness, Frazzini, Pedersen (Asness et al., 2018) in determining the
+qualityscoreofacompany. FollowingAsnessetal(2018), wedefineaquality stockasonethat, ceteris
+paribus, is profitable, growing, safe and well managed. We build a single aggregate quality (Quality )
+3
+score from three composite components - Profitability, Growth, and Safety - using standard ‘off-the-
+shelf’ measures from academia. Given the increased availability of and access to structured ESG data,
+we extend the aggregate quality score to include ESG (Quality ). We recognize that ESG is still at
+4
+an early stage of adoption, but we believe (and show) that it is practical for all investors to include
+ESG metrics into their investment considerations.
+To substantiate these measures, we build from the theory on valuation of firms. In the strictest
+sense, dividend is the only cash flow an investor owning stock receives from a publicly traded firm.
+The Dividend Discount Model is, thus, one of the simplest models for valuing equity : the value of
+a stock is the present value of its expected dividends. We specifically use the Gordon Growth Model
+(Gordon, 1962) to value firms that are in a ‘steady state’6
+DPS
+1
+P = (1)
+(r−growth)
+where: P is stock price, DPS is expected next period dividends, r is required rate of return and
+1
+growth is the growth rate in dividends in perpetuity.
+We can re-write Equation 1 as:
+(Profit∗DPS/Profit)
+P = (2)
+(r−growth)
+We divide prices by book values to make the outcomes comparable across time and in the cross
+section. Dividing Equation 2 by Book Value (B):
+P (Profit/B)∗(DPS/Profit)
+=
+B r−growth
+or
+P profitability∗payoutratio
+= (3)
+B r−growth
+Two of the right-hand side variables in Equation 3, profitability and growth, form the basis for
+construction of our quality measure:
+5In most cases, the data is available. On the occasional instance where data is not available, we ignore the stock
+6Ourchoiceoflargecapfirmsbiasestheuniversemoretowards‘steadystate’firms. Bychoice,weexcludesmallcap
+firmswhicharemorelikelytobenon-steady-state(highgrowth)andtherefore,weposit,lesssuitedtoaqualitymeasure.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+• Profitability: Profitability is profits per unit of book value. More profitable companies should
+command a higher stock price, all else being equal.
+• Growth Stocks with growing profits should command a higher price, ceterius paribus. Growth
+is difficult to estimate, and we use a three-year time-frame to determine growth in our measure.
+Bychoosingthelargecapsasouruniverse, weavoidsomeofthemajorcriticismsofthesimpleGordon
+model7 while still providing a simple and academically robust foundation for the construction of the
+quality score for our purposes.
+In line with academic research already described, we posit that investors would prefer safer stock
+toriskierstock, ceterius paribus. SoanymeasureofqualityshouldhaveSafety asanintegralelement,
+and this becomes the third component of our quality score.
+In recent years there is increasing recognition by investors that a firm’s performance in ESG areas
+has a direct influence on its overall long-term performance and risk profile (see Fulton et al. (2012)
+and Cheung et al. (2007)). So we posit that investors, ceterius paribus, would prefer firms with high
+ESG scores (are more environmentally and socially conscious with better governance standards) to
+those with low ESG scores (less conscious firms with poor governance). Structured, standardized
+data on ESG is recently being accessible across the investment community. We add ESG related
+information to extend our base model. We recognize that given the early stages of ESG, we are likely
+to only glean directional insights whether ESG data can be used in a systematic quality portfolio by
+a socially-conscious retail investor rather than complete a rigorous analysis.
+Having provided the theoretical underpinning for the choice of components, we next build out the
+components themselves. First, theory suggests that profitability should be measured as the ‘sustain-
+able’ part of profits adjusted for accruals with relation to book value. We average several measures
+of profitability to reduce inherent noise (hopefully leaving the sustainable part of profitability intact).
+Second, theory suggests that growth should be the ‘increase in sustainable profits in relation to book
+values’. We use a 3 year window where possible, and average multiple measures to reduce noise in
+teasing out a measure of sustainable growth8. Finally, safety is computed from volatility, beta and
+other risk measures. Similar to the other two measures, we average multiple measures to build a
+composite measure for safety9. We standardise and transform all scores as described in Appendix A
+to allow for different scores to be combined without any inherent statistical bias.
+More specifically, we measure Profitability as return on equity (ROE), return on assets (ROA),
+cash flow over assets (CFOA), operating margin (OPMAR), and the cash accruals over assets (ACC)
+(see also the analysis by Piotroski (2000)). The accounting data used is the audited annual results
+standardized by Refinitiv. We assign the highest negative score10 for companies which have negative
+enterprise value11 at the end of any calendar month thereby excluding these companies from being
+selected into our portfolio. Our Profitability composite is:
+Profitability = z(z +z +z +z +z ) (4)
+roe roa cfoa opmar acc
+7See Brennan (1971)
+8Weusetheshorter3yearwindowascomparedtothe5-yearwindowusedbyAsnessetal(2018)givencompressing
+business cycles.
+9We do not include Ohlson’s O-Score (Ohlson, 1980) and Altman’s Z-Score (Altman, 1968) included by Asness et
+al (2018) in our safety measure as the statistical robustness of these scores is not entirely obvious for the Hong Kong
+market
+10An arbitrarily chosen large negative number
+11We are only interested in the sign rather than the actual value of EV.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+We further smooth the Profitability score using the rolling 12 month mean with a minimum period
+of 6 months. This avoids the jagged effects of companies with different financial reporting dates.
+For Growth, we use the three-year growth in ROE, ROA and CFOA. In addition, we count the
+number of times that OPMAR has not decreased in the last 3 years12. Our Growth composite is:
+Growth = z(z
+∆roe
++z
+∆roa
++z
+∆cfoa
++z(cid:80)i
+n
+−
+=
+3
+i
+Count∆opmar
+) (5)
+Here ∆ denotes three-year growth. Like we do for Profitability, we penalize the Growth score
+if companies have negative enterprise values on any given month. For Profitability and Growth we
+winsorize for an upper limit first. The percentage of the distribution we select for winsorization is
+a function of the number of stocks in the universe and ensures that sufficient number of firms are
+included13.
+Safe stocks are companies with low beta (BAB), low volatility (VOL), low leverage (LEV), high
+cashflow leverage (CFLEV) and low ROE volatility (EVOL). Our Safety composite is:
+Safety = z(z +z +z +z +z ) (6)
+bab vol lev cflev evol
+We estimate BAB as in Frazzini and Pedersen (2014) based on the product of the rolling one-year
+daily return standard deviation and the rolling five-year three-day return correlations. We calculate
+VOL from the variance of daily returns over a rolling one year (252 days) with a minimum window
+of 121 days. LEV is negative total debt over total assets. CFLEV is Free Operating Cash Flow
+excluding Dividends over Total Debt. EVOL is the standard deviation of quarterly ROE over the past
+15 quarters. We require at least twelve non missing quarters. We winsorize safety scores with upper
+and lower distribution bounds.
+Our Safety score is by construction more dynamic than the Profitability and Growth scores. As a
+result, Safety tends to be more sensitive/responsive to intra-year market changes.
+Our single Quality composite score is a combination of the three (Equation 7):
+Quality = z(Profitabilty+Growth+Safety) (7)
+3
+whereQuality isour3componentquality. Weuseallavailableinformation-ifaparticularscore/measure
+3
+is missing due to lack of or inadequate data, we average the remaining values.
+For the ESG extension of the model, we use specific elements of the broader ESG score computed
+by Refinitiv. Refinitiv has a long window for data collection - and ESG scores could change during
+the almost 2 year data collection period. This poses a challenge as any systematic strategy requires
+point-in-time data certainty to avoid data snooping. Consequently, we choose those measures within
+the broader ESG measures which are more certain as at any given point in time. We choose the
+following sub-components from Refinitiv’s rather large dataset:
+• ESG Management Score: ‘The Management Score measures a company’s commitment and
+effectiveness towards following best practice corporate governance principles.’,
+• ESG Shareholders Score: ‘The Shareholders Score measures a company’s effectiveness to-
+wards equal treatment of shareholders and the use of anti-takeover devices.’,
+12As a proxy for a measure of sustainability of growth for a firm.
+13For larger universes, the limit % will be higher.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+• ESG Workforce Score: ‘The Workforce Score measures a company’s effectiveness towards
+job satisfaction, a healthy and safe workplace, maintaining diversity and equal opportunities and
+development opportunities for its workforce.’,
+• ESGCommunityScore: ‘TheCommunityScoremeasuresthecompany’scommitmenttowards
+being a good citizen, protecting public health and respecting business ethics.’,
+• ESG Controversies Score: ‘Controversies Score is calculated based on 23 ESG controversy
+topics.14’
+Our ESG composite is, therefore (Equation 8):
+ESG = z(Management+Shareholders+Workforce+Community+Controversies) (8)
+Like all our scores, we clip and winzorise our z-score. As ESG scores are updated throughout the
+year, we use the 12 month rolling mean (with a minimum of 6 months) as our ESG score for any
+period. We use all available information - if a particular score/measure is missing due to lack of or
+inadequate data, we add the remaining values. Not all firms have ESG scores - and the number of
+firms which have ESG scores continues to grow. Where the firm does not have a reported ESG score,
+the ESG score value is set to zero.
+Our extended Quality composite score is a combination of the four sub components (Equation 9):
+Quality = z(Profitabilty+Growth+Safety+ESG) (9)
+4
+where Quality is our 4 component Quality.
+4
+Figure 1 shows the percentage of HSLI constituents at the end of every quarter reporting ESG
+scores in the Refinitiv database. The coverage is in excess of 90% since 2012.
+Figure1: %ofHSLIIndexConstituentswithESGScores
+We calculate the quality score on the last trading day of the month. For our quarterly portfolio,
+the portfolio for the next quarter consists of the top decile of HSLI Index constituents stocks ranked
+by quality score as of the last trading day of the respective quarter. Portfolios are equal-weighted,
+refreshed every quarter.
+We choose equal-weighted portfolios given their simplicity to understand and compute. Our
+goal is to get a implementable, pragmatic systematic strategy and so we take an intuitive approach15.
+14The definitions, in italics, are from Refinitiv (2019).
+15We can think of alternate weighting mechanisms - market value, quality score - but those are beyond the scope of
+this paper
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+We choose a quarterly-hold as two of our components (Profitability and Growth) for Quality 16
+3
+utilise data refreshed annually and so a monthly rebalanced portfolio will be largely driven by the
+changes exclusively in the safety component. As safety is, inherently, a low beta/vol (BAB/VOL)
+strategy a longer hold period would ensure we are not effectively holding a BAB or VOL factor port-
+folio. A quarterly rebalance is the half-life of our minimum period of 6 months to compute a rolling
+profitability score. We do not solve for an optimal holding period - but rather choose an easily imple-
+mentable period.
+4 Analysis
+4.1 Persistence of Quality
+We start by examining whether a stock’s quality is persistent i.e. by selecting stocks that were
+profitable, growing, and safe in the recent past, are we successfully selecting stocks that display these
+characteristics in the future? This is an important first step in determining whether our criteria work.
+In an efficient market, one would expect that the returns on quality to be unpredictable.
+To examine the predictability of quality, we build two portfolios every quarter: a Top portfolio
+consisting of constituent stocks with the highest quality score, and a Bottom portfolio consisting of
+constituent stocks with the lowest quality scores for the period. We then compute a mean quality
+score across the equal weighted stocks in each portfolio. We compute this average quality score at the
+time of the portfolio formation (time t) and in the subsequent quarter and 1, 2 and 3 years (t + 1,
+t + 4, t + 8 and t + 12 quarters). We look at the persistence in the subsequent quarter to examine
+whether quality is indeed persistent during our portfolio holding period.
+Quality scores, by construction, vary monotonically between the two portfolios at the time of
+portfolio formation. We use quality scores in the future as a proxy for persistence. For quality to
+be persistent, companies with high quality scores today, should maintain high scores in the future.
+Table 1 shows that, on average, and subject to survival of a stock, high-quality firms today remain
+high-quality firms a quarter and 1, 2 and 3 years into the future. We can statistically reject the null
+hypothesis of no difference in each of quality characteristics between today’s classification of high and
+low score companies for at least 3 years in the future.
+In Table 1, for our holding period of a quarter, the persistence is clear and significant. Over the
+longer period, up to 12 quarters, too, there evidence of persistence across all our components and the
+aggregatescore. TheProfitabilitycomponentshowstheweakestpersistenceespeciallytwoyearsout17.
+Over time, there is a narrowing of the separation between today’s high quality and low quality
+companies. This, importantly, reflects the reality that high quality companies do not necessarily stay
+highqualityovertime. Investorsarewelladvisedtoreviewtheirfavouritequalitycompaniesregularly.
+Table 2 shows persistence when we include ESG into the Quality score. The results are similar
+to the above - evidence of persistence across both quality and all its sub-components. Even across
+the Profitability sub-component, the persistence is statistically significant with the inclusion. We note
+that adding ESG has widened the differences between the Quality Top and Bottom portfolios.18
+4
+16and three components - Profitability, Growth and ESG - for Quality
+4
+17An area for further investigation
+18SeeVerheydenetal.(2016)who‘report“anunequivocally“positivecontributiontorisk-adjustedreturnswhenusinga
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Table1: PersistenceofQuality3 measures
+Component Top Bottom T-B T-B T-B
+Portfolio Portfolio t-stat p-val
+t Quality 2.000 0.601 1.399 81.623 0.000
+t+1Q Quality 1.971 0.700 1.272 49.824 0.000
+t+4Q Quality 1.853 0.940 0.913 21.709 0.000
+t+8Q Quality 1.776 1.110 0.666 13.423 0.000
+t+12Q Quality 1.747 1.172 0.574 20.786 0.000
+t Profitability 0.876 -0.152 1.028 9.608 0.000
+t+1Q Profitability 0.875 0.252 0.623 7.445 0.000
+t+4Q Profitability 0.810 0.665 0.144 1.589 0.112
+t+8Q Profitability 0.728 0.544 0.184 0.885 0.376
+t+12Q Profitability 0.738 0.365 0.373 1.790 0.074
+t Growth 0.872 -1.516 2.388 19.076 0.000
+t+1Q Growth 0.846 -1.132 1.978 16.690 0.000
+t+4Q Growth 0.706 -0.252 0.958 6.331 0.000
+t+8Q Growth 0.602 0.035 0.568 2.942 0.003
+t+12Q Growth 0.537 0.032 0.505 3.460 0.001
+t Safety 0.689 -0.177 0.866 31.186 0.000
+t+1Q Safety 0.666 -0.170 0.836 28.259 0.000
+t+4Q Safety 0.584 -0.126 0.710 15.759 0.000
+t+8Q Safety 0.557 -0.096 0.653 10.882 0.000
+t+12Q Safety 0.582 -0.075 0.657 12.166 0.000
+This table shows average quality scores. Each calendar quarter, constituent
+stocks are ranked in ascending order on the basis of their quality score. The
+rankedstocksareassignedtotwoportfolios: aTopportfolioconsistingofthe
+top quality ranked stocks, a Bottom portfolio consisting of the bottom quality
+rankedstocks. Thistablereportseachportfolio’squalityscoreatportfoliofor-
+mation(datet)uptothesubsequent3years(datet+12quarters). Wereport
+thetimeseriesaverageoftheequal-weightedcross-sectionalmeans. Thesample
+period runs from from April 2012 to September 2019. Standard errors are ad-
+justedforheteroskedasticityandautocorrelationwithalaglengthof0,0,2,4,
+and6quarters(NeweyandWest(1987)).
+Table2: PersistenceofQuality4
+Component Top Bottom T-B T-B T-B
+Portfolio Portfolio t-stat p-val
+t Quality 2.700 0.452 2.248 65.931 0.000
+t+1Q Quality 2.647 0.530 2.117 57.258 0.000
+t+4Q Quality 2.446 0.718 1.728 44.844 0.000
+t+8Q Quality 2.318 0.875 1.443 25.006 0.000
+t+12Q Quality 2.236 0.901 1.335 14.153 0.000
+t Profitability 0.834 0.648 0.186 6.904 0.000
+t+1Q Profitability 0.836 0.707 0.129 6.640 0.000
+t+4Q Profitability 0.842 0.685 0.157 2.982 0.003
+t+8Q Profitability 0.854 0.576 0.278 2.120 0.034
+t+12Q Profitability 0.871 0.520 0.351 2.431 0.015
+t Growth 0.847 -0.554 1.402 18.098 0.000
+t+1Q Growth 0.819 -0.307 1.126 12.972 0.000
+t+4Q Growth 0.741 0.116 0.625 5.259 0.000
+t+8Q Growth 0.728 0.289 0.440 2.990 0.003
+t+12Q Growth 0.706 0.153 0.553 4.504 0.000
+t Safety 0.584 -0.204 0.788 33.742 0.000
+t+1Q Safety 0.568 -0.192 0.761 32.568 0.000
+t+4Q Safety 0.521 -0.144 0.665 20.288 0.000
+t+8Q Safety 0.487 -0.139 0.625 22.177 0.000
+t+12Q Safety 0.497 -0.140 0.638 23.133 0.000
+t ESG 0.503 -0.177 0.680 22.632 0.000
+t+1Q ESG 0.509 -0.171 0.680 22.268 0.000
+t+4Q ESG 0.487 -0.138 0.624 15.453 0.000
+t+8Q ESG 0.478 -0.109 0.586 18.941 0.000
+t+12Q ESG 0.462 -0.071 0.534 9.547 0.000
+This table shows average quality scores. Each calendar quarter, constituent
+stocks are ranked in ascending order on the basis of their quality score. The
+rankedstocksareassignedtotwoportfolios: aTopportfolioconsistingofthe
+top quality ranked stocks, a Bottom portfolio consisting of the bottom quality
+rankedstocks. Thistablereportseachportfolio’squalityscoreatportfoliofor-
+mation(datet)uptothesubsequent3years(datet+12quarters). Wereport
+thetimeseriesaverageoftheequal-weightedcross-sectionalmeans. Thesample
+period runs from from April 2012 to September 2019. Standard errors are ad-
+justedforheteroskedasticityandautocorrelationwithalaglengthof0,0,2,4,
+and6quarters(NeweyandWest(1987)).
+Our conclusion is similar to that of Asness et al (2018) who use longer data sets. For our purposes,
+we can say that quality as we defined it is a persistent characteristic such that high quality today
+predicts future high quality over the next 3 years.
+4.2 The Price of Quality
+Having shown that future quality is predictable with our construction of the quality score, we turn
+to whether high-quality stocks command higher prices than low-quality ones. This is an important
+10%best-in-classESGscreeningapproach(onethateffectivelyremovescompanieswiththelowest10%ofESGrankings),
+both on a global and a developed markets universe.’. Also see Raju (2019) for a similar result in the Indian market.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+question to determine if investors reward quality with a higher price/premium.
+To examine this, following Fama and MacBeth (1973), we run cross-sectional regressions of each
+stock’s log market-to-book ratio on its overall quality score as shown in Equation 10.
+Pi = log(MB)i = α+βQualityi+controls+(cid:15)i (10)
+t t t t
+where the market-to-book (MBi) is defined as the Price-to-Book-Value per share of the stock i as
+t
+of the last trading day of March19 of year t. We use the winsorized and transformed z-scores as our
+explanatory variables. The regression coefficient β shows the relationship between the price of quality
+and the quality score.
+Equation 11 details our two control variables, Market Capitalization (MktCap) and 12 month
+return (Return):
+Pi = log(MB)i = α+β Qualityi+β z(MktCapi)+β z(Returni)+(cid:15)i (11)
+t t q t MC t 12r t t
+where z(MktCapi) is the z-score of the market capitalization for firm i in period t, and z(Returni)
+t t
+is the z-score of the 252 day return of firm i for period t. On the last trading day of March each year,
+we regress scaled prices on quality and control measures. Table 3 reports the results of Fama MacBeth
+regressionsofscaledpricesonQuality andcontrolmeasures. Weruntheregressionwithandwithout
+3
+entity-fixed effects, as indicated. We see that the price of quality as reflected in its co-efficient (β ),
+q
+is positive and generally statistically significant especially when we control for the firm effects: high-
+quality firms do command higher price to book multiples.
+Table3: Fama-McBethRegression-Quality3
+FirmEffects
+Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue
+Quality 0.01 0.16 0.87 0.14 2.01 0.04 0.22 3.32 0.00 0.35 5.52 0.00
+MktCap -0.17 -2.02 0.04 1.36 4.76 0.00
+Return 1.09 10.93 0.00 0.64 9.82 0.00
+R2 0.00 0.87 0.12 0.00 0.02 0.00 0.23 0.00
+ThistablereportsresultsfromannualFama-Macbethregressions. Thedependentvariableisthelogofafirm’smarket-to-bookratioinMarch
+ofeachcalendaryear(datet). Theexplanatoryvariablesarethequalityscores(Equation7)ondatetandaseriesofcontrols. MktCapisthe
+winsorized,clipped,transformedzscoreofthefirm’smarketcapitalization;Return isthefirm’sstockreturnovertheprioryear(252trading
+days). Firmfixedeffectsareincludedwhenindicated(EntityEffects).
+The R2 for these equations are low though significant : quality is definitely not a significant deter-
+minant of price. This is what we observe in real life - prices are not highly correlated to the quality
+of a company.
+We examine the market cap to determine whether larger firms command a higher price multiple
+for quality in Table 3. We show a statistically significant relationship when we control for the firm
+effect - larger firms have a higher multiple for quality than firms with a lower market cap. This result
+is aligned to the postulation that large stocks being more liquid and have less liquidity risk than small
+firms with smaller liquidity thus enjoy higher prices (Acharya and Pedersen (2005)). Our universe is
+the HSLI constituents - already the largest companies listed on the Hong Kong stock market. Within
+these constituents there is a difference in the liquidity of firms in the top decile by size versus the
+bottom decile. The negative coefficient when we run the regression without firm effects, is a reflection,
+we postulate, of this underlying universe. When we control for firm effects, the results are what we
+would expect - a positive coefficient between market cap and price of quality.
+19We choose March as our cut-off since many firms in Hong Kong use a calendar Financial Year. The March date
+allows for all firms to have published their annual accounts.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+We also examine past stock returns to determine if past returns have a relationship with the price
+multiples. Including past returns is necessary since firms in our universe have varying fiscal year-ends
+(upto11monthsapart)20. Apositivecoefficientonpastoneyearreturnsindicatesthatrecentreturns
+raise current prices while the book value has not had time to adjust. Consistent with this observation,
+Table 3 shows that, ceteris paribus, stocks with higher stock returns tend to have higher scaled prices.
+In summary, our results indicate that high-quality firms do enjoy higher price multiples even con-
+trolling for size and returns. However, the explanatory power is limited.
+Table 4 shows the Fama-McBeth results with the inclusion of ESG into our Quality score. The
+4
+results are weaker but similar to those of Quality .
+3
+Table4: Fama-McBethRegression-Quality4
+FirmEffects
+Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue
+Quality 0.04 1.15 0.25 0.03 0.81 0.42 0.08 2.53 0.01 0.07 2.39 0.02
+MktCap -0.06 -0.72 0.47 1.16 4.28 0.00
+Return 1.06 9.00 0.00 0.50 8.83 0.00
+R2 0.00 0.25 0.09 0.00 0.01 0.01 0.15 0.00
+ThistablereportsresultsfromannualFama-Macbethregressions. Thedependentvariableisthelogofafirm’smarket-to-bookratioinMarch
+ofeachcalendaryear(datet). Theexplanatoryvariablesarethequalityscores(Equation9)ondatetandaseriesofcontrols. MktCapisthe
+winsorized,clipped,transformedzscoreofthefirm’smarketcapitalization;Return isthefirm’sstockreturnovertheprioryear(252trading
+days). Firmfixedeffectsareincludedwhenindicated(EntityEffects).
+OurfindingsreflectthoseofAsnessetal(2018)whoconcludefromtheirbroaderandlongersample:
+To summarize, our results are consistent with the hypothesis that high-quality firms com-
+mand higher (scaled) prices. However, the explanatory power of quality is limited, leaving a
+large amount of variation in prices unexplained. Our results appear robust to specification
+and not driven by effects related to small stocks or by a particular industry or geography.
+The multi-dimensional nature of quality makes it difficult to provide a unified explanation for the
+quality premium. Critics of quality often argue that quality is not a single systematic risk factor - but
+rather a mix of a variety of underlying factors and behavioral biases. But despite these objections,
+there is reasonable evidence to show that high quality firms do command higher multiples.
+4.3 Returns of a Systematic Quality Portfolio
+Having established persistence and that there is a positive relationship between quality and the price
+ofquality, weturntoexaminingreturnsofquality. Wewillfollowthetraditionalmethodofexamining
+excess return with respect to the CAPM one-factor model; the Fama and French (1993) three-factor
+model, whichincludesthemarketfactorMKT,thesizefactorSMBandthevaluefactorHML;andthe
+four-factormodel, whichincludesthemomentumfactorUMD(JegadeeshandTitman(1993), Carhart
+(1997), Fama and French (2011)). The alphas are the intercepts from the regression (Equation 12)
+with the first one, three, or four right-hand-side variables included:
+r = α+β MKT +β SMB +β HML +β UMD +(cid:15) (12)
+t MKT t SMB t HML t UMD t t
+where r is the excess return over the risk-free rate of the portfolio. For the various factors in
+t
+Equation 12, we use AQR’s dataset (AQR Betting Against Beta: Equity Factors Data, Monthly)
+20Accounting variables at the end of the firm’s fiscal year ending anywhere in calendar year t-1 are aligned to March
+of the current calendar year t
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+which has monthly factor data for Hong Kong21. As the AQR dataset is in US Dollars, we convert
+Hong Kong Dollar returns of our portfolio(s) to US Dollars using the closing USDHKD price22 for the
+respective date. Table 5 shows the results.
+Table5: ReturnsofQuality3 : TopandBottomportfolios
+BottomPortfolio TopPortfolio
+Co-eff stderr t-stat pvalue Co-eff stderr t-stat pvalue
+ExcessReturn -0.22 -0.37 0.41 0.97
+CAPMAlpha -0.74 0.30 -2.47 0.02 0.03 0.20 0.14 0.89
+FF3FactorAlpha -0.72 0.30 -2.39 0.02 -0.03 0.18 -0.18 0.86
+FF4FactorAlpha -0.48 0.31 -1.54 0.13 0.05 0.19 0.28 0.78
+Beta 1.01 0.73
+InformationRatio -0.91 0.31
+RawSharpe -0.03 0.58
+FF4AdjustedR2 0.75 0.00 0.81 0.00
+This table shows calendar-time portfolio returns. Each calendar quarter, the constituents of the
+HSLIindexarerankedinascendingorderonthebasisoftheirqualityscore. Therankedstocksare
+assignedtooneoftwoportfolios-aBottomportfolioconsistingofthelowestscoringstocksandaTop
+portfolioconsistingofthehighestscoringstocks. Alphaistheinterceptinatimeseriesregressionof
+monthlyexcessreturn. Theexplanatoryvariablesarethereturnsofthemarket(MKT),size(SMB),
+book-to-market(HML),andmomentum(UMD)portfoliosfromAQRBettingAgainstBeta: Equity
+FactorsData,Monthly. ThesampleperiodrunsfromApril2012toSeptember2019. Returnsarein
+USD,donotincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate. Returns
+andalphasareinmonthlypercentage,stderrors,t-statisticsandrelatedpValuesareshownnextto
+the coefficient estimates. Beta is the realized coefficient on the market portfolio. Raw Sharpe and
+InformationRatiosareannualizednumbers. AdjustedR2iscomputedforthe4factorregression.
+The high quality stocks portfolio (with monthly excess returns of 41bps) outperforms a portfolio of
+low-qualitystocks(withmonthlyexcessreturnsof-22bps)by62bps. Wecanrejectthenullhypothesis
+of no difference in average returns between our high quality and low quality portfolios.
+When we control for market risk and other factor exposures, the out-performance in the alpha of
+high-quality stocks largely remains. The under-performance is statistically significant against CAPM
+and FF3 for the Bottom Portfolio. Even with the Top Portfolio having no alpha, there is a significant
+spread between the Top and the Bottom portfolios. The annualized raw sharpe ratio as well as the
+InformationratioareindicativeofthesignificantspreadinriskadjustedperformancebetweentheTop
+and Bottom portfolios. A final point: our Top portfolio has a lower beta than the Bottom portfolio -
+indicating that our quality score inherently selects a less volatile portfolio.
+Next, we examine the components of aggregate quality in more detail. Table 6 reports alphas and
+other statistics for a top decile, quarterly rebalanced portfolio using the composite quality score and
+its constituent components. Like Table 5, we report the alphas with respect to the CAPM, FF3, and
+FF4 models.
+At the aggregate Quality , the factor loadings are interesting. As expected, the relationship with
+3
+SMB is negative though significant. Our universe consists of the top 100 (approximately) stocks by
+market capitalization, and even though there is a spread in market cap, we do not actively seek size
+in our components. Within these top market cap companies, we seem to be choosing the larger ones.
+We do not check for ‘value’ in our Quality criteria and so the regression results showing a sig-
+3
+nificant positive relationship is not what we expect, a priori. Quality is buying based on quality
+irrespective of stock prices (value), while HML is buying based on stock prices, irrespective of
+quality. A negative loading for value should be expected, as we have shown that high-quality stocks
+tend to be expensive (have high prices) while the value factor (HML) is long cheap (value) stocks.
+Note the Safety and Profitability components have a positive and significant relationship to HML
+21There are issues in the use of Non-U.S factor datasets. See Bru¨ckner et al. (2015). While we recognize that caution
+should be applied, we believe that it is important to use the data sets to expore the use of factor theory in non-US
+markets.
+22prices from Refinitiv
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Table6: Quality3 PortfolioReturns: FamaFrench4Factors
+Quality Profitability Growth Safety
+Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue
+ExcessReturn 0.41 0.97 -0.23 -0.49 0.29 0.51 0.32 0.82
+CAPMAlpha 0.03 0.14 0.89 -0.66 -3.12 0.00 -0.18 -0.51 0.61 -0.03 -0.15 0.88
+FF3FactorAlpha -0.03 -0.18 0.86 -0.72 -3.71 0.00 -0.18 -0.56 0.58 -0.10 -0.58 0.56
+FF4FactorAlpha 0.05 0.28 0.78 -0.62 -3.02 0.00 0.20 0.64 0.52 0.08 0.45 0.65
+MKT 0.72 18.67 0.00 0.82 20.08 0.00 0.95 15.00 0.00 0.67 19.23 0.00
+SMB -0.12 -2.36 0.02 -0.15 -2.86 0.01 -0.19 -2.31 0.02 -0.13 -2.87 0.01
+HML 0.23 2.97 0.00 0.19 2.26 0.03 -0.63 -4.96 0.00 0.25 3.59 0.00
+UMD -0.07 -1.36 0.18 -0.09 -1.53 0.13 -0.33 -3.64 0.00 -0.15 -3.12 0.00
+Beta 0.73 0.83 0.92 0.68
+InformationRatio 0.31 -0.49 0.07 0.08
+RawSharpe 0.58 -0.12 0.26 0.79
+FF4AdjustedR2 0.81 0.00 0.83 0.00 0.74 0.00 0.83 0.00
+Thistableshowscalendar-timeportfolioreturns. Eachcalendarquarter,theconstituentsoftheHSLIindexarerankedinascendingorder
+onthebasisoftheirqualityscore. Therankedstocksareassignedtooneoftwoportfolios-aBottomportfolioconsistingofthelowest
+scoringstocksandaTopportfolioconsistingofthehighestscoringstocks. Alphaistheinterceptinatimeseriesregressionofmonthly
+excessreturn. Theexplanatoryvariablesarethereturnsofthemarket(MKT),size(SMB),book-to-market(HML),andmomentum(UMD)
+portfoliosfromAQRBettingAgainstBeta: EquityFactorsData,Monthly. ThesampleperiodrunsfromApril2012toSeptember2019.
+ReturnsareinUSD,donotincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate. Returnsandalphasarein
+monthlypercentage,stderrors,t-statisticsandrelatedpValuesareshownnexttothecoefficientestimates. Betaistherealizedcoefficient
+onthemarketportfolio. RawSharpeandInformationRatiosareannualizednumbers. AdjustedR2iscomputedforthe4factorregression.
+which may be contributing to the overall positive coefficient for HML23.
+The UMD factor loading is marginal and not significant. We posit at least two explanations for
+this: First, we do not seek momentum in our criteria - and finding a significant large relationship
+would simply be coincidence or otherwise would merit an explanation. Second, our safety criteria
+seeks low volatility. Wang and Xu (2009) show volatility has a negative relationship to momentum.
+Despite a positive and statistically significant relationship with MKT, our Quality portfolio has
+3
+a low beta. The loadings for HML, SMB and UMD seem to imply our portfolio is likely to be long
+low beta and large stocks - in accordance to our intended portfolio construction.
+Looking next at the components that make up Quality , Profitability has the lowest excess return
+3
+and significant negative alphas. Profitability as a metric for portfolio construction in Hong Kong does
+not work well for the period under consideration. Could this be a result of the structure of Hong Kong
+market, the time period under consideration or the result of the measures we have chosen? We do not
+have a robust explanation for this weak set of alphas. The negative loadings of SMB and UMD for
+Profitability are intuitive : being long large companies with low betas.
+The Growth sub-component has a positive excess return and alphas which though negative for
+CAPM and FF3 are statistically not significant. Of note is the negative and significant loading for
+HML - growth companies are more expensive.
+As expected, the Safety sub-component has the lowest MKT exposure, with Growth having the
+highest. Safety is negatively (and significant) loaded to UMD - we choose low beta/low vol stocks.
+Betas are also what one would expect: Profitability and Growth having the higher beta and Safety
+the lowest. Safety also has the highest raw sharpe.
+Interestingly, the combination of the three components provides significant synergies - with the
+Quality giving higher excess returns, alphas, raw sharpes, information ratio and a lower beta than
+3
+each individual component. Returns on the aggregate Quality factor have something more than can
+3
+be explained as a simple ‘sum of parts’. The combination is indeed a powerful one.
+A similar analysis for the Quality portfolio: Table 7 shows the returns of Top and Bottom
+4
+23A matter for further investigation
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+portfolios, Table 8 shows the results against FF4.
+Table7: ReturnsofQuality4 : TopandBottomportfolios
+BottomPortfolio TopPortfolio
+Co-eff stderr t-stat pvalue Co-eff stderr t-stat pvalue
+ExcessReturn -0.13 -0.20 0.43 1.04
+CAPMAlpha -0.67 0.34 -1.94 0.06 0.06 0.21 0.30 0.77
+FF3FactorAlpha -0.66 0.35 -1.88 0.06 0.00 0.19 0.00 1.00
+FF4FactorAlpha -0.56 0.37 -1.52 0.13 0.01 0.21 0.06 0.95
+Beta 1.06 0.70
+InformationRatio -0.01 0.54
+RawSharpe 0.08 0.47
+FF4AdjustedR2 0.70 0.00 0.78 0.00
+This table shows calendar-time portfolio returns. Each calendar quarter, the constituents of the
+HSLIindexarerankedinascendingorderonthebasisoftheirqualityscore. Therankedstocksare
+assignedtooneoftwoportfolios-aBottomportfolioconsistingofthelowestscoringstocksandaTop
+portfolioconsistingofthehighestscoringstocks. Alphaistheinterceptinatimeseriesregressionof
+monthlyexcessreturn. Theexplanatoryvariablesarethereturnsofthemarket(MKT),size(SMB),
+book-to-market(HML),andmomentum(UMD)portfoliosfromAQRBettingAgainstBeta: Equity
+FactorsData,Monthly. ThesampleperiodrunsfromApril2012toSeptember2019. Returnsarein
+USD,donotincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate. Returns
+andalphasareinmonthlypercentage,stderrors,t-statisticsandrelatedpValuesareshownnextto
+the coefficient estimates. Beta is the realized coefficient on the market portfolio. Raw Sharpe and
+InformationRatiosareannualizednumbers. AdjustedR2iscomputedforthe4factorregression.
+The high Quality stocks portfolio (with monthly excess returns of 43bps) outperforms a portfolio
+4
+of low-quality stocks (with monthly excess returns of -13bps) by 55bps. Once again, we can reject the
+null hypothesis of no difference in average returns between our high quality and low quality portfolios.
+Like with Quality , the CAPM and FF3 alphas for Quality are negative and significant for the
+3 4
+Bottom portfolio. This shows the spread in alpha between the Quality Bottom and Top portfolios.
+4
+Inaddition, theQuality Topportfoliohasalowerbetaandhigherinformationratioandrawsharpes.
+4
+Indeed the Top portfolio does outperform the Bottom portfolio: buying quality incorporating ESG
+does pay.
+Table 8 shows the summary of the regressions for our Quality top portfolio of quality and it’s
+4
+individual sub-components respectively. Like with Quality , Quality is greater than the ‘sum of
+3 4
+parts’ : with lower beta, higher information ratio and excess return than any individual component.
+The ESG component does not by itself generate excess returns (and has a negative information
+ratio - indicating that a systematic portfolio that selects the top ranked ESG companies does not out-
+perform the index in Hong Kong24). A top portfolio of ESG has returns that are negatively loaded to
+SMB (larger companies have higher ESG bias) and positively loaded to HML (firms with higher ESG
+scores are more expensive). Adding ESG has lowered the beta of our Quality portfolio marginally
+4
+and increased information ratio.
+Next, we look at the correlations between the different quality components. There is no a priori
+reason for the components to be correlated. Each of the measures that make up the components is a
+measure of quality that investors should pay for at the margin, but the measures do not have to be
+related to one another. Table 9 reports the correlation for the excess returns of Quality portfolio.
+3
+All of the pairwise correlations among the quality components are positive. The average pairwise
+correlation among the Quality components is 0.7798. The Safety component is the most correlated
+3
+with our overall Quality score. We posit that this is due to the higher frequency (daily prices) data
+3
+we use in its computation which causes the Quality portfolio to be biased towards changes in Safety
+3
+scores.
+Table 10 reports the correlation for the excess returns of Quality portfolio. All of the pairwise
+4
+24Therefore raising the question about the usefulness of ESG as a predictor of returns within the context of large cap
+firms in Hong Kong.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+srotcaF4hcnerFamaF
+:snruteRoiloftroP
+4ytilauQ
+:8elbaT
+GSE
+ytefaS
+htworG
+ytilibatfiorP
+ytilauQ
+eulavp
+tats-t
+ffe-oC
+eulavp
+tats-t
+ffe-oC
+eulavp
+tats-t
+ffe-oC
+eulavp
+tats-t
+ffe-oC
+eulavp
+tats-t
+ffe-oC
+40.0
+20.0
+28.0
+23.0
+15.0
+92.0
+94.0-
+32.0-
+40.1
+34.0
+nruteRssecxE
+11.0
+06.1-
+53.0-
+88.0
+51.0-
+30.0-
+16.0
+15.0-
+81.0-
+00.0
+21.3-
+66.0-
+77.0
+03.0
+60.0
+ahplAMPAC
+50.0
+00.2-
+14.0-
+65.0
+85.0-
+01.0-
+85.0
+65.0-
+81.0-
+00.0
+17.3-
+27.0-
+00.1
+00.0
+00.0
+ahplArotcaF3FF
+31.0
+25.1-
+33.0-
+56.0
+54.0
+80.0
+25.0
+46.0
+02.0
+00.0
+20.3-
+26.0-
+59.0
+60.0
+10.0
+ahplArotcaF4FF
+00.0
+42.61
+07.0
+00.0
+32.91
+76.0
+00.0
+00.51
+59.0
+00.0
+80.02
+28.0
+00.0
+06.61
+96.0
+TKM
+10.0
+97.2-
+61.0-
+10.0
+78.2-
+31.0-
+20.0
+13.2-
+91.0-
+10.0
+68.2-
+51.0-
+10.0
+94.2-
+31.0-
+BMS
+50.0
+59.1
+71.0
+00.0
+95.3
+52.0
+00.0
+69.4-
+36.0-
+30.0
+62.2
+91.0
+00.0
+81.3
+72.0
+LMH
+52.0
+51.1-
+70.0-
+00.0
+21.3-
+51.0-
+00.0
+46.3-
+33.0-
+31.0
+35.1-
+90.0-
+78.0
+71.0-
+10.0-
+DMU
+17.0
+86.0
+29.0
+38.0
+07.0
+ateB
+82.0-
+80.0
+70.0
+94.0-
+45.0
+oitaRnoitamrofnI
+41.0
+97.0
+62.0
+21.0-
+74.0
+eprahSwaR
+00.0
+77.0
+00.0
+38.0
+00.0
+47.0
+00.0
+38.0
+00.0
+87.0
+2RdetsujdA4FF
+ehT
+.erocsytilauqriehtfosisabehtnoredrognidnecsanideknareraxedniILSHehtfostneutitsnoceht
+,retrauqradnelachcaE
+.snruteroiloftropemit-radnelacswohselbatsihT
+siahplA
+.skcotsgnirocstsehgihehtfognitsisnocoiloftroppoTadnaskcotsgnirocstsewolehtfognitsisnocoiloftropmottoBa-soiloftropowtfoenootdengissaeraskcotsdeknar
+mutnemomdna,)LMH(tekram-ot-koob,)BMS(ezis,)TKM(tekramehtfosnruterehteraselbairavyrotanalpxeehT
+.nruterssecxeylhtnomfonoissergerseiresemitanitpecretnieht
+edulcnitonod,DSUnierasnruteR
+.9102rebmetpeSot2102lirpAmorfsnurdoirepelpmasehT
+.ylhtnoM,ataDsrotcaFytiuqE
+:ateBtsniagAgnitteBRQAmorfsoiloftrop)DMU(
+ottxennwohseraseulaVpdetalerdnascitsitats-t,srorredts,egatnecrepylhtnomnierasahpladnasnruteR
+.etarllibyrusaerT.S.Uehtrevoerasnruterssecxedna,gnigdehycnerruc
+rotcaf4ehtrofdetupmocsi2RdetsujdA
+.srebmundezilaunnaerasoitaRnoitamrofnIdnaeprahSwaR
+.oiloftroptekramehtnotneicffieocdezilaerehtsiateB
+.setamitsetneicffieoceht
+.noisserger
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Table9: Quality3 Componentcorrelations Table10: Quality4 Componentcorrelations
+Quality Profitability Growth Safety Quality Profitability Growth Safety ESG
+Quality 1.00 0.88 0.73 0.93 Quality 1.00 0.82 0.67 0.85 0.92
+Profitability 0.88 1.00 0.75 0.89 Profitability 0.82 1.00 0.75 0.89 0.81
+Growth 0.73 0.75 1.00 0.70 Growth 0.67 0.75 1.00 0.70 0.71
+Safety 0.93 0.89 0.70 1.00 Safety 0.85 0.89 0.70 1.00 0.82
+Thistableshowscorrelationofmonthlyreturnsinexcessofrisk ESG 0.92 0.81 0.71 0.82 1.00
+freerate. TheportfoliosforQuality, Profitability, Growthand Thistableshowscorrelationofmonthlyreturnsinexcessofriskfreerate.
+Safetyaretheequalweightedtopdecilescoringstockcalculated TheportfoliosforQuality,Profitability,Growth,SafetyandESGarethe
+atthelasttradingdayofeachquarter. Thesampleperiodruns equalweightedtopdecilescoringstockcalculatedatthelasttradingday
+from April 2012 to September 2019. Returns are in USD, do ofeachquarter. ThesampleperiodrunsfromApril2012toSeptember
+not include currency hedging, and excess returns are over the 2019. ReturnsareinUSD,donotincludecurrencyhedging,andexcess
+U.S.Treasurybillrate. returnsareovertheU.S.Treasurybillrate.
+correlations among the quality components are positive. The average pairwise correlation among the
+Quality components is 0.7805. Interestingly, the ESG component is the most correlated with our
+4
+overall Quality score. In a sense, this relationship is aligned to the broader hypothesis of ESG - com-
+4
+paniesthatdofocusondoingthingsrightacrossavarietyofstakeholderstendtobequalitycompanies.
+While there is little prior research to inform our thinking (see Asness et al. (2018) and Norges-
+Bank (2015)), we think these positive correlations support the decision to combine the three (or four)
+component sets of measures into a single quality score.
+Wealsoneedtodealwithpotentialmulti-collinearitybetweenthecomponentsofourqualityscore.
+Again, a priori, we do not expect collinearity amongst the components by their very construction. We
+calculate the variance inflation factors (VIF) for the excess returns of the individual component port-
+folios to check for multi-collinearity. We also take the position that a VIF score in excess of 10 would
+determine collinearity. Table 11 shows the VIFs for Quality indicating a lack of multi-collinearity
+3
+using our criteria.
+Table11: Quality3 VarianceInflationFactorsforProfitability,GrowthandSafety
+VarianceInflationFactor
+Profitability 5.18
+Growth 2.28
+Safety 4.58
+Thistableshowsvarianceinflationfactorsforthesub-componentsofthequalityscore. Weuse
+monthlyreturnsinexcessofriskfreerate. TheportfoliosforProfitability,GrowthandSafety
+aretheequalweightedtopdecilescoringstockcalculatedatthelasttradingdayofeachquarter.
+ThesampleperiodrunsfromApril2012toSeptember2019. ReturnsareinUSD,donotinclude
+currencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate.
+Table12: Quality4 VarianceInflationFactorsforProfitability,Growth,SafetyandESG
+VarianceInflationFactor
+Profitability 5.53
+Growth 2.43
+Safety 5.14
+ESG 3.58
+Thistableshowsvarianceinflationfactorsforthesub-componentsofthequalityscore. Weuse
+monthlyreturnsinexcessofriskfreerate. TheportfoliosforProfitability,Growth,Safetyand
+ESGaretheequalweightedtopdecilescoringstockcalculatedatthelasttradingdayofeach
+quarter. ThesampleperiodrunsfromApril2012toSeptember2019. ReturnsareinUSD,do
+notincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate.
+Similarly, Table 12 also shows no multicollinearity amongst the Quality components.
+4
+There is also the consideration of multi-collinearity for the specific measures we choose for the
+Profitability and Safety sub-components. Conceptually, here, the picture is less clear. Metrics like
+ROE and ROA, or LEV and CFLEV are likely to be collinear by definition. At the same time, we
+recognize that these individual measures have their own unique nuances and have value to be included
+into any analysis despite collinearity. So, a priori, we set threshold of VIFs to be in excess of 10 for
+us to consider dropping a specific measure25. The VIFs for the measures that make up Profitability
+and Safety are shown in Tables 13 and 15 respectively.
+25See O’Brien (2007).
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Table13: Quality3 VarianceInflationFactorsforProfitabilitycomponents
+VarianceInflationFactor
+ROE 5.89
+ROA 6.84
+CFOA 7.37
+OPMAR 3.33
+ACC 3.10
+Thistableshowsvarianceinflationfactorsforthesub-componentsoftheProfitabilityscore. We
+usemonthlyreturnsinexcessofriskfreerate. TheportfoliosforROE,ROA,CFOA,OPMAR
+andACCaretheequalweightedtopdecilescoringstockcalculatedatthelasttradingdayof
+eachquarter. ThesampleperiodrunsfromJan2011toSeptember2019. ReturnsareinUSD,
+donotincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate.
+Table14: Quality3 Profitabilitymeasurecorrelations
+Profitability ROE ROA CFOA OPMAR ACC
+Profitability 1.00 0.69 0.67 0.79 0.96 0.81
+ROE 0.69 1.00 0.89 0.87 0.69 0.73
+ROA 0.67 0.89 1.00 0.89 0.66 0.68
+CFOA 0.79 0.87 0.89 1.00 0.77 0.76
+OPMAR 0.96 0.69 0.66 0.77 1.00 0.79
+ACC 0.81 0.73 0.68 0.76 0.79 1.00
+Thistableshowscorrelationofmonthlyreturnsinexcessofriskfreerate. The
+portfolios for ROE, ROA, CFOA, OPMAR and ACC are the equal weighted
+topdecilescoringstockcalculatedatthelasttradingdayofeachquarter. The
+sampleperiodrunsfromApril2012toSeptember2019. ReturnsareinUSD,do
+notincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybill
+rate.
+The VIFs for ROE and ROA are not high enough for us to consider dropping either of them out-
+right. Further, Table 14 shows the correlations between the monthly portfolio excess returns formed
+on each of the metrics that make up our Profitability score. The correlation between ROE and ROA
+is, as expected, high at 0.89. Both metrics focus on a different nuance of the profitability - and so
+there is merit to retain them in the analysis. While the paired correlations of each of the measures
+are elevated, they do not indicate the need to drop either measure.
+For our Safety metrics (Table 15), the VIFs remain well within range.
+Table15: Quality3 VarianceInflationFactorsforSafetycomponents
+VarianceInflationFactor
+BAB 2.48
+VOL 3.22
+LEV 5.12
+CFLEV 3.80
+EVL 3.58
+Thistableshowsvarianceinflationfactorsforthesub-componentsoftheProfitabilityscore. We
+usemonthlyreturnsinexcessofriskfreerate. TheportfoliosforBAB,VOL,LEV,CFLEVand
+EVLaretheequalweightedtopdecilescoringstockcalculatedatthelasttradingdayofeach
+quarter. ThesampleperiodrunsfromApril2012toSeptember2019. ReturnsareinUSD,do
+notincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate.
+Table16: Quality3 Safetymeasurecorrelations
+Safety BAB VOL LEV CFLEV EVL
+Safety 1.00 0.70 0.84 0.86 0.80 0.85
+BAB 0.70 1.00 0.75 0.66 0.63 0.66
+VOL 0.84 0.75 1.00 0.73 0.68 0.75
+LEV 0.86 0.66 0.73 1.00 0.85 0.82
+CFLEV 0.80 0.63 0.68 0.85 1.00 0.75
+EVL 0.85 0.66 0.75 0.82 0.75 1.00
+Thistableshowsvarianceinflationfactorsforthesub-components
+oftheProfitabilityscore. Weusemonthlyreturnsinexcessofrisk
+free rate. The portfolios for BAB, VOL, LEV, CFLEV and EVL
+are the equal weighted top decile scoring stock calculated at the
+last trading day of each quarter. The sample period runs from
+April2012toSeptember2019. ReturnsareinUSD,donotinclude
+currencyhedging,andexcessreturnsareovertheU.S.Treasurybill
+rate.
+ForthecorrelationbetweentheSafetymeasures(Table16), thepair-wisecorrelationbetweenLEV
+and CFLEV is 0.85. High, but not high enough for us to consider dropping either one. In passing, we
+note that, in general, pair-wise correlations are lower for the measures that make up Safety - because
+of the variety and construction of the measures chosen.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Similar tables for Quality are Tables 17 and 18 for Profitability
+4
+Table17: Quality4 VarianceInflationFactorsforProfitabilitycomponents
+VarianceInflationFactor
+ROE 5.89
+ROA 6.84
+CFOA 7.37
+OPMAR 3.33
+ACC 3.10
+Thistableshowsvarianceinflationfactorsforthesub-componentsoftheProfitabilityscore. We
+usemonthlyreturnsinexcessofriskfreerate. TheportfoliosforROE,ROA,CFOA,OPMAR
+andACCaretheequalweightedtopdecilescoringstockcalculatedatthelasttradingdayof
+eachquarter. ThesampleperiodrunsfromJan2011toSeptember2019. ReturnsareinUSD,
+donotincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate.
+Table18: Quality4 Profitabilitymeasurecorrelations
+Profitability ROE ROA CFOA OPMAR ACC
+Profitability 1.00 0.69 0.67 0.79 0.96 0.81
+ROE 0.69 1.00 0.89 0.87 0.69 0.73
+ROA 0.67 0.89 1.00 0.89 0.66 0.68
+CFOA 0.79 0.87 0.89 1.00 0.77 0.76
+OPMAR 0.96 0.69 0.66 0.77 1.00 0.79
+ACC 0.81 0.73 0.68 0.76 0.79 1.00
+Thistableshowscorrelationofmonthlyreturnsinexcessofriskfreerate. The
+portfolios for ROE, ROA, CFOA, OPMAR and ACC are the equal weighted
+topdecilescoringstockcalculatedatthelasttradingdayofeachquarter. The
+sampleperiodrunsfromApril2012toSeptember2019. ReturnsareinUSD,do
+notincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybill
+rate.
+Tables 19 and 20 for Safety.
+Table19: Quality4 VarianceInflationFactorsforSafetycomponents
+VarianceInflationFactor
+BAB 2.48
+VOL 3.22
+LEV 5.12
+CFLEV 3.80
+EVL 3.58
+Thistableshowsvarianceinflationfactorsforthesub-componentsoftheProfitabilityscore. We
+usemonthlyreturnsinexcessofriskfreerate. TheportfoliosforBAB,VOL,LEV,CFLEVand
+EVLaretheequalweightedtopdecilescoringstockcalculatedatthelasttradingdayofeach
+quarter. ThesampleperiodrunsfromApril2012toSeptember2019. ReturnsareinUSD,do
+notincludecurrencyhedging,andexcessreturnsareovertheU.S.Treasurybillrate.
+Table20: Quality4 Safetymeasurecorrelations
+Safety BAB VOL LEV CFLEV EVL
+Safety 1.00 0.70 0.84 0.86 0.80 0.85
+BAB 0.70 1.00 0.75 0.66 0.63 0.66
+VOL 0.84 0.75 1.00 0.73 0.68 0.75
+LEV 0.86 0.66 0.73 1.00 0.85 0.82
+CFLEV 0.80 0.63 0.68 0.85 1.00 0.75
+EVL 0.85 0.66 0.75 0.82 0.75 1.00
+Thistableshowsvarianceinflationfactorsforthesub-components
+oftheProfitabilityscore. Weusemonthlyreturnsinexcessofrisk
+free rate. The portfolios for BAB, VOL, LEV, CFLEV and EVL
+are the equal weighted top decile scoring stock calculated at the
+last trading day of each quarter. The sample period runs from
+April2012toSeptember2019. ReturnsareinUSD,donotinclude
+currencyhedging,andexcessreturnsareovertheU.S.Treasurybill
+rate.
+There is nothing in the analysis of collinearity to cause us to rethink the construction of the re-
+spective components of Profitability or Safety.
+We reiterate that our intent is not so much to select measures based on data analysis (tanta-
+mount to data mining or fitting), but to demonstrate that having multiple measures to make up a
+sub-component is a robust way of ensuring the holistic capture of a sub-component.
+Having determined that we have a methodology to identify quality companies, demonstrated that
+the methodology is able to predict persistence of quality into the future, demonstrated that a high-
+quality portfolio earns excess returns and has better risk adjusted return characteristics when com-
+pared to low-quality portfolio and the FF4 factor model, and having dealt with multi-collinearity of
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+measures, we finally turn to examine performance of such a Quality systematic portfolio against the
+3
+HSLI. Figures 2, 3 and 4 summarise the performance of the Quality portfolio versus the HSLI since
+3
+1 April 2012.
+Figure2: SystematicHKQuality3 StrategyvsHSLIMonthlyPriceReturnAnalysisMonthStarttoMonthStart
+Wecomputepricereturnsonanopen-to-openbasis. Practically,thisisastraightforwardexecution
+model - the investor places market orders before market opens and in liquid stocks, for retail investor
+size of orders, execution at market open has a high probability. We have chosen the 1st trading day of
+a quarter as our investment/rebalancing day26. By restricting the universe to large cap stocks, we op-
+erate in the most liquid segment of the market. We recognize that there will be capacity constraints27,
+and slippage28 for the strategy if the invested amount is a significant proportion of the capacity. We
+ignore trading and custody costs and any taxes - in the current context, these costs are fairly small
+(10 - 25 bps as trading costs)29 and do not impair the overall results given the modest turnover. We
+have also ignored dividends and, therefore, total returns in our calculations.
+Figure 4: Systematic SG Quality3 Strategy Summary
+Statistics
+Stat HKQuarterlyQuality HSLI
+Figure3: SystematicSGQuality3StrategyReturnAnalysis: MonthStart Start 2012-04-02 2012-04-02
+toMonthStart End 2019-09-30 2019-09-30
+Risk-freerate 0.00% 0.00%
+TotalReturn 55.95% 26.94%
+CAGR 6.11% 3.23%
+MaxDrawdown -22.61% -36.51%
+1Y -10.84% -7.20%
+3Y(ann.) 6.07% 4.39%
+5Y(ann.) 8.60% 2.59%
+SinceIncep. (ann.) 6.11% 3.23%
+DailySharpe 0.52 0.28
+DailySortino 0.87 0.46
+DailyInfoRatio 0.13 -
+CalmarRatio 0.27 0.09
+DailyMean(ann.) 7.08% 4.79%
+DailyVol(ann.) 13.59% 17.24%
+BestDay 4.43% 4.93%
+WorstDay -3.90% -5.22%
+MonthlySharpe 0.50 0.27
+MonthlySortino 0.80 0.44
+MonthlyInfoRatio 0.28 -
+MonthlyMean(ann.) 6.89% 4.67%
+MonthlyVol(ann.) 13.73% 17.25%
+BestMonth 7.28% 13.25%
+WorstMonth -10.41% -12.98%
+YearlySharpe 0.58 0.24
+YearlySortino 2.72 0.69
+YearlyInfoRatio 0.31 -
+YearlyMean 6.14% 4.10%
+YearlyVol 10.51% 16.81%
+BestYear 28.25% 40.90%
+WorstYear -6.39% -15.51%
+Avg. Drawdown -2.56% -3.60%
+Avg. DrawdownDays 38.42 57.96
+Avg. UpMonth 3.08% 3.71%
+Avg. DownMonth -3.55% -4.16%
+The long term CAGR of 6.11% pa for our Quality strategy versus 3.23% pa for the HSLI over
+3
+the period, a spread of over 2.87% pa, indicates that investing in a systematic Quality strategy does
+3
+26We do not attempt to optimize the rebalancing day for the purpose of this analysis.
+27Estimatingthesizeconstraintsusingwellacceptedtechniquesisstraightforwardbutbeyondthescopeofthispaper
+28Slippages can also be estimated. Again, beyond the scope of this paper.
+29Note an ETFs tracking the top 100 stocks in Hong Kong has a Total Expense Ratios in the region of 100 bps. The
+cost of running a 10-11 stock portfolio with a modest quarterly turnover should be comparable to these costs.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+payoff over the long term. Yearly raw sharpe’s of the portfolio (0.58) is 2.40x the raw sharpe of the
+HSLI (0.24), demonstrating superior risk return characteristics of the Quality portfolio.
+3
+Figure 6: Systematic SG Quality4 Strategy Summary
+Statistics
+Stat HKQuarterlyQuality HSLI
+Figure5: SystematicSGQuality4StrategyReturnAnalysis: MonthStart Start 2012-04-02 2012-04-02
+toMonthStart End 2019-09-30 2019-09-30
+Risk-freerate 0.00% 0.00%
+TotalReturn 56.50% 26.94%
+CAGR 6.16% 3.23%
+MaxDrawdown -21.67% -36.51%
+1Y -10.03% -7.20%
+3Y(ann.) 5.79% 4.39%
+5Y(ann.) 6.86% 2.59%
+SinceIncep. (ann.) 6.16% 3.23%
+DailySharpe 0.53 0.28
+DailySortino 0.88 0.46
+DailyInfoRatio 0.13 -
+CalmarRatio 0.28 0.09
+DailyMean(ann.) 7.12% 4.79%
+DailyVol(ann.) 13.55% 17.24%
+BestDay 8.64% 4.93%
+WorstDay -4.00% -5.22%
+MonthlySharpe 0.51 0.27
+MonthlySortino 0.84 0.44
+MonthlyInfoRatio 0.22 -
+MonthlyMean(ann.) 6.90% 4.67%
+MonthlyVol(ann.) 13.54% 17.25%
+BestMonth 9.51% 13.25%
+WorstMonth -10.49% -12.98%
+YearlySharpe 0.47 0.24
+YearlySortino 2.97 0.69
+YearlyInfoRatio 0.54 -
+YearlyMean 6.45% 4.10%
+YearlyVol 13.74% 16.81%
+BestYear 38.06% 40.90%
+WorstYear -5.46% -15.51%
+Avg. Drawdown -3.09% -3.60%
+Avg. DrawdownDays 47.39 57.96
+Avg. UpMonth 3.03% 3.71%
+Avg. DownMonth -3.29% -4.16%
+A similar output for the Quality is shown in Figures 5 and 6. The long term CAGR of 6.16%
+4
+pa for our Quality strategy versus 3.23% pa for the HSLI over the period, a spread of over 2.92%
+4
+pa, indicates that investing in a systematic Quality strategy also does payoff over the long term.
+4
+Yearly raw sharpe’s of the portfolio (0.47) is 1.92x the raw sharpe of the HSLI (0.24), demonstrating
+superior risk return characteristics of the quality portfolio. Adding ESG criteria to determine Qual-
+ity, on a preliminary basis, does not seem to significantly dissipate long-term out-performance arising
+from Quality . Socially-conscious investors in Hong Kong do seem to have a systematic way to invest
+3
+without compromising on their principles.
+Note that despite being a more concentrated portfolio (of only 10-11 stock), the overall monthly
+volatility for the Quality strategy (13.73%)30 is lower than the monthly volatility of the broader,
+3
+large cap focused HSLI index (17.25%). It is possible to generate long term risk adjusted returns in
+excess of the market (HSLI) by investing in a more concentrated systematic portfolio without taking
+on additional risk (i.e increasing volatility).
+The turnover of a portfolio is an important consideration for a retail investor as a high turnover
+adds transaction costs which will lower the returns of the portfolio. Our portfolio is rebalanced quar-
+terly. The profile of the rolling annual turnover31 of the Quality portfolio is shown in Figure 7 (with
+3
+a max of 63.64%, a min of 18.18%, a mean of 42.15% and a mode of 27.27%). Effectively, using mean
+turnover, this means we keep 1 of every 2 stock we hold at the start of an annual period. This is
+an acceptable profile of turnover and ensures that quality companies are being reviewed regularly.
+Further, the turnover will not add extraordinary costs of execution for an investor.
+30and 13.54% for the Quality strategy
+4
+31We calculate the turnover each quarter from the quarter a year previous.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Figure7: TurnoverofQuality3 portfolio Figure8: TurnoverofQuality4 portfolio
+Figure 8 shows the similar turnover histogram over time for the Quality strategy with a max of
+4
+45.45%, a min of 9.09%, a mean of 32.51% and a mode of 36.36%. Again, similar to the Quality
+3
+strategy, this is a well-behaved portfolio turnover. If anything, adding ESG reduces turnover of the
+portfolio - something that should be an important consideration for an investor.
+5 Conclusion
+We define a quality stock as one that has characteristics that should command, ceterius paribus, a
+higher relative price. Deriving from the Gordon Growth Model, we build a quality score using ‘off-the-
+shelf’ criteria for profitability, growth and safety (Quality ) based on existing well-regarded research.
+3
+To this, we extend the definition of quality to include ESG criteria (Quality ). Using fundamental
+4
+accounting data and price time series, we use these criteria to build a top decile stock, long-only,
+quarterly-rebalanced portfolio from the constituents of the HSLI Index. We first show that quality
+is persistent over time. Our analysis shows the predictability of the persistence of high-quality for
+firms three years into the future. Next, we show that such a portfolio earns higher than market risk
+adjusted returns. Our results are consistent with existing studies on the quality factor : quality stocks
+have a tendency to be underpriced and junk stocks overpriced by the market.
+When we extend our analysis to include ESG criteria, the results remain largely similar to the
+Quality definition. This has practical implications for a socially-minded investor within a Hong
+3
+Kong context.
+Our results further indicate that a long-only systematic Quality and Quality strategy handily
+3 4
+outperforms the HSLI Index which has ETFs accessible by all investors. By restricting the portfolio
+to the top decile (10-11) stocks and quarterly rebalancing an individual investor, we reckon, would
+administratively have a fairly light touch in managing such a portfolio. In addition, we show that for
+such a strategy, the turnover is modest which further makes portfolio management fairly straightfor-
+ward. We finally show that the volatility of the portfolio compares favourably to the market volatility
+despite the more concentrated portfolio.
+By including ESG criteria, we show that a socially-conscious investor can invest in a practical,
+systematic quality strategy which outperforms the broad large cap Index.
+Our results argue that quality companies need to be regularly reviewed and the quarterly rebal-
+ancing inherent in the construction and the moderate turnover resulting ensures this. The strategy,
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+therefore, has practical applications for non-institutional investors who would like to build long-only
+systematic portfolios with exposure to quality.
+References
+Viral Acharya and Lasse Heje Pedersen. Asset Pricing with Liquidity Risk. Journal of Financial
+Economics, 77:375–410, 2005. doi: 10.1016/j.jfineco.2004.06.007.
+Edward I. Altman. Financial Ratios, Discriminant Analysis and the Prediction of Corporate
+Bankruptcy. The Journal of Finance, 23(4):589, 1968. doi: 10.2307/2978933.
+Andrew Ang, Robert Hodrick, Yuhang Xing, and Xiaoyan Zhang. High Idiosyncratic Volatility and
+Low Returns: International and Further U.S. Evidence. National Bureau of Economic Research,
+Working Paper, 2008. doi: 10.3386/w13739.
+AQR Betting Against Beta: Equity Factors Data, Monthly. URL http://www.aqr.com/Insights/
+Datasets/Betting-Against-Beta-Equity-Factors-Monthly.
+Clifford S. Asness, Andrea Frazzini, and Lasse Heje Pedersen. Quality Minus Junk. Review of Ac-
+counting Studies, 24(1):34–112, May 2018. doi: 10.1007/s11142-018-9470-2.
+Michael Brennan. A Note on Dividend Irrelevance and the Gordon Valuation Model. The Journal of
+Finance, 26(5):1115–1121, 1971. ISSN 00221082, 15406261. URL http://www.jstor.org/stable/
+2326087.
+Roman Bru¨ckner, Patrick Lehmann, Martin H. Schmidt, and Richard Stehle. Non-U.S. Multi-Factor
+Data Sets Should be Used with Caution. SSRN Electronic Journal, Nov 2015. doi: http://dx.doi.
+org/10.2139/ssrn.2390063. URL http://ssrn.com/abstract=2390063.
+Mark M. Carhart. On Persistence in Mutual Fund Performance. The Journal of Finance, 52(1):
+57–82, 1997. doi: 10.1111/j.1540-6261.1997.tb03808.x. URL http://onlinelibrary.wiley.com/
+doi/abs/10.1111/j.1540-6261.1997.tb03808.x.
+Yan-LeungCheung, J.ThomasConnelly, PimanLimpaphayom, andLyndaZhou. DoInvestorsReally
+Value Corporate Governance? Evidence from the Hong Kong Market. Journal of International Fi-
+nancial Management & Accounting, 18(2):86–122, May 2007. doi: 10.1111/j.1467-646X.2007.01009.
+x. URL https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-646X.2007.01009.x.
+Eugene F. Fama and Kenneth R. French. Common risk factors in the returns on stocks and bonds.
+Journal of Financial Economics, 33(1):3–56, 1993. doi: 10.1016/0304-405x(93)90023-5.
+Eugene F. Fama and Kenneth R. French. Size, Value, and Momentum in International Stock Returns.
+SSRN Electronic Journal,Jun2011. doi: 10.2139/ssrn.1720139. URLhttp://ssrn.com/abstract=
+1720139.
+Eugene F. Fama and James D. Macbeth. Risk, Return, and Equilibrium: Empirical Tests. Journal of
+Political Economy, 81(3):607–636, 1973. doi: 10.1086/260061.
+Andrea Frazzini and Lasse Heje Pedersen. Betting against beta. Journal of Financial Economics, 111
+(1):1–25, 2014. doi: 10.1016/j.jfineco.2013.10.005.
+Mark Fulton, Bruce Kahn, and Camilla Sharples. Sustainable Investing: Establishing Long-Term
+Value and Performance. SSRN Electronic Journal, 2012. doi: 10.2139/ssrn.2222740. URL http:
+//ssrn.com/abstract=2222740.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+M.J.Gordon. The Investment, Financing, and Valuation of the Corporation. Irwinseriesineconomics.
+R.D. Irwin, 1962. URL https://books.google.com.sg/books?id=5_yxAAAAIAAJ.
+Benjamin Graham. The Intelligent Investor. Harper, 2006.
+Narasimhan Jegadeesh and Sheridan Titman. Returns to Buying Winners and Selling Losers: Impli-
+cations for Stock Market Efficiency. The Journal of Finance, 48(1):65, 1993. doi: 10.2307/2328882.
+V. Kalesnik and E. Kose. The Moneyball of Quality Investing, 2014. URL https:
+//www.researchaffiliates.com/en_us/publications/articles/259_the_moneyball_of_
+quality_investing.html.
+Partha S. Mohanram. Separating Winners from Losers among LowBook-to-Market Stocks us-
+ing Financial Statement Analysis. Review of Accounting Studies, 10(2-3):133–170, 2005. doi:
+10.1007/s11142-005-1526-4.
+Whitney K. Newey and Kenneth D. West. A Simple, Positive Semi-Definite, Heteroskedastic-
+ity and Autocorrelation Consistent Covariance Matrix. Econometrica, 55(3):703, 1987. doi:
+10.2307/1913610.
+Norges-Bank. THE QUALITY FACTOR - Discussion Note, 2015. URL http://www.nbim.no/en/
+publications/discussion-notes/2015/the-quality-factor/.
+Robert Novy-Marx. The other side of value: The gross profitability premium. Journal of Financial
+Economics, 108(1):1–28, 2013. doi: 10.1016/j.jfineco.2013.01.003.
+Robert O’Brien. A Caution Regarding Rules of Thumb for Variance Inflation Factors. Quality &
+Quantity, 41:673–690, 10 2007. doi: 10.1007/s11135-006-9018-6.
+James A. Ohlson. Financial Ratios and the Probabilistic Prediction of Bankruptcy. Journal of
+Accounting Research, 18(1):109, 1980. doi: 10.2307/2490395.
+StephenH.Penman, ScottA.Richardson, andIremTuna. TheBook-to-PriceEffectinStockReturns:
+Accounting for Leverage. Journal of Accounting Research, 45(2):427–467, 2007. doi: 10.1111/j.
+1475-679x.2007.00240.x.
+Joseph D. Piotroski. Value Investing: The Use of Historical Financial Statement Information to
+Separate Winners from Losers. Journal of Accounting Research, 38:1, 2000. doi: 10.2307/2672906.
+Rajan Raju. Implementing a Systematic Long-only Quality Strategy in the Indian Market. 2019.
+URL http://ssrn.com/abstract=3490999.
+Refinitiv. Environmental, Social and Governance (ESG) Scores from Refinitiv. online,
+Jun 2019. URL https://www.refinitiv.com/content/dam/marketing/en_us/documents/
+methodology/esg-scores-methodology.pdf.
+ScottA.Richardson, RichardG.Sloan, MarkT.Soliman, andIremTuna. Accrualreliability, earnings
+persistence and stock prices. Journal of Accounting and Economics, 39(3):437–485, 2005. doi:
+10.1016/j.jacceco.2005.04.005.
+S&P. S&P Dow Jones Indices. URL https://us.spindices.com/index-family/factor/quality.
+Tim Verheyden, Robert G. Eccles, and Andreas Feiner. ESG for All? The Impact of ESG Screening
+on Return, Risk, and Diversification. Journal of Applied Corporate Finance, 28(2):47–55, 2016. doi:
+10.1111/jacf.12174. URL https://onlinelibrary.wiley.com/doi/abs/10.1111/jacf.12174.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687
+Kevin Q. Wang and Jianguo Xu. Market Volatility and Momentum. SSRN Electronic Journal, 2009.
+doi: 10.2139/ssrn.1359966.
+Appendix A Standardizing and Transforming into a z-score
+In order to put each measure on equal footing and combine them in a statistically valid manner, each
+month we standardize and transform each variable into a z-score with similar distribution characteris-
+tics. In the construction of z-scores, we deal with outliers through winsorization and clipping similar
+to the approach used by Standard & Poor’s in their index construction (S&P).
+• Z-Scores: We compute z-scores using:
+z = (x −µ )/σ (A.1)
+α α α α
+where:
+z = z-score for given stock
+α
+x = winsorized value for given stock
+α
+µ = mean of the winsorized series
+α
+σ = standard deviation of the winsorized series
+α
+• Winsorization: Outlier z-scores are winsorized to ensure that the overall scores are less dis-
+torted by extreme values. To do this, for a given average z-score, the values for all securities
+are first ranked in ascending order. Then, for scores that lie above 3 or below -3, their value is
+clipped to 3 or -3, whichever is applicable.
+• Transform: We use standard scalers to scale and transform the winsorized and clipped z-score
+series to create a unit ‘normal’ distribution. This allows for the addition of z-scores without
+introducing bias of scale.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3494687

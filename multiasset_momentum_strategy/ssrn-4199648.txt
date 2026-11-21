@@ -1,0 +1,703 @@
+Long-only multi-asset momentum: searching for
+absolute returns
+Enrique A. Zambranoa
+Vitral Advisors
+Carlos Rizzolob
+Vitral Advisors
+September 2022
+Abstract
+The forward perspectives for the 60/40 portfolio have deteriorated since secular tailwinds (that have
+benefited equities) are fading and stock-bond correlation may become positive. For this reason, allocating
+to uncorrelated strategies seems rational. In this paper we develop a long-only multi-asset momentum
+strategy that shows attractive risk-adjusted returns and the ability to generate positive returns on a rolling
+basis, while having low correlation with traditional portfolios. The strategy is based on a robust approach
+that considers several momentum measures and formation periods. It can be used in a standalone basis
+or combined with a 60/40 portfolio, generating higher returns with lower volatility and a fraction of the
+drawdowns.
+Keywords: absolute returns, multi-asset momentum, trend-following, 60/40 portfolio, tactical asset
+allocation.
+a Enrique A. Zambrano, CFA, is a portfolio manager at Vitral Advisors. E-mail: ezambrano@vitraladvisors.com.
+b Carlos Rizzolo is a managing partner at Vitral Advisors. E-mail: crizzolo@vitraladvisors.com.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+1. Introduction
+The 60-40 portfolio has performed exceptionally well over the last decades. Stocks have been the principal
+return generator of this portfolio, while bonds have played an important role reducing equity risk.
+Furthermore, bonds have served as an important diversifier for stocks, given the low (and even negative)
+correlation between these two assets observed during the last couple of decades1. However, recent
+developments call into question the forward returns of the 60-40 portfolio. First, high stock valuations
+and the withdrawal of years of accommodative monetary policies cloud the perspective for equity
+investments, or at least for passive investing. Second, stock-bond correlation has not always been
+negative, as we have experienced during the present year2. In this sense, the current environment favors
+drifting away from the 60-40 portfolio and allocating to uncorrelated strategies.
+Alternative asset strategies have been widely studied in the literature and used by practitioners. Hedge
+funds and commodity trading advisors (CTAs) have used systematic macro and managed futures strategies
+for many decades. These strategies often consider several approaches, including price momentum, trend-
+following, macro momentum, relative value and carry. The attractiveness of these strategies relies on the
+potential for uncorrelated returns with traditional asset classes.
+Under this wide range of alternatives, momentum and trend-following emerge as the most important.
+There is a vast amount of literature that explains the momentum effect and finds evidence of its
+persistence over time. Momentum have been applied to individual stocks (Jegadeesh and Titman (1993)),
+sectors/industries (Faber (2010)) and asset classes (Asness, Moskowitz and Pedersen (2013)). It consists
+of buying past winners and selling past losers; in other words, buying assets that are trending up and
+selling assets that are trending down. Furthermore, these studies suggest that the momentum effects
+persist over 3-to-18-month periods and reverses in 3 to 5 years.
+In this paper we are interested in long-only momentum. In particular, the objective is to develop a multi-
+asset momentum strategy that fulfills two primary goals: 1) show attractive risk-adjusted returns and 2)
+generate absolute returns (uncorrelated with traditional asset classes). For this purpose, we evaluate
+several momentum signals and construct a ranking to select the top assets. We invest in the top assets if
+they exhibit positive momentum; otherwise, we allocate to a portfolio of risk-off assets. The strategy´s
+backtest shows historically attractive risk-adjusted returns and low drawdowns, with great potential for
+adding value to traditional portfolios.
+The paper is structured as follows. In section 2, we explain the rationale for the asset universe selection.
+Additionally, in section 3, we walk through the different features related to momentum and describe our
+investment philosophy. In section 4, we show the performance metrics and evaluate the strategy, while
+section 5 discusses the role of the strategy within traditional portfolios. Finally, section 6 concludes.
+1 For example, see AQR (2022).
+2 In fact, AQR (2022) explains that the main drivers of the stock-bond correlation are inflation and growth
+uncertainties. If inflation uncertainty is high, then we should expect a positive correlation, while the opposite should
+be anticipated if growth uncertainty predominates. Given the current uncertainty around inflation, we should expect
+a positive correlation between stocks and bonds.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+2. Asset universe
+The main goal is to develop a strategy that generates absolute returns. For this purpose, our asset universe
+must be as broad as possible (minimizing overlapping assets) and should contain assets with positive ex-
+ante expected returns for at least one state of the economy. In principle, we can characterize economic
+regimes using two variables: inflation and growth. Since inflation can be rising or falling and growth can
+be accelerating or slowing, there are four possible combinations of these variables. In this sense, our
+universe must include assets that prevail in at least one of the four macroeconomic regimes: rising
+inflation and accelerating growth, falling inflation and accelerating growth, rising inflation and slowing
+growth, and falling inflation and slowing growth.
+In a rising inflation/accelerating growth environment, we should expect that Commodities (Energy and
+Agriculture), Metals, Real Estate and Emerging Markets equities show positive performance. Alternatively,
+during the falling inflation/accelerating growth regime, we should anticipate that Corporate Bonds (IG and
+HY), Treasuries, Developed Markets equities and Real Estate exhibit positive returns. On the other hand,
+when growth slows and inflation is rising, assets such as Cash, Gold and Commodities should behave well.
+Finally, if growth is slowing and inflation falls, Treasuries should have positive returns. In this sense, our
+asset universe is composed of the following asset classes and ETFs:
+- US Large Cap Equities (S&P 500): SPY
+- US Large Cap Equities (Nasdaq 100): QQQ
+- US Small Cap Equities (Russell 2000): IWM
+- European Equities: VGK
+- Japanese Equities: EWJ
+- Emerging Markets Equities: EEM
+- US Real Estate: VNQ
+- Commodities: DBC
+- Commodities (agriculture): DBA
+- Gold: GLD
+- Investment Grade US Corporate Bonds: LQD
+- High Yield US Bonds: HYG
+- Long-term US Treasuries: TLT
+- Cash: SHV
+- Medium-term US Treasuries: IEF
+The asset universe is composed of equities, bonds, commodities, gold and real estate. Regarding equities,
+we differentiate between US Large Cap, US Small Cap, Europe, Japan and Emerging Markets. In particular,
+US Large Cap is divided into S&P 500 and Nasdaq 100, given that the latter is more concentrated in
+technology stocks. Fixed income includes US investment grade, US high yield and US treasuries. Finally,
+we include two commodities funds since DBC is focused on energy, while DBA is fully concentrated in
+agriculture.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Since our focus is a long-only dual momentum strategy, our asset universe is segmented into two
+components. The first group includes the assets that we will invest in when they exhibit positive
+momentum (Risk-On universe), and the second group contains the assets that we will hold when the risk-
+on assets show negative scores (Risk-Off universe). The latter is composed of cash and medium-term
+treasuries, while the former contains the rest of the asset universe.
+Before going through the investment process, we must mention some caveats regarding our asset
+universe. We attempt to choose assets with positive ex-ante expected returns in at least one of the four
+macroeconomic regimes. However, we acknowledge that such returns could be negative, reason why we
+must emphasize that our strategy is not dogmatic. Although our asset universe selection is based on
+fundamental principles, the strategy is completely systematic and will select the best assets with positive
+trends and strong momentum, without regarding the state of the economy.
+3. Investment process
+As previously discussed, we are interested in constructing a multi-asset (systematic) momentum strategy.
+In general, momentum strategies consist in buying past winners (assets with highest/positive momentum)
+and selling past losers (assets with lowest/negative momentum). However, since our main goal is to
+develop a long-only strategy, we focus on selecting the best assets with positive momentum. In this
+process, we must answer the following questions: how do we define a “past winner”? How do we define
+a “winner”? What do we mean about “past”? In other words, the process of developing a momentum
+strategy entails selecting the momentum measure and the look-back period.
+3.1. Measuring momentum
+There are several ways to measure momentum. For instance, momentum can be assessed by calculating
+past price returns or total returns (Antonacci, 2016), price minus moving averages (Bruder et al., 2011)
+and moving average crossovers (Levine and Pedersen, 2015), among others. As Hoffstein (2018) explains,
+these measures are strongly related. On the other hand, some practitioners are interested in risk-adjusted
+momentum (ReSolve, n.d.). Moreover, authors such as Keller and Butler (2014) modify the traditional
+total return momentum to adjust for the correlation of the specific asset with the rest of the universe.
+In this paper we explore three measures of momentum. First, we consider traditional total return
+momentum. Second, we use the price minus moving average measure. Third, we consider a risk-adjusted
+measure that corrects the total return score by the sum of absolute daily movements, thus penalizing
+assets with “inefficient” trends. The calculation for each of these momentum indicators is shown below.
+𝑃 −𝑃
+𝑇𝑜𝑡𝑎𝑙 𝑟𝑒𝑡𝑢𝑟𝑛 𝑚𝑜𝑚𝑒𝑛𝑡𝑢𝑚: 𝑟𝑖 = 𝑡 𝑡−𝑛
+𝑡,𝑛 𝑃
+𝑡−𝑛
+𝑃
+𝑃𝑟𝑖𝑐𝑒 𝑚𝑖𝑛𝑢𝑠 𝑚𝑜𝑣𝑖𝑛𝑔 𝑎𝑣𝑒𝑟𝑎𝑔𝑒: 𝑟𝑖 = 𝑡 −1
+𝑡,𝑛 𝑆𝑀𝐴
+𝑡,𝑡−𝑛
+Electronic copy available at: https://ssrn.com/abstract=4199648
+𝑃
+ln 𝑡
+𝑃
+𝑅𝑖𝑠𝑘 𝑎𝑑𝑗𝑢𝑠𝑡𝑒𝑑 𝑚𝑜𝑚𝑒𝑛𝑡𝑢𝑚: 𝑟𝑖 = 𝑡−𝑛
+𝑡,𝑛 𝑃
+∑𝑡−1 |ln 𝑖+1|
+𝑖=𝑡−𝑛 𝑃
+𝑖
+Where 𝑟𝑖 is the respective momentum measure for asset 𝑖 at time 𝑡 with look-back period 𝑛 (in days or
+𝑡,𝑛
+months), 𝑃 is the asset´s total return index at time 𝑡, and 𝑆𝑀𝐴 is the total return index simple moving
+𝑡 𝑡,𝑡−𝑛
+average a time 𝑡 with look-back period 𝑛.
+The total return momentum calculation simply measures the past returns. Assets with high past returns
+are assets with strong momentum, and therefore should have high returns in the following periods. On
+the other hand, the price minus moving average calculation measures the distance between the price and
+the trend. A higher (and positive) distance means that the trend will accelerate, which implies that the
+asset has higher momentum. Finally, the risk adjusted momentum measure corrects the total return
+measure by the dispersion of the daily movements, penalizing assets with high dispersion. The rationale
+for this metric is that, although we favor assets with strong momentum, we would also like to consider
+the path towards such returns. In other words, comparing two assets with the same total return, we have
+preference for the one with the smoother path, i.e. we prefer assets with “efficient” trends.
+These three measures are related and should produce a similar momentum ranking. However, each one
+of them approaches momentum from (slightly) different angles, reason why results can differ. In this
+sense, we must decide which measure to use, topic that is discussed in subsequent sections.
+3.2. Look-back period
+The second feature that we must consider in our momentum strategy is the look-back period. This is by
+no means a trivial choice since it could have significant impact on the strategy´s results. Practitioners and
+academics often consider formation periods that span between 1 and 18 months. In particular, the most
+common are 1, 3, 6 and 12 months. From a daily perspective, the most used moving averages are 20, 50,
+100 and 200 days.
+The selection of the look-back period is often related to the strategy´s objectives and desired trading
+frequency. More frequent strategies often consider smaller look-back periods. These strategies offer the
+advantage of capturing rapid changes in momentum and trend, at the expense of acting on noise.
+Alternatively, strategies with less turnover often use longer formation periods. They aim to capture long
+term trends and cancel out noise, with the drawback of slowly reacting to changes in momentum.
+In this paper, we are interested in medium- and long-term momentum. In other words, we want to ride
+long-term trends and minimize noise, attempting to capture changes in momentum as fast as possible.
+For this reason, we discard short look-back periods (less than 3 months / 50 days) and very long look-back
+periods (greater than 12 months / 200 days). However, this still leaves us with multiple time frames to
+consider, topic that is discussed in following sections.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+3.3. Adjusting for correlation
+Before discussing the selection of the measure and look-back period, it is necessary to introduce an
+additional element for our momentum score. Since our goal is to generate absolute returns, our strategy
+should consider the correlation between each asset and the rest of the portfolio. In other words, in
+addition to preferring high momentum assets, we also want to favor assets with low correlations. By
+placing emphasis on the assets with low correlations, we maximize the likelihood that our strategy selects
+assets that have positive trends while the rest of the universe shows negative momentum. This approach
+has been used by Keller and Keuning (2016).
+The general idea is to adjust the momentum score by the correlation between the asset and a portfolio
+composed of the asset universe (equally weighted). If the correlation is positive, the momentum score
+should be penalized, with the magnitude of the correction depending on the size of the coefficient. On
+the other hand, if the correlation is negative, the score should be enhanced. In this paper, we follow
+Keuning´s (n.d.) approach and propose the following adjustments for the momentum score.
+𝐶𝑜𝑟𝑟𝑒𝑙𝑎𝑡𝑖𝑜𝑛 𝑎𝑑𝑗𝑢𝑠𝑡𝑚𝑒𝑛𝑡 #1: 𝜑𝑖 = 𝑟𝑖 (1−𝜌)
+𝑡,𝑛 𝑡,𝑛
+𝑟𝑖
+𝐶𝑜𝑟𝑟𝑒𝑙𝑎𝑡𝑖𝑜𝑛 𝑎𝑑𝑗𝑢𝑠𝑡𝑚𝑒𝑛𝑡 #2: 𝜑𝑖 = 𝑡,𝑛
+𝑡,𝑛 (1+𝜌)
+where 𝜑𝑖 is the correlation-adjusted score and 𝜌 is the asset´s correlation with the asset universe
+𝑡,𝑛
+portfolio (equally weighted).
+These alternatives penalize high/positive correlations and favor low/negative correlations. However, the
+adjustments are nonlinear. For instance, the first alternative places more weight on penalizing high
+correlations and less weight favoring negative correlations, while the second alternative prefers favoring
+negative correlations over penalizing positive coefficients. Both alternatives show similar behavior when
+the correlations are around zero. These features are shown in the following chart.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Chart 1. Correlation Adjustments
+Source: own calculations.
+To get a better understanding of each alternative, we present a table with the 12-month average
+correlation between each asset and the rest of the universe.
+Table 1. Historical correlations with the 13-asset portfolio
+SPY 0.86
+QQQ 0.79
+IWM 0.83
+VGK 0.85
+EWJ 0.74
+EEM 0.85
+VNQ 0.71
+DBC 0.54
+DBA 0.42
+GLD 0.34
+LQD 0.24
+HYG 0.67
+TLT -0.13
+SHV -0.01
+IEF -0.10
+Source: own calculations based on data retrieved from Bloomberg.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Equities tend to have higher correlations with the equally weighted portfolio3, while bonds usually show
+near zero or negative correlations. In this sense, alternative #1 penalizes equities greatly, while alternative
+#2 generates a much smaller penalization. A strategy based on the first alternative would probably have
+less exposure to equities in comparison to a strategy that follows the second alternative, reason why the
+results could show important differences. We explore these differences in subsequent sections.
+3.4. Parameter selection – our philosophy
+The selection of the measure and look-back period is often at the core of momentum strategies. The
+natural decision is perhaps selecting the measure and look-back period that exhibits the best past
+performance (absolute or risk-adjusted), i.e. running an optimization. For example, if we determine that
+the total return measure and the 6-month look-back period shows the highest returns in the backtest, we
+would be inclined to choose this combination. Many investors would feel tempted to select the
+parameters with best past performance; however, we think this reasoning is flawed.
+The fact that a specification has delivered the best performance in the past doesn´t necessarily mean that
+it will be the best combination in the future. A single specification may have just been lucky, while others
+may have been unfortunate. For example, let´s suppose that a specific asset has shown positive 6-month
+total return momentum for the past months, and assume that in the next month it will exhibit positive
+returns. If the most recent print shows a slightly positive score (0.5%), it would suggest maintaining that
+asset, thus benefiting from the forward returns. However, if the score is slightly negative (-0.5%), the asset
+would be withdrawn from the portfolio, missing the next month´s returns. Both prints are extremely close,
+but the results differ greatly. The question is whether the difference between scores justifies the
+difference in returns. In other words, is the first scenario a representation of the “skill” of the signal? Or
+is the second scenario a realization of “bad luck”?
+This example highlights the fragility of a single model. The differences between specifications may be
+related to realizations of “luck” (or “bad luck”) rather than evidence of “skill”. Since luck is intrinsically
+random, past luck does not imply that the model will have fortune going forward. In fact, any single
+specification can suffer of “bad luck” in the future, which could be catastrophic for the portfolio. In more
+formal terms, any single model suffers of what Hoffstein (2019) has labeled as “model specification risk”.
+The general idea is to minimize the model specification risk, i.e. reduce the impact of luck in our strategy.
+For this purpose, we believe that the appropriate path is to consider all available information rather than
+running optimizations. If we believe that momentum works, then all signals should provide information
+for our decision. In other words, there should be no superior specification; all signals should be
+contemplated. By considering all the available information, we believe that model specification risk can
+be minimized. This results in a more robust framework, which has higher odds of capturing momentum
+and has less exposure to fortune shocks. Although the framework would probably underperform some
+specifications in a given time period, we believe that it enhances the prospects for the long run.
+3 This should not come as a surprise since half of the asset universe is composed by stocks, which usually share the
+same risk drivers.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+3.5. The strategy
+The final elements of our strategy are related to portfolio construction and signal aggregation process.
+The next step is to figure out how to aggregate all signals. Since we have three measures (total return,
+price minus moving average and risk-adjusted) and three look-back periods (3, 6 and 12 months / 50, 100
+and 200 days), there are nine possible combinations. We propose two alternatives that take advantage of
+all the information embedded in these nine signals. The first alternative is to use an ensemble approach.
+We can consider each combination as a sub-strategy that will inform us on a specific asset allocation. If
+we run all sub-strategies and average out the allocations for each asset, then we would have the total
+portfolio allocation. The second alternative is to construct a score that aggregates all signals. For instance,
+we could rank the assets in each specification, assign a score to each place, and add the scores across all
+the signals. This will create a final score, allowing us to select the assets in the top positions. The score
+assignment doesn’t need to be linear, it could favor assets in the top part of each ranking or penalize
+assets with negative momentum. We label this alternative as the “scores approach”.
+Finally, the portfolio construction process is as follows. At the end of each month, we rank the 13 risk-on
+assets according to their momentum (aggregating all signals). We select the top N assets and assign each
+asset an equal weight (1/N). If any of the assets exhibit negative momentum4, it is substituted by the risk-
+off asset with highest score. We hold the portfolio for one month and repeat the process.
+4. Historical Performance
+In this section, we explore the strategy´s results. We first show the performance for the regular strategy
+and then discuss a slight variation more suitable for conservative investors.
+4.1. Backtest
+We perform the backtest using daily observations from 12/31/2003 to 05/31/2022. The data was
+retrieved from Bloomberg. The time series are based on total return indexes constructed from each ETF
+in the asset universe. However, since some ETFs have a more recent inception date, we complete the
+backtest using the total return of the respective underlying index. At each evaluation date, we select the
+top 5 assets according to their momentum scores.
+We focus on several performance metrics. First, we show the total return during the whole period and
+the compounded annual growth rate (CAGR)5. Second, we present the annualized standard deviation, the
+return/risk ratio, and the maximum drawdown observed during the period. Finally, since we focus on
+absolute returns, we display the probability of the 1 year rolling returns being positive or higher than -5%.
+4 With the ensemble approach, assessing whether an asset exhibits negative momentum is straightforward.
+However, with the aggregate score approach, we must define how to determine if the asset has negative
+momentum. One alternative is to count the number of signals and compare with a specified threshold. The natural
+threshold is perhaps using half of the signals (however, we also use one third as a threshold, for a more conservative
+approach). In this sense, if more than half (or more than a third) of the signals show negative momentum, we
+categorize such asset as an asset with negative momentum.
+5 We also present the performance for specific periods in appendix 1.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+We present the results for the momentum measures adjusted for correlation (using both alternatives
+discussed in section 3.3) and without adjustments (pure momentum). We show the scores approach
+(using both thresholds), the ensemble approach and each single specification for all the three adjusted
+measures. The results are displayed in the following tables.
+Table 2. Results with pure momentum measure
+Total Annual P(1Y RR P(1Y RR
+Volatility Ret/Vol Max DD
+Return Return > 0%) > -5%)
+Score approach, 1/2 signals
+536.16% 10.58% 12.17% 0.87 -23.20% 80.93% 91.33%
+threshold
+Score approach, 1/3 signals
+584.76% 11.02% 11.79% 0.93 -16.51% 83.01% 95.64%
+threshold
+Ensemble 446.91% 9.68% 11.23% 0.86 -18.99% 84.01% 92.11%
+TR Momentum, 3 months 538.41% 10.60% 12.87% 0.82 -24.35% 82.78% 89.19%
+TR Momentum, 6 months 562.91% 10.83% 12.91% 0.84 -16.97% 88.14% 95.32%
+TR Momentum, 12 months 388.66% 9.01% 13.47% 0.67 -23.59% 78.79% 87.75%
+Price minus MA, 50 days 302.19% 7.86% 12.58% 0.62 -23.43% 78.44% 88.71%
+Price minus MA, 100 days 550.12% 10.71% 12.46% 0.86 -23.50% 79.95% 91.42%
+Price minus MA, 200 days 497.11% 10.20% 12.61% 0.81 -19.76% 82.64% 93.34%
+Risk-adjusted momentum, 3
+477.22% 10.00% 11.09% 0.90 -23.46% 83.60% 90.21%
+months
+Risk-adjusted momentum, 6
+469.98% 9.92% 11.15% 0.89 -18.09% 87.73% 95.10%
+months
+Risk-adjusted momentum,
+233.94% 6.77% 11.39% 0.59 -23.41% 76.55% 85.26%
+12 months
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Table 3. Results with multiplicative correlation-adjusted measure (alternative #1)
+Total Annual P(1Y RR P(1Y RR
+Volatility Ret/Vol Max DD
+Return Return > 0%) > -5%)
+Score approach, 1/2 signals
+352.71% 8.55% 10.34% 0.83 -23.32% 85.77% 93.29%
+threshold
+Score approach, 1/3 signals
+406.10% 9.21% 9.94% 0.93 -13.40% 89.17% 97.15%
+threshold
+Ensemble 335.79% 8.33% 9.23% 0.90 -17.55% 85.99% 92.79%
+TR Momentum, 3 months 335.60% 8.33% 10.74% 0.78 -24.74% 83.42% 89.42%
+TR Momentum, 6 months 398.25% 9.12% 10.55% 0.86 -15.28% 88.12% 95.85%
+TR Momentum, 12 months 329.42% 8.24% 10.53% 0.78 -20.15% 84.44% 93.36%
+Price minus MA, 50 days 258.46% 7.19% 10.35% 0.69 -23.21% 79.38% 88.39%
+Price minus MA, 100 days 396.23% 9.10% 10.43% 0.87 -21.96% 82.19% 91.86%
+Price minus MA, 200 days 485.56% 10.08% 10.76% 0.94 -20.29% 88.23% 94.27%
+Risk-adjusted momentum, 3
+265.71% 7.30% 9.60% 0.76 -22.33% 82.41% 89.94%
+months
+Risk-adjusted momentum, 6
+325.85% 8.19% 9.48% 0.86 -15.47% 88.96% 96.19%
+months
+Risk-adjusted momentum,
+221.14% 6.55% 9.20% 0.71 -20.02% 83.26% 91.56%
+12 months
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Table 4. Results with divisive correlation-adjusted measure (alternative #2)
+Total Annual P(1Y RR P(1Y RR
+Volatility Ret/Vol Max DD
+Return Return > 0%) > -5%)
+Score approach, 1/2 signals
+590.66% 11.08% 11.60% 0.95 -22.30% 84.72% 92.86%
+threshold
+Score approach, 1/3 signals
+705.31% 12.01% 11.22% 1.07 -14.47% 89.32% 96.44%
+threshold
+Ensemble 453.87% 9.75% 10.55% 0.92 -17.74% 85.12% 92.77%
+TR Momentum, 3 months 532.28% 10.54% 12.29% 0.86 -24.31% 83.71% 89.44%
+TR Momentum, 6 months 605.20% 11.20% 12.36% 0.91 -16.17% 89.12% 95.69%
+TR Momentum, 12 months 386.01% 8.97% 12.65% 0.71 -20.15% 80.20% 89.85%
+Price minus MA, 50 days 322.36% 8.15% 11.85% 0.69 -23.15% 79.81% 89.26%
+Price minus MA, 100 days 509.19% 10.32% 11.84% 0.87 -23.04% 81.64% 91.58%
+Price minus MA, 200 days 561.47% 10.82% 12.19% 0.89 -20.08% 85.74% 93.66%
+Risk-adjusted momentum, 3
+395.91% 9.09% 10.45% 0.87 -23.51% 83.51% 90.12%
+months
+Risk-adjusted momentum, 6
+537.21% 10.59% 10.56% 1.00 -15.47% 89.14% 95.94%
+months
+Risk-adjusted momentum,
+244.93% 6.96% 10.27% 0.68 -20.02% 77.35% 89.21%
+12 months
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Some comments are in order. First, comparing between the three tables, we can appreciate that, in
+general, table 3 shows the best returns (absolute and risk-adjusted), while table 2 exhibits the lowest
+volatility and drawdowns. This must not come as a surprise since the first alternative for the correlation-
+adjusted measure penalizes equities greatly (and thus favors bonds), whereas the second alternative does
+not penalize equities as much (favoring equities on a relative basis). We discussed this point in previous
+sections. More importantly, both correlation-adjusted measures tend to show better metrics that the
+non-adjusted measure. This leads us to believe that there is value added by adjusting the momentum
+measure with the asset’s correlation, although we acknowledge that more formal statistical tests should
+be applied.
+Comparing all three tables, we prefer the second alternative for the correlation adjustment, reason why
+we will focus our analysis on table 3 (although a similar analysis applies for the other tables). In the first
+place, both approaches (ensemble and scores approach) tend to show better risk-adjusted performance
+and smaller drawdowns than most of the single specifications. For instance, only the risk-adjusted 6-
+month momentum exhibits better return/risk measure than the ensemble approach and the score
+approach with a 1/2 threshold. This highlights one of the most attractive characteristics of our model: the
+process is not only more robust and thus reduces model specification risk, but also generates better
+results than most of the single specifications.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+On the other hand, it is worth noticing that the best results are shown by the scores approach with a 1/3
+threshold. It seems that by being more conservative (categorizing an asset as “negative momentum” if
+more than a third of the signals are negative), it avoids important drawdowns and thus shows higher
+compounded returns in the long run. Although the 1/3 threshold sounds somewhat arbitrary (compared
+to the 1/2 threshold), it appears reasonable to take a more conservative approach by defining that an
+asset has negative momentum if just a few signals are negative. However, we will use both versions (in
+addition to ensemble approach) for the remainder of the paper.
+In general, the return, volatility and drawdown metrics appear to be attractive. Nonetheless, with the
+purpose of gaining more insight, we add the statistics for the 60/40 portfolio6, S&P 500 (ETF: SPY) and the
+13-asset equally weighted portfolio. We must highlight that these portfolios do not constitute an
+appropriate benchmark for our strategy, we just show them to give a general reference.
+Table 5. The strategy and some reference portfolios
+Total Annual P(1Y RR P(1Y RR
+Volatility Ret/Vol Max DD
+Return Return > 0%) > -5%)
+Score approach, 1/2 signals
+590.66% 11.08% 11.60% 0.95 -22.30% 84.72% 92.86%
+threshold
+Score approach, 1/3 signals
+705.31% 12.01% 11.22% 1.07 -14.47% 89.32% 96.44%
+threshold
+Ensemble 453.87% 9.75% 10.55% 0.92 -17.74% 85.12% 92.77%
+60/40 Portfolio 260.46% 7.22% 11.32% 0.64 -35.78% 88.48% 93.25%
+SPY 429.26% 9.48% 19.09% 0.50 -55.20% 85.97% 90.26%
+13 asset portfolio 290.22% 7.68% 13.34% 0.58 -39.58% 84.05% 91.40%
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+6 The 60-40 portfolio is composed by 60% SPY and 40% AGG (US Aggregate), rebalanced monthly at the end of each
+month. The performance metrics include the reinvestment of dividends (total return).
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Chart 2. Growth of a $100
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Chart 3. Drawdowns
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+The strategy shows similar volatility to the 60/40 portfolio, with higher total returns than the S&P 500.
+Moreover, maximum drawdowns are cut by approximately half of those experienced by the 60/40
+portfolio. In this sense, the strategy has the benefit of low volatility given by the 60/40 portfolio, shows
+potential for equity-like returns, and dramatically reduces drawdowns. All in all, the strategy appears to
+be very attractive from a risk-adjusted basis.
+However, we must mention some caveats regarding our strategy. The probability of 1-year rolling returns
+being positive or higher than -5% is not significantly different than those seen in the reference portfolios.
+Additionally, these probabilities seem rather small to achieve the absolute return goal. Following Keller
+and Keuning (2016), we should expect that an absolute return strategy exhibits a probability of positive
+1-year rolling returns higher than 95%, and a 99% probability of rolling returns better than -5%7. In this
+sense, although the strategy appears to accomplish the risk-adjusted goal, it fails to generate absolute
+returns on a rolling basis. For this reason, we discuss a simple modification of the strategy that could help
+us succeed towards the absolute return goal.
+4.2. Seeking absolute returns
+We believe that a more defensive approach in our asset allocation is necessary to achieve the absolute
+returns goal. In this sense, we propose a slight variation of our model that considers the number of assets
+with negative momentum in the determination of the exposure to risk-on assets. Once this exposure is
+assessed, we follow the previous rules for the portfolio construction.
+Based on Keller and Keuning (2016), we suggest the following formulae to define the exposure to risk-on
+assets.
+𝑛
+% 𝑅𝑖𝑠𝑘 𝑂𝑛 𝐸𝑥𝑝𝑜𝑠𝑢𝑟𝑒 = max(1− ,0%)
+𝑁
+𝑁−𝑞∗
+4
+where 𝑛 is the number of assets with negative momentum, 𝑁 is the number of assets in the risk-on
+universe, and 𝑞 depends on the desired level of protection (𝑞 =0,1,2).
+The rationale for this additional layer of protection relies on the fact that, when the market crashes,
+correlations between risky assets tend to approach unity. In this regard, too many assets with negative
+momentum may perhaps indicate that the remaining assets will fall. In previous sections, we explained
+our logic for the asset universe selection, considering four possible macroeconomic regimes. In three of
+the regimes, we argued that some risk assets should thrive. However, in the falling inflation/slowing
+growth scenario, only the risk off assets were expected to show positive returns. In this sense, a large
+7 The rationale for this metric is that we should expect that no matter when the investor enters the strategy, he
+should have very high chances of exhibiting positive returns in one year.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+number of assets with negative momentum could indicate that the economy is or will enter into such
+regime, signaling that the remaining assets will probably exhibit negative performance.
+The selection of the parameter 𝑞 depends on the desired level of protection. We can achieve a low level
+of protection setting the parameter to 0, which would mean that the risk-on exposure is equal to the
+proportion of assets with positive momentum. On the other hand, a medium level of protection (𝑞 = 1)
+indicates that if three quarters of the risk-on universe shows negative momentum, then the portfolio
+should be invested entirely in risk-off assets. Finally, 𝑞 = 2 (high level of protection) means that if half of
+the assets exhibit negative momentum, then the portfolio would be completely protected. In this paper,
+we explore the low and medium levels of protection.
+Table 6. The strategy with additional protection layer
+Total Annual P(1Y RR P(1Y RR
+Volatility Ret/Vol Max DD
+Return Return > 0%) > -5%)
+Score approach, 1/2 signals
+431.87% 9.51% 8.81% 1.08 -11.66% 92.34% 98.43%
+threshold, low protection
+Score approach, 1/3 signals
+377.98% 8.88% 8.00% 1.11 -9.21% 94.96% 99.29%
+threshold, low protection
+Ensemble, low protection 312.97% 8.02% 7.61% 1.05 -9.69% 92.61% 99.18%
+Score approach, 1/2 signals
+383.71% 8.95% 8.27% 1.08 -10.29% 94.73% 99.54%
+threshold, mid protection
+Score approach, 1/3 signals
+304.17% 7.89% 7.37% 1.07 -8.46% 95.87% 99.98%
+threshold, mid protection
+Ensemble, mid protection 273.86% 7.43% 6.91% 1.08 -8.39% 95.64% 100.00%
+60/40 Portfolio 260.46% 7.22% 11.32% 0.64 -35.78% 88.48% 93.25%
+SPY 429.26% 9.48% 19.09% 0.50 -55.20% 85.97% 90.26%
+13 asset portfolio 290.22% 7.68% 13.34% 0.58 -39.58% 84.05% 91.40%
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Adding the layer of protection improves the risk-adjusted returns. The more protective stance generates
+lower returns but also significantly reduces the volatility and drawdowns. More importantly, in most
+variations the probability of rolling returns being positive or greater than -5% is higher than 95% and 99%,
+respectively. Additionally, the strategy has slightly higher returns than the 60/40 portfolio (and in some
+instances, similar returns to the S&P 500), but reducing considerably the volatility and cutting the
+maximum drawdown to more than a third of the movement observed in the 60/40. In this sense, we
+believe that this variation of the strategy is both capable of delivering attractive risk-adjusted returns and
+showing positive returns on a rolling basis.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+5. The role of the strategy in a traditional portfolio
+The case for investing in the strategy on a standalone basis has already been discussed. However, the
+effects of the strategy within a traditional portfolio are not clear. Since the strategy has a multi-asset
+investment universe, we should expect a low correlation (on average) with the 60/40 portfolio. In this
+sense, allocating a percentage of the portfolio to the strategy would probably reduce the volatility and
+drawdowns of the overall portfolio, while enhancing returns. In the following chart we explore the 3-year
+rolling correlations (daily observations) between the strategy and the 60/40 portfolio. As an example, we
+use the variation defined by the scores approach with 1/2 signals threshold and medium protection.
+Chart 4. 3-year rolling correlations between the strategy and the 60/40 portfolio
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+The 3-year rolling correlation ranges between 0 a 0.60, with a concentration inside the 0.2-0.6 interval.
+The average correlation in the whole period is 0.37. Moreover, the correlation dynamics are quite
+interesting. The value tanked to zero during the 2008 financial crisis and became small during 2020
+pandemic; in other words, the strategy switched to assets uncorrelated with the 60/40 portfolio and
+avoided those big drawdowns. Additionally, the correlation coefficient remained somewhat elevated
+between 2010 and 2020, capitalizing on the rising trend of the 60/40 portfolio. In this sense, the overall
+correlation is small and dynamically adapts to the movements in the 60/40. For this reason, adding the
+Electronic copy available at: https://ssrn.com/abstract=4199648
+strategy to the traditional portfolio would provide diversification benefits and enhance returns. We
+explore these effects in the following table8.
+Table 7. Combining the strategy with the 60/40 portfolio
+Total Annual P(1Y RR P(1Y RR
+Volatility Ret/Vol Max DD
+Return Return > 0%) > -5%)
+10% strategy, 90% 60/40
+275.51% 7.46% 10.47% 0.71 -32.03% 89.73% 93.91%
+portfolio
+20% strategy, 80% 60/40
+290.18% 7.68% 9.69% 0.79 -28.32% 89.98% 94.68%
+portfolio
+30% strategy, 70% 60/40
+304.40% 7.89% 9.00% 0.88 -24.94% 90.53% 95.32%
+portfolio
+40% strategy, 60% 60/40
+318.07% 8.09% 8.42% 0.96 -21.71% 90.62% 95.51%
+portfolio
+50% strategy, 50% 60/40
+331.09% 8.27% 7.97% 1.04 -18.40% 91.22% 95.67%
+portfolio
+Strategy 383.71% 8.95% 8.27% 1.08 -10.29% 94.73% 99.54%
+60/40 Portfolio 260.46% 7.22% 11.32% 0.64 -35.78% 88.48% 93.25%
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+8 Once again, we use as an example the scores approach with 1/2 threshold and medium level of protection.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Chart 5. Combining the strategy with the 60/40 portfolio: Growth of $100
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Combining the 60/40 portfolio with the strategy dramatically improves the performance of the 60/40
+standalone portfolio. For instance, investing 30% of the capital in the strategy and 70% in the traditional
+portfolio lowers the overall volatility by more than 20%, while annual returns increase by 10%. Moreover,
+a balanced 50% strategy and 50% 60/40 portfolio results in a volatility below 8%, while returns remain
+above such level and drawdowns are cut to a more manageable -18%. In fact, the return-risk ratio for this
+combination is very similar to the one observed in the original strategy. In this sense, the strategy appears
+to add value to the traditional portfolios by increasing returns and reducing volatility and drawdowns.
+6. Concluding remarks
+The 60/40 portfolio has delivered great returns over the last couple of decades. However, many features
+that favored the performance of traditional portfolios have changed recently. For instance, stock
+valuations are historically high and years of accommodative monetary policy are being reversed, while
+stock-bond correlation appears to have turned positive due to the high uncertainty around inflation. In
+this context of low expected returns for the 60/40 portfolio, allocating to uncorrelated strategies seems
+reasonable.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+For this purpose, we developed a long-only multi-asset momentum strategy that shows attractive risk-
+adjusted returns and the ability to generate positive returns on a rolling basis, while having low correlation
+with traditional portfolios. The strategy exhibits higher returns than the 60/40 portfolio, with an important
+reduction in volatility and experiencing a fraction of the worst drawdown. Furthermore, the strategy
+appears to have very high chances of showing positive performance in a one-year period, i.e. it seems as
+a plausible strategy for generating absolute returns. It can be used in a standalone basis or combined with
+a 60/40 portfolio. In the latter case, it improves considerably the performance metrics of the traditional
+portfolio by increasing returns and reducing volatility and drawdowns.
+The main difference with other momentum strategies is the approach used to capture the signals. We
+make no efforts to optimize the measure and look-back period. Instead, we believe that each measure
+and formation period addresses the issue from a slightly different angle and thus provides useful
+information. For this reason, we aggregate several signals in our analysis. This process reduces the model
+specification risk and the exposure to “luck”. Although the approach may underperform a single
+specification in a given time period, we believe that it enhances the prospects for future returns.
+Despite our robust approach and attractive historical performance, we must highlight some limitations of
+our strategy. For instance, we do not address an important dimension of risk embedded in momentum
+and trend following strategies: the “rebalance timing luck” (Hoffstein et al., 2020)9. Our strategy
+rebalances at the end of each calendar month, which makes it vulnerable to such risk10. Furthermore,
+although we attempt to capture momentum, we would like to avoid being invested in assets that have
+already gone parabolic. In this sense, we could improve the model by incorporating mean reversion or
+counter-trend signals. These are perhaps the most important areas for improvement; however, we
+believe that the strategy developed in this paper has an attractive outlook for future returns.
+References
+Antonacci, G. (2016). Risk Premia Harvesting Through Dual Momentum. Journal of Management &
+Entrepreneurship, Vol. 2, No. 1, p. 27-55.
+AQR (2022). The Stock/Bond Correlation: Drivers and Implications. Available at:
+https://www.aqr.com/Insights/Research/Alternative-Thinking/The-Stock-Bond-Correlation
+Asness, C., Moskowitz, T., Pedersen, L. (2013). Value and Momentum Everywhere. The Journal of Finance,
+Vol. 68, No. 3, p. 929-985.
+9 The rebalance timing luck refers to the divergences in performance associated with different rebalancing schedules
+(Hoffstein et al., 2020).
+10 A possible solution for minimizing rebalance timing risk is to reduce the rebalancing frequency. For example, we
+could divide our strategy in four sub-strategies, each one of them addressing the same signals and rebalancing at
+the last day of every four weeks. In this sense, every Friday we would rebalance a quarter of the portfolio and hold
+that sub-strategy for the next four weeks.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Bruder, B., Dao, T., Richard, J., Roncalli, T. (2011). Trend Filtering Methods for Momentum Strategies.
+Available at SSRN: https://ssrn.com/abstract=2289097
+Faber, M. (2010). Relative strength strategies for investing. Available at
+SSRN: https://ssrn.com/abstract=1585517
+Hoffstein, C. (2018). Diversifying the What, How, and When of Trend Following. Newfound Research Blog.
+Available at: https://blog.thinknewfound.com/2018/04/diversifying-the-what-how-and-when-of-trend-
+following/#_ftn5
+Hoffstein, C. (2019). Fragility Case Study: Dual Momentum GEM. Newfound Research Blog. Available at:
+https://blog.thinknewfound.com/2019/01/fragility-case-study-dual-momentum-gem/
+Hoffstein, C., Faber, N., Braun, S. (2020). Rebalance Timing Luck: The (Dumb) Luck of Smart Beta. Available
+at SSRN: https://ssrn.com/abstract=3673910
+Jegadeesh, N., Titman, S. (1993). Returns to buying winners and selling losers: implications for stock
+markets efficiency. The Journal of Finance, Vol. 48, No. 1, p. 65-91.
+Keller, W., Butler, A. (2014). A Century of Generalized Momentum; From Flexible Asset Allocations (FAA)
+to Elastic Asset Allocation (EAA). Available at SSRN: https://ssrn.com/abstract=2543979
+Keller, W., Keuning, J. (2016). Protective Asset Allocation (PAA): A Simple Momentum-Based Alternative
+for Term Deposits. Available at SSRN: https://ssrn.com/abstract=2759734
+Keuning, J. (n.d.). Deciphering Correlation Hedged Momentum. TrendXplorer Blog. Available at:
+https://indexswingtrader.blogspot.com/2016/06/deciphering-correlation-hedged-momentum.html
+Levine, A., Pedersen, L. (2016). Which Trend is Your Friend? Financial Analyst Journal, Vol. 72, No. 3.
+ReSolve (n.d.). Dynamic Asset Allocation for Practitioners, Part 3: Risk-adjusted Momentum. ReSolve Asset
+Management Blog. Available at: https://investresolve.com/dynamic-asset-allocation-for-practitioners-
+part-3-risk-adjusted-momentum/
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Appendix 1
+The strategy shows attractive performance metrics over the entire study period. In charts 2 and 3, we can
+appreciate that the strategy performed well during the sharp market downturns seen in 2008-2009 and
+2020. Alternatively, although the strategy showed attractive returns during the 2010 decade, it increased
+at a much slower pace than the equity market and 60/40 portfolio. However, a more thorough analysis of
+specific time periods is important for setting future expectations. In this sense, we present several charts
+with the performance over particular time frames.
+Chart 6. Growth of $100 (12/29/2006 – 12/31/2010)
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Chart 7. Growth of $100 (12/31/2009 – 05/31/2022)
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Chart 8. Growth of $100 (12/31/2019 – 12/31/2020)
+Source: own calculations based on data retrieved from Bloomberg. It assumes no transaction costs or management
+fees.
+Electronic copy available at: https://ssrn.com/abstract=4199648
+Starting with the 2008 Financial Crisis, we can appreciate that both variations of the strategy performed
+well. Although the strategy without protection declined during 2008, the drawdown was small and the
+strategy bottomed well before the traditional portfolio, recovering all losses by the end of 2009.
+Additionally, the protective strategy remained flat in 2008 and started increasing during the third quarter
+of 2009. The drawdown was almost non-existent during this period. In this sense, the behavior exhibited
+through the 2008 Financial Crisis highlights one key element of our strategy: during prolonged declines in
+markets, the strategy is expected to have small drawdowns and effectively protect capital.
+The behavior observed during 2020 somewhat resembles the one experienced in previous crashes. The
+protective strategy barely moved during March, and started grinding up around May, closing the year with
+a 12% gain. The strategy without protection experienced a small drawdown, had a slow recovery the
+following months, and accelerated the pace during the second half, sustaining a better return than the
+S&P 500 at the end of the year. However, we must highlight that the strategy may have slightly benefited
+from rebalance timing luck. At the end of February, the strategy switched to a more defensive stance,
+avoiding part of the March´s crash11.
+The picture is different when equity markets exhibit prolonged uptrends. For instance, between 2010 and
+2019, the strategy rose at a much slower pace than equities and traditional portfolios. Since the strategy
+tends to have a defensive stance, short corrections followed by rapid recoveries imply that the strategy
+will switch to other uncorrelated assets and will thus forego the fast rebounds in stocks. However, despite
+showing lower returns than equities and traditional portfolios during this period, the strategy experienced
+non-negligible returns: the regular strategy had a CAGR of roughly 8.2%, while the protective strategy
+exhibited an annual 7.4% return.
+The previous analysis gives us some insights for setting future expectations. During prolonged downtrends
+in global assets, we should expect the strategy to have low drawdowns. When assets start to recover, the
+strategy should remain in a defensive stance; however, as momentum increases, the strategy should
+adapt and raise the exposure to risk-on assets. The result is a combination of attractive returns, low
+volatility, and minimum drawdowns over long periods of time. These characteristics come with a cost:
+during prolonged uptrends, the strategy tends to underperform traditional portfolios. In more formal
+terms, the cost of cutting the left tail of the distribution is the whipsaw risk embedded in momentum and
+trend following strategies.
+11 The strategy without protection had an allocation of 20% SPY, 20% QQQ, 20% GLD, 20% LQD and 20% TLT during
+February. At the rebalance, SPY went risk-off and switched to 20% IEF. Although the difference is not material, the
+rebalance schedule certainly favored the performance. Additionally, the protective strategy was already 20% Risk-
+Off in February but switched to more than 90% Risk-Off at the rebalance date. If the strategy had rebalanced before
+the equity declines observed in late February, the drawdown would have been worse.
+Electronic copy available at: https://ssrn.com/abstract=4199648

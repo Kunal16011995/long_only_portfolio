@@ -1,0 +1,1207 @@
+Deep Value Portfolios : a Long Only Implementation
+Philippe Declerck* This version: December 2020
+Abstract We describe a framework to build deep value multi-asset long-only portfolios. Portfolios built according to this framework do add value, and are robust to several changes of specifications. Much like traditional value portfolios, we document they work better when combined with some sort of momentum signal. Keywords: deep value
+*HSBC Global Asset Management. email: philippe.declerck@hsbc.fr. The views expressed here are those of the author alone and not of HSBC Global Asset Management.
+1 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+1 Introduction
+Value is the phenomenon that cheap securities will be to prone to outperform in the near future, while expensive securities will be to prone to underperform in the near future. It is a relative phenomenon: a portfolio investing according to value will be long of the cheap assets and short of the expensive ones. Hence, even if cheap securities display negative absolute returns in the near future, the value portfolio may deliver positive return, provided cheap securites outperform expensive ones.
+It is hard to identify the first value strategy (or investor), but what is certain is that its principle has been known and applied for quite some time, with for instance Graham and Dodd (1934, [15]). The value investing literature is large and ever expanding, with now well-known work published in the 1980s and 1990s, for instance DeBondt and Thaler (1985, [11]), Fama and French (1992, [13] and 1993, [14]), Lakonishok, Shleifer, and Vishny (1994, [17]) and many others.
+Value is not a simply a beta phonemenon, and literature supports the idea that partial implementation of factors, through the long leg only, adds material value. Asness et al. (2012, [2]) show that the long leg of value portfolios delivers superior risk-adjusted returns compared to the short leg in many markets and asset classes. Blitz et al. (2020, [9]) go as far as to say that investors will be better off with simplified portfolios using the long leg and shorting with the market, since "the long-minus-market approach has offered more value than the full-fledged long-short approach for individual factors, and even more so for a multi-factor combination". Benaych-Georges et al. (2020, [7]) revisit this paper, and while their conclusion differs on the effectiveness of the short leg, one of their findings is that the "LH [long leg beta-hedged] implementation of individual factors leads to Sharpe Ratios that are comparable, on average, to those of the LS [long-short] implementation".
+While the term "deep value" sounds familiar, there is not a single, well-accepted defintion. Intuitively, deep value investing demands an incredibly high discount relative to "fair value". Things would be simple if the concept of fair value was well defined, but it is not. If fair value is an anchor, it could be an assessment of the value of a given security, using, for instance for equities, (tangible) book value, discounted cash flows or dividends,. . . , or a historical value, around which the market value gravitates. Asness et al. (2017, [1]) define deep value "as episodes where the valuation spread between cheap and expensive securities is wide relative to its history". This definition implies a comparison between 2 assets and from a historical basis. According to Sharma et al. (2019, [19]) "deep value investors look for the largest dislocations and hold concentrated portfolios of stocks with the cheapest valuations relative to intrinsic value". This view calls for both
+2 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+historical and cross-sectional comparisons. Hence, deep value can be assessed from a historical and / or a cross-sectional view, and also on a standalone or relative basis. For instance Asness et al. (2017, [1]) consider assets on a historical and relative basis, while typical value screens of benchmarked equities long-only value strategies tend consider stocks on a cross-sectional (within sectors or industries) and relative basis.
+In this paper, we opt to focus on a historical definition of deep value, and consider assets on a standalone basis. Our goal is to build long-only portfolios that are easy to implement in real life, because investing in the simplest relative value portfolio (dollar neutral, long one asset, short one asset) is not always achievable, because of potential (net) short constraints. Therefore, we build deep value portfolios that are fully implementable by investing out-ofsample in securities identified as deep value by the metric used (more on this in Sections 3 and 4).
+We contribute to the scarce literature on deep value by systematically building investable, out-of-sample, portfolios based on extreme realizations of a metric derived from a value framework. We also test the robustness of the framework, and our empirical results show that it is robust to variations of parameters, and that complementing deep value with a momentum overlay does add value.
+The rest of the paper is organised as follows. Section 2 provides an overview of the dataset. Section 3 describes the framework used to build the expected returns from which signals are used. These signals and the subsequent multi-asset portfolios are described in Section 4. Section 5 presents a first set of results, while Section 6 expands them and reports robustness checks, and finally Section 7 concludes.
+2 Data Description
+In this section, we briefly describe the various data sets used in this paper. All data are daily, from January 1999 to June 2020.
+2.1 Governement Bonds
+The investment universe of 9 bonds can be split into countries for which we use bond futures and countries for which we use swap rates. We use the following index futures: Australia 10-year Bond, Canada 10-year Bond, Euro Bund, Long Gilt, US 10-year Note, and 10-year swaps for: New Zealand, Norway, Sweden and Switzerland. For both subsets, we then recalculate daily returns for a constant duration of 7.5 years. Futures returns, swap rates and durations are all obtained from Thomson Reuters Datastream.
+3 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+2.2 Currencies
+The universe of currency forwards and non-deliverable forwards (NDFs) is split into 2 universes:
+· 9 exchange rates from the G10 vs the USD (United States Dollar): AUD (Australian Dollar), CAD (Canadian Dollar), EUR (Euro), JPY (Japanese Yen), NZD (New Zealand Dollar), NOK (Norwegian Krone), SEK (Swedish Krona), CHF (Swiss Franc) and GBP (British Pound).
+· 12 other exchange rates, labeled EM currencies, vs the USD: BRL (Brazilian Real), CLP (Chilean Peso), HUF (Hungarian Forint), IDR (Indonesian Rupiah), INR (Indian Rupee), KRW (Korean Won), MXN (Mexican Peso), PLN (Polish Zloty), RUB (Russian Ruble), SGD (Singapore Dollar), TWD (Taiwanese Dollar), ZAR (South African Rand).
+We use spot and 3-month forward implied yields from Bloomberg to calculate returns.
+2.3 Equities Indices
+The investment universe consists of indices of: · 11 developed countries index futures: ASX (Australia), TSX (Canada), CAC (France), DAX (Germany), FTSE/MIB (Italy), TOPIX (Japan), IBEX (Spain), OMX (Sweden), SMI (Switzerland), FTSE (United Kingdom), S&P500 (United States). · 12 emerging countries index futures: BOVESPA (Brazil), HSCEI (China H), MSCI INDONESIA (Indonesia), KOSPI2 (Korea), NIFTY (India), KLCI (Malaysia), BOLSA (Mexico), WIG (Poland), TOP (South Africa), MSCI TAIWAN (Taiwan), SET (Thailand), BIST (Turkey).
+Futures returns are obtained from Bloomberg. We also obtain daily Price Return series, Total Return series (when available) and cash rates from Thomson Reuters Datastream. For periods prior to the availability of futures data, we backfill the respective futures series with the excess return of the Total Return (or Price Return when Total Return is not available) series vs cash.
+Our investment universe therefore comprises 53 instruments, split into 5 asset classes.
+4 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+3 Expected returns
+This section briefly describes the methodology1 used to build a set of multi-asset expected returns, consistent with a value-based framework. This framework heavily relies on market prices and fundamental dynamics, depends on a limited set of parameters only, and do not incorporate many judgemental views (except the model itself, which is no insignificant view), except for some prospective views from consensus. Series derived from this framework can be updated, monitored and used on a real-time basis in financial simulations and backtests.
+
+3.1 Risk free rate
+
+We believe the risk free rate is a slow mean-reverting process towards a long term equi-
+librium. To model the expected nominal risk free rate r, we use a linear combination of a consensus forecast of the 3-month rate in 1 year rCFoY 1 and a long term equilibrium cash rate r:
+r = rCFoY 1 + (1 - )r
+
+Due to differences of long term real interest rates and inflation equilibria, we had to cre-
+
+ate some granular expected cash rates assumptions between High EMHI 2 and Low EMLI 3 inflation Emerging Market Countries, US and strongly-linked countries4, European coun-
+
+tries excluding UK5, and Japan. Real long term cash rates are supposed to vary between 0
+
+and 0.5 percent in OECD countries (resp. 1 and 2 percent in EM countries) and long term
+
+inflation to hover around 2 percent for most OECD countries and between 3 and 6 percent
+
+in EM markets:
+
+
+
+  = 0.5
+
+
+
+
+
+    
+
+rE
+
+MH
+
+I
+
+=
+
+0.02 + 0.06
+
+=
+
+0.08
+
+
+
+  
+
+rE
+
+MLI
+
+=
+
+0.01
+
++ 0.03
+
+=
+
+0.04
+
+(1)
+
+ 
+
+rE U xU K
+
+=
+
+0
+
++
+
+0.02
+
+=
+
+0.02
+
+
+
+
+
+   
+
+rU SetAl
+
+=
+
+0.005
+
++
+
+0.02
+
+=
+
+0.025
+
+
+
+
+
+ 
+
+rU SetAl
+
+=
+
+0
+
++
+
+0.005
+
+=
+
+0.005
+
+3.2 Equities
+Let's define e the expected inflation, ge the real expected earnings growth, D, P and E respectively the expected dividends, price and earnings, e the expected Return on Equity,
+ the expected pay-out ratio. Using a a Gordon Shapiro framework, the equities expected
+1This methodology is derived from Bellone et al. (2017, [6]). 2BRL, IDR, INR, RUB, TRY, ZAR 3CNY, KRW, MXN, PLN, SGD, THB, MYR 4AUD, CAD, NZD, UK, and US 5CHF, EUR, NOK, SEK
+
+5 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+returns can be expressed as:
+
+rE
+
+=
+
+e
+
++
+
+ge
+
++
+
+D P
+
+=
+
+e
+
++
+
+e
+
++
+
+E P
+
+,  and E are from companies income statements and with  is set at 0.1. For a given equities index, we derive these values by aggregating values of all companies of the index. The expected excess return is rE - r.
+
+3.3 Government bonds
+A constant maturity bond expected return can be decomposed (without embedding a meanreversion of the price of risk) as the average carry and roll down component and a capital gain/loss due to the expected change in cash rate. Hence we define the nominal 10Y bond expected returns as :
+rB = BY10
+with BY10 a simple constant maturity bond yield. The excess return is simply the yield curve slope: rB - r.
+
+3.4 Currencies
+Consider a situation6 where we have two currencies: the domestic currency (say US dollar, USD) and the foreign emerging currency FX. The spot exchange rate at time t is et and is quoted as USD per FX:
+Units of the domestic currency et = Units of the foreign currency
+That is 1 U SD = et × F X or 1F X = U SD/et. Let's define the domestic (resp. foreign) short rate as rd (resp. rf ). The corresponding risk-free money market bills are Bd and Bf . We model the exchange rate as a geometric brownian motion under probability P. The drift and volatility are assumed constant and deterministic, such that:
+de = e[edt + edWe]
+dBd = rdBddt
+dBf = rf Bf dt
+Let's assume that the US investor buys forward the foreign currency FX, and invests in the local risk free rate. Such a trade is equivalent to the possibility of investing in a foreign
+6This currency framework was inspired by Bjork (2003, [8], chapter 17)
+
+6 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+asset with price process B~f (t) = Bf (t)et, for which the dynamics can be written as: dB~f = B~f [(e + rf )dt + edWe]
+
+We introduce the currency price of risk e such that:
+
+dB~f = B~f [(rd + ee)dt + edWe]
+
+with
+
+e
+
+=
+
+e+rf e
+
+-rd
+
+.
+
+To express the fundamental value of the price of risk, we start from the loglinearised present value relationship of the FX (against USD) which relates the risk premium to the expectations of the expected real interest rate differentials and the terminal value of the currency, that is combining carry (expressed in real term) and the deviation from a fundamental valuation anchor (PPP adjusted exchange rate) against USD:
+
+eF X,U SD
+
+=
+
+(log(ePF
+
+X,U PP
+
+SD
+
+)
+
+-
+
+log(eF X,USD)) eF X,U SD
+
++
+
+rF X
+
+-
+
+rU S D
+
+It follows that:
+
+reF X,USD = eF X,USDeF X,USD + rUSD
+
+For OECD countries, we expect e to be 0, while we expect it to be closer to 0.15 for EM countries.
+
+4 Portfolio Construction
+4.1 Signals
+The valuation metric is determined over the asset classes and securities mentioned in Section 2 and derived from the expected return defined in Section 3. Rather than using the expected returns outright, we use rolling 10y percentiles of the expected returns. High (resp. low) percentiles are equivalent to high (resp. low) expected returns hence equivalent to low (resp. high) valuations. Therefore, an asset will be flagged as "Deep Value" (i.e. extremely cheap) when its percentile is very high.
+Rolling 10y percentiles are calculated for each asset in all asset classes. When the available history ranges between 5 and 10 years, percentiles are calculated over the available history. No percentile is calculated when less than 5 years of data are available.
+Figure 1 shows the expected returns and the corresponding 10y rolling percentiles of
+7 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+the spillover of the S&P500. Its is worth noting inflection points are the same, but the reaction of percentiles is much more pronounced: over this history, extreme values ( 95% and  5%) were reached by the percentiles. For instance, percentiles jump to very high levels in late 2009, and remain there until end 2012.
+4.2 Portfolios
+The typical value investor buys and sells early. The obvious risk of a deep value investor is to buy a value trap, i.e. to buy extremely early. According to Sharma et al. (2019, [19]), "the risk of value traps - that low prices may remain low for a long time - is exacerbated with deep value strategies". Kupersmith et al. (2017, [16]) advise to combine "quantitative and qualitative insights" when evaluating deep value opportunities, or to "incorporate other systematic investment themes, like quality".
+To benefit from the re-rating of deep value assets, we need to avoid value traps while retaining deep value assets until the re-rating is material enough. Hence, we need to define the following thresholds:
+· IN: the entry threshold ;
+· OUT: the natural exit threshold, when the asset has re-rated enough ;
+· ValueTrap: the alternative exit threshold, in case the asset keeps getting cheaper.
+An asset is considered deep value when the corresponding historical percentile P is such as: P  IN and P < V alueT rap. At time t, an asset will be in portfolio if:
+· it is flagged as deep value: the corresponding percentile at t Pt is such as Pt  IN and Pt < V alueT rap
+· it was in portfolio at time t - 1 and Pt is such as Pt > OU T and Pt < V alueT rap.
+Limiting value traps means ValueTrap should not be much larger than OUT: if the asset is considered cheap enough around IN, we should not allow it to become much cheaper before exiting. Using a ValueTrap threshold prevents from investing in a security that keeps derating. It can be seen as a momentum filter: while we're not looking for positive momentum per se, we are leaving aside securities with negative momentum. Riding a deep value asset long enough means OUT should be much smaller than IN, so we need to have: OU T < IN < V alueT rap and OU T IN . Figure 2 illustrates this rationale.
+Portfolios are built at the asset class level. For a given asset class with N assets, assets are allocated weights of 1/N . To ensure no look-ahead bias, the signals used at date t are
+8 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+calculated with data up to date t - 1. Signals are calculated on a daily basis, and portfolios are rebalanced on a daily basis, at market close. Finally, all returns are expressed in excess of cash, net of transaction costs, but gross of management fees (see appendix for details).
+
+5 Performance of deep value strategies
+Figure 3 displays cumulative returns of deep value strategies, using the following thresholds: IN=80%, ValueTrap=90%, OUT=50%. As expected given their past performances, bonds are hardly ever in: from 1% of the time (SEK) to 13% (Treasuries and Gilt) and seem to deliver just slightly positive returns. Investments in other asset classes appear much more frequent. To render comparisons easier, Figure 4 displays cumulative returns for the same portfolios, leveraged so that their ex post volatilities are 10%7 For the same amount of (ex post) risk, Bonds deliver as much as EM Equities, while FX (especially DM FX) does not add much value.
+First results are encouraging as cumulative returns are positive. However it is hard to assess whether their corresponding Sharpe ratios, displayed in Table 1 are good (here again, and unless mentioned, all statistics in this paper are calculated for periods when portfolios own at least one security). What sort of benchmark could deep value portfolios be compared to ?
+
+Bonds DM FX EM FX DM Equities EM Equities
+
+1.4
+
+0.2
+
+0.3
+
+0.7
+
+0.5
+
+Table 1: Sharpe ratios of deep value strategies
+
+One benchmark that makes sense is a strategy that, for a given asset, is invested the same amount of time as the deep value strategy. For any given deep value strategy, we simulate 10,000 random strategies accordingly. A refinement - yet to be simulated - would be to take into account investment duration, as deep value strategies are not expected to turn over much. Given simulated strategies have much higher turnover, transaction costs are not taken into account. Then, we calculate Sharpe ratios for all simulated strategies and use them to check where the deep value strategies rank. Ranks of the Sharpe ratios of deep value strategies presented in Table 1 are shown in Table 2. Deep value strategies outperform close to 100% of random strategies. The only asset class where it is not the case is EM Equities, for which the strategy still outperforms 92% of random strategies. Still, this is very positive, but we need to check whether these results are just luck in the choices
+7Returns of 0, ie when no investment is made, are not taken into account to calculate volatilities.
+
+9 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+of parameters or not.
+
+Bonds DM FX EM FX DM Equities EM Equities
+
+100% 100% 100%
+
+100%
+
+92%
+
+Table 2: Percentile of deep value strategies within random strategies
+
+6 Robutsness checks
+The first part of our empirical analysis essentially describes our modus oprandi, and only displays results for a single deep value strategy, derived from one set of parameters. In this section we test the robustness of strategies to all three parameters.
+6.1 The IN, OUT and ValueTrap thresholds
+Table 5 displays Sharpe ratios for a first set of alternative strategies: we keep OUT at 50%, while move IN between 80% and 90%, with ValueTrap remaining between 5% and 15% higher than IN. Table 6 displays the corresponding ranks of these Sharpe ratios. The first observation is that widening the gap between IN and ValueTrap tends to deteriorate Sharpe ratios, except for DM Equities, which seem insensitive to these thresholds. This makes sense: the wider the gap between IN and ValueTrap, the more space for valuation deterioration. The gap between IN and ValueTrap needs to be kept narrow. The second observation is that all strategies rank very well against random strategies, except for EM Equities. Two of the tested alternatives fail to outperform half of the random strategies.
+The second set of alternative strategies test the impact of the OUT threshold, while keeping IN at 80% and ValueTrap at 90%. Table 7 shows three different behvaviors. For Bonds and EMEquities, the Sharpe ratio is going one way: up, while it is going down for DMEquities. For DMFX, the Sharpe ratio starts by increasing, then decreases (much more), while it seems to oscillate for EMFX. These differences are understandable: they are a sign that trends have been much more long-lasting in Bonds over the past 20 years. Table 8 reports that most strategies have massively outperformed random strategies. Using 70% for the OUT threshold gives weak results for all asset classes, and from a relative view, the only strategies underperfoming are the ones with a 70% OUT threshold. This confirms the intuition that the gap between IN and OUT should not be too small.
+The third set of alternative strategies also test the impact of the OUT threshold, this time keeping IN at 90% and ValueTrap at 95%. Tables 9 and 10 confirm previous results, with slight differences. Indeed, when OUT=70%, only EM Equities are badly ranked, and while Sharpe ratios of Bonds and FX strategies are higher on average, Sharpe ratios of
+10 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+Equities strategies are slightly lower on average. With respect to Bonds and EM Equities, it has been better to hold on to deep value assets for long, while with respect to FX and EM Equities, it has better not to hold on too long.
+6.2 Does trying to avoid value traps help ?
+We may legitimately wonder whether adding a ValueTrap threshold, a kind of momentum overlay, adds value in a deep value framework. Therefore, we ran the same tests as in 6.1, but without a ValueTrap threshold. Tables 11 and 12 display results when the IN threshold varies, while Tables 13, 14, 15 and 16 display results with IN set at 80% and 90%, and OUT moving from 70% to 20%.
+Overall, not using the ValueTrap threshold has a material impact on deep value strategies: Sharpe ratios drop significantly, usually by 30% to 60%. That can be even more for DM FX, for which Sharpe ratios become overall negative, or less for EM Equities, for which not using ValueTrap even increase the Sharpe ratio in a few instances (though by only a few basis points). When compared to random strategies, these deep value strategies do not fare well on average, and fail to beat half of random strategies more often than not. Lone exceptions are DM Equities, and EM FX to a lesser extent.
+7 Conclusion
+Building expected returns and deriving deep value strategies from them has worked over the past 20 years. Indeed, deep value strategies tend to deliver positive Sharpe ratios and outperform the luckiest random strategies (in terms of Sharpe ratios). These deep value strategies are not often invested, hence can be used as overlays. They have performed well in different asset classes, and they seem robust to the performance pattern of underlying assets and thresholds used. Interestingly, they also tend to perform better when they are completed with a momentum filter. The obvious caveat is that history length is only 20 years, and it will be worth expanding it in future research. Also, one has to keep in mind that, by definition, percentile analysis is not forward looking, and that things can always get (a lot) worse before they eventually get better.
+From an practical view, portfolios were designed according to 3 thresholds: IN, OUT and ValueTrap. Robustness checks show deep value portfolios are robust to these thresholds, and help draw rules: OUT should be low enough compared to IN, though to too low, because the added value of keeping assets for a very long time appears limited. Lastly,
+11 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+ValueTrap really helps and should be close to IN. Suggested typical ranges are [80%, 90%] for IN, [40%, 50%] for OUT and [85%, 95%] for ValueTrap.
+12 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+References
+[1] Asness, Cliff, John Liew, Lasse Heje Pedersen, Ashwin Thapar, Deep Value, AQR Capital Management working paper, 2017.
+[2] Asness, Cliff, Tobias Moskowitz, Lasse H. Pedersen, Value and Momentum Everywhere, The Journal of Finance 68(3), pp.929-985, 2013, https://doi.org/10.1111/jofi.12021
+[3] Bakrania, Paras, Chris Doheny, Jonathan Frader, Caroline Heinrichs, Fundamental Trends and Dislocated Markets, AQR Capital Management working paper, 2019.
+[4] Bellone, Benoit, Cross-border Equity Valuation with the Residual Income Mode, HSBC Global Asset Management Working Paper, 2011.
+[5] Bellone, Benoit, Should Investors Hold Passive Currency Risks ?, HSBC Global Asset Management Working Paper, 2011.
+[6] Bellone, Benoit, Farah Bouzida, Thomas Vy, A Simplified Framework to Generate Time Series Prospective Sharpe Ratios, HSBC Global Asset Management Working Paper, 2017.
+[7] Benaych-Georges, Florent, Jean-Philippe Bouchaud, Stefano Ciliberti, Equity Factors: To Short Or Not To Short, That is the Question, Capital Fund Management working paper, 2020, http://dx.doi.org/10.2139/ssrn.3557879
+[8] Bjork, Thomas, Arbitrage Theory in Continuous Time, Oxford University Press, 2003.
+[9] Blitz, David, Guido Baltussen, Pim van Vliet, When Equity Factors Drop Their Shorts, Financial Analysts Journal, 2020, 76(4), pp. 7399, 2020, http://dx.doi.org/10.2139/ssrn.3493305
+[10] Chibane, Messaoud and Samuel Ouzan, Value Bubbles, Working Paper, 2019, http://dx.doi.org/10.2139/ssrn.3412459
+[11] DeBondt, Wermer F. M., Richard Thaler, Does the stock market overreact?, Journal of Finance, 40(3), pp. 793-805, 1985, https://doi.org/10.2307/2327804
+[12] Digard Paul-Noel, Philippe Declerck, Thomas Vy, Timing Value, Working Paper, 2019.
+[13] Fama, Eugene F., Kenneth R. French, The Cross-Section of Expected Stock Returns, Journal of Finance, 47(2), pp. 427465, 1992, https://doi.org/10.2307/2329112
+[14] Fama, Eugene F., Kenneth R. French, Common Risk Factors in the Returns on Stocks and Bonds, Journal of Financial Economics, 33(1), pp. 356, 1993, https://doi.org/10.1016/0304-405X(93)90023-5
+[15] Graham, Benjamin and David Dodd, Security Analysis, McGraw Hill, 1934.
+[16] Kupersmith, David, Adrienne Ross, Ashwin Thapar, Building a Better Deep Value Portfolio, AQR Capital Management working paper, 2017.
+13 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+[17] Lakonishok, Josef, Andrei Shleifer, Robert W. Vishny, Contrarian Investment, Extrapolation, and Risk, Journal of Finance, 49(5), pp. 15411578, 1994, https://doi.org/10.1111/j.1540-6261.1994.tb04772.x
+[18] Oxman, Jeffrey, Sunil K. Mohanty,Tobias Eric Carlisle, Deep Value Investing and Unexplained Returns, Midwest Finance Association 2012 Annual Meetings Paper, 2012, http://dx.doi.org/10.2139/ssrn.1928694
+[19] Sharma, Deepika, Muling Si, Josephine Smith, Yield Curve Predictors of Foreign Exchange Returns, The Journal of Index Investing, 10(2), pp.63-79, 2019, DOI: 10.3905/jii.2019.10.2.063
+14 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+8 Appendix
+
+8.1 Transaction costs
+The simulated performance is net of transaction costs, with estimated bid-ask spreads as listed below. Estimated bid-ask spreads are tripled during periods of market stress, as listed in the table below. Positions are re-balanced on a weekly basis at market close.
+
+Asset Government Bond Futures Interest Rate Swaps DM Equity Index Futures EM Equity Index Futures excl Bovespa Bovespa Index Futures DM FX EM FX excl CLP, COP, IDR CLP, COP, IDR
+
+Bid-Ask Spread Est.(bps) 1 20 2 10 20 1 5 10
+
+Table 3: Transaction Costs and Bid-Ask Spread Estimates
+
+Starts 30-08-2001 30-08-2008 30-04-2010 31-07-2011 31-07-2015
+
+Ends 31-10-2001 31-01-2009 30-06-2010 30-11-2011 30-08-2015
+
+Table 4: Tripling Transaction Cost Periods (Market Stress)
+
+15 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+8.2 Expected returns and percentiles
+Figure 1: Expected returns and percentiles. The figure shows expected returns and associated rolling 10y percentiles for the S&P500. The sample period is from January 1999 to June 2020.
+16 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+Figure 2: Expected returns and percentiles with entry and exit thresholds. The figure shows expected returns and associated rolling 10y percentiles for the S&P500, with potential thresholds to enter and exit positions. 80% is the entry threshold, 90% and 50% are the exits thresholds. The sample period is from January 1999 to June 2020.
+17 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+8.3 Deep value strategies: cumulative returns
+Figure 3: Cumulative returns of deep value portfolios. The figure shows cumulative returns of deep value portfolios per asset class, using the following thresholds: IN=80%, OUT=90%, ValueTrap=50%. The sample period is from January 1999 to June 2020.
+18 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+Figure 4: Cumulative returns of deep value portfolios. The figure shows cumulative returns of deep value portfolios per asset class, using the following thresholds: IN=80%, OUT=90%, ValueTrap=50%. Portfolios are leveraged so that realized volatilities taking only into account periods when at least one asset is in are set at 10%. The sample period is from January 1999 to June 2020.
+19 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+8.4 Deep value strategies: Sharpe ratios and corresponding ranks
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 50%
+
+85%
+
+1.86 0.35
+
+0.47
+
+0.60
+
+0.76
+
+80% 50%
+
+90%
+
+1.38 0.20
+
+0.34
+
+0.73
+
+0.53
+
+80% 50%
+
+95%
+
+1.09 0.09
+
+0.33
+
+0.71
+
+0.46
+
+85% 50%
+
+90%
+
+1.65 0.39
+
+0.29
+
+0.64
+
+0.39
+
+85% 50%
+
+95%
+
+1.26 0.23
+
+0.33
+
+0.68
+
+0.38
+
+90% 50%
+
+95%
+
+1.61 0.35
+
+0.44
+
+0.67
+
+0.46
+
+Table 5: Sharpe ratios of deep value strategies - Sensitivity to the IN and ValueTrap thresholds for OUT at 50%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 50%
+
+85%
+
+100% 100% 100%
+
+100%
+
+100%
+
+80% 50%
+
+90%
+
+100% 100% 100%
+
+100%
+
+92%
+
+80% 50%
+
+95%
+
+100% 94% 100%
+
+100%
+
+67%
+
+85% 50%
+
+90%
+
+100% 100% 99%
+
+100%
+
+31%
+
+85% 50%
+
+95%
+
+100% 100% 100%
+
+100%
+
+26%
+
+90% 50%
+
+95%
+
+100% 100% 100%
+
+100%
+
+68%
+
+Table 6: Percentile of deep value strategies within random strategies - Sensitivity to the IN and ValueTrap thresholds for OUT at 50%
+
+20 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 70%
+
+90%
+
+0.57 0.18
+
+0.29
+
+0.79
+
+0.32
+
+80% 60%
+
+90%
+
+1.27 0.36
+
+0.38
+
+0.79
+
+0.50
+
+80% 50%
+
+90%
+
+1.38 0.20
+
+0.34
+
+0.73
+
+0.53
+
+80% 40%
+
+90%
+
+1.46 0.22
+
+0.45
+
+0.69
+
+0.53
+
+80% 30%
+
+90%
+
+1.57 0.07
+
+0.33
+
+0.59
+
+0.55
+
+80% 20%
+
+90%
+
+1.72 0.09
+
+0.38
+
+0.58
+
+0.61
+
+Table 7: Sharpe ratios of deep value strategies - Sensitivity to the OUT threshold for IN at 80% and ValueTrap at 90%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 70%
+
+90%
+
+0% 100% 98%
+
+100%
+
+5%
+
+80% 60%
+
+90%
+
+100% 100% 100%
+
+100%
+
+84%
+
+80% 50%
+
+90%
+
+100% 100% 100%
+
+100%
+
+92%
+
+80% 40%
+
+90%
+
+100% 100% 100%
+
+100%
+
+92%
+
+80% 30%
+
+90%
+
+100% 100% 100%
+
+100%
+
+95%
+
+80% 20%
+
+90%
+
+100% 100% 100%
+
+100%
+
+99%
+
+Table 8: Percentile of deep value strategies within random strategies - Sensitivity to the OUT threshold for IN at 80% and ValueTrap at 90%
+
+21 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+90% 70%
+
+95%
+
+1.31 0.46
+
+0.52
+
+0.73
+
+0.28
+
+90% 60%
+
+95%
+
+1.35 0.59
+
+0.57
+
+0.73
+
+0.33
+
+90% 50%
+
+95%
+
+1.61 0.35
+
+0.44
+
+0.67
+
+0.46
+
+90% 40%
+
+95%
+
+1.53 0.33
+
+0.44
+
+0.62
+
+0.47
+
+90% 30%
+
+95%
+
+1.57 0.24
+
+0.30
+
+0.56
+
+0.48
+
+90% 20%
+
+95%
+
+1.73 0.23
+
+0.33
+
+0.60
+
+0.51
+
+Table 9: Sharpe ratios of deep value strategies - Sensitivity to the OUT threshold for IN at 90% and ValueTrap at 95%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+90% 70%
+
+95%
+
+100% 100% 100%
+
+100%
+
+1%
+
+90% 60%
+
+95%
+
+100% 100% 100%
+
+100%
+
+7%
+
+90% 50%
+
+95%
+
+100% 100% 100%
+
+100%
+
+68%
+
+90% 40%
+
+95%
+
+100% 100% 100%
+
+100%
+
+72%
+
+90% 30%
+
+95%
+
+100% 100% 99%
+
+100%
+
+75%
+
+90% 20%
+
+95%
+
+100% 100% 100%
+
+100%
+
+87%
+
+Table 10: Percentile of deep value strategies within random strategies - Sensitivity to the OUT threshold for IN at 90% and ValueTrap at 95%
+
+22 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 50%
+
+-
+
+0.66 -0.11 0.17
+
+0.49
+
+0.40
+
+85% 50%
+
+-
+
+0.68 -0.04 0.15
+
+0.47
+
+0.33
+
+90% 50%
+
+-
+
+0.85 0.00
+
+0.20
+
+0.46
+
+0.41
+
+Table 11: Sharpe ratios of deep value strategies - Sensitivity to the IN threshold, no ValueTrap threshold, for OUT at 50%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 50%
+
+-
+
+0%
+
+2%
+
+62%
+
+100%
+
+30%
+
+85% 50%
+
+-
+
+0%
+
+21%
+
+48%
+
+100%
+
+7%
+
+90% 50%
+
+-
+
+22% 46%
+
+77%
+
+99%
+
+36%
+
+Table 12: Percentile of deep value strategies within random strategies - Sensitivity to the IN threshold, no ValueTrap threshold, for OUT at 50%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 70%
+
+-
+
+-0.15 -0.21 0.11
+
+0.46
+
+0.23
+
+80% 60%
+
+-
+
+0.43 -0.08 0.17
+
+0.48
+
+0.34
+
+80% 50%
+
+-
+
+0.66 -0.11 0.17
+
+0.49
+
+0.40
+
+80% 40%
+
+-
+
+0.82 -0.05 0.25
+
+0.51
+
+0.43
+
+80% 30%
+
+-
+
+0.96 -0.08 0.19
+
+0.48
+
+0.43
+
+80% 20%
+
+-
+
+1.14 -0.05 0.24
+
+0.49
+
+0.47
+
+Table 13: Sharpe ratios of deep value strategies - Sensitivity to the OUT threshold, no ValueTrap threshold, for IN at 80%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+80% 70%
+
+-
+
+0%
+
+0%
+
+23%
+
+99%
+
+0%
+
+80% 60%
+
+-
+
+0%
+
+7%
+
+60%
+
+100%
+
+10%
+
+80% 50%
+
+-
+
+0%
+
+2%
+
+61%
+
+100%
+
+30%
+
+80% 40%
+
+-
+
+11% 14%
+
+95%
+
+100%
+
+47%
+
+80% 30%
+
+-
+
+87% 6%
+
+73%
+
+100%
+
+47%
+
+80% 20%
+
+-
+
+100% 16%
+
+91%
+
+100%
+
+70%
+
+Table 14: Percentile of deep value strategies within random strategies - Sensitivity to the OUT threshold, no ValueTrap threshold, for IN at 80%
+
+23 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+90% 70%
+
+-
+
+0.33 -0.03 0.20
+
+0.42
+
+0.21
+
+90% 60%
+
+-
+
+0.63 0.09
+
+0.26
+
+0.45
+
+0.29
+
+90% 50%
+
+-
+
+0.85 0.00
+
+0.20
+
+0.46
+
+0.41
+
+90% 40%
+
+-
+
+0.90 0.03
+
+0.21
+
+0.45
+
+0.43
+
+90% 30%
+
+-
+
+0.97 0.04
+
+0.13
+
+0.44
+
+0.44
+
+90% 20%
+
+-
+
+1.14 0.05
+
+0.15
+
+0.48
+
+0.46
+
+Table 15: Sharpe ratios of deep value strategies - Sensitivity to the OUT threshold, no ValueTrap threshold, for IN at 90%
+
+IN OUT ValueTrap Bonds DM FX EM FX DM Equities EM Equities
+
+90% 70%
+
+-
+
+0%
+
+26%
+
+76%
+
+95%
+
+0%
+
+90% 60%
+
+-
+
+0%
+
+92%
+
+97%
+
+98%
+
+2%
+
+90% 50%
+
+-
+
+22% 46%
+
+77%
+
+99%
+
+37%
+
+90% 40%
+
+-
+
+52% 66%
+
+82%
+
+99%
+
+50%
+
+90% 30%
+
+-
+
+90% 73%
+
+33%
+
+98%
+
+55%
+
+90% 20%
+
+-
+
+100% 79%
+
+50%
+
+100%
+
+67%
+
+Table 16: Percentile of deep value strategies within random strategies - Sensitivity to the OUT threshold, no ValueTrap threshold, for IN at 90%
+
+24 Electronic copy available at: https://ssrn.com/abstract=3750134
+
+

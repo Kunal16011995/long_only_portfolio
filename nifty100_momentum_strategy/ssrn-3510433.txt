@@ -1,0 +1,1250 @@
+Implementing a Systematic Long-only Momentum Strategy:
+Evidence From India
+Rajan Raju Abhijit Chandrasekaran
+October 2019
+ABSTRACT
+We show that a monthly-rebalanced, long-only portfolio of top-decile stocks selected from the
+NIFTY100 using ‘off-the-shelf’ momentum criteria significantly outperforms the NIFTY100 Index -
+both in terms of absolute returns (by 10.70% pa) and risk adjusted returns, with a mean turnover of
+32.10% per month. We show that momentum persists in the near term but dissipates over time. We
+demonstrate that our long-only approach has a significant tilt to the momentum factor. We also show
+that time in the market rather than timing the market is important for momentum investing. The
+strategy has higher volatility and the occasional momentum crash. The strategy’s out performance
+survives real-world implementation given the rise of discount brokers in India. In the absence of cheap
+ETFs to get exposure to momentum, the systematic long-only strategy from the most liquid part of
+the market using ‘off-the-shelf’ criteria provides a practical, executable investment methodology that
+exposes an investor to momentum in the Indian market.
+Keywords— Momentum, Factors, India, Investing, Quantitative, Systematic
+1
+Electronic copy available at: https://ssrn.com/abstract=3510433
+1 Introduction and Literature Review
+“far more money is made buying high and selling at even higher prices” - Richard Driehaus
+Factor investing is a rational and robust investment approach for long term investors. Factors
+are investment styles that deliver outsize returns over the long run. Stocks have exposure to style
+factors like value, momentum, and quality. However, factors are not a one way street - they are risky
+and can under-perform1. Equities and bonds are instances of factors where risk premiums are col-
+lected by simply buying them and are referred to as static factors. Most factor strategies follow Fama
+and French’s (1993) seminal work on factors and build long-short market-neutral portfolios based on
+a universe of all securities in the relevant market. These dynamic factor portfolios are rebalanced
+regularly. While factor theory is robust, transforming a non-investable risk factor into an investable
+strategy is complex. Two strategies based on the same factor may behave differently depending upon
+the choice of implementation (asset universe, choice of metric, cut-off threshold, weighting scheme,
+rebalancing frequency)2. We specifically flag two issues. First, short selling is restricted and often
+prohibited for retail investors. Alternatives to short selling are expensive and have execution risks not
+accounted for in theory. Long-only portfolios are unbalanced portfolios carrying market exposures as
+distinct from market-neutral long-short portfolios. Second, market liquidity/capacity is an execution
+constraint that is difficult to model accurately and practical implementations usually deliver different
+(and often lower) returns than what theory suggests.
+In their original work on buying past winners and selling past losers, Jegadeesh and Titman (1993)
+laid the foundations of the current momentum framework. They showed picking recent winners from
+the past 3-12 months and holding them for the next 3-12 months provides abnormal returns. Systemic
+risks could not explain these returns. Beyond a 12-month holding period, they showed the perfor-
+mance of the winners dissipates over the next 24 months.
+SinceJegadeeshandTitman’swork,severalstudiesshowthatthemomentumanomalyholdsacross
+markets, asset classes and regimes. Rouwenhorst (1998) shows significant momentum returns from
+a sample of 12 European countries and a sample of 20 emerging markets (1999). In a study of 23
+countries across Asia-Pacific, Europe, Japan, and North America, Fama and French (2012) report
+‘except for Japan, there is return momentum everywhere, and spreads in average momentum returns
+also decrease from smaller to bigger stocks’. Asness, Moskowitz, and Pedersen (2013) find evidence
+for consistent momentum return premia across eight diverse markets and asset classes.
+In India, too, momentum studies show evidence of momentum premium. Ansari and Khan (2012)
+find ‘strong presence’ of momentum profits in Indian stock between 1995-2006. Maheshwari and
+Dhankar (2018) using data between 1997-2013 ‘confirm the existence of momentum and long-term
+overreaction effect in the Indian stock market’.
+Any momentum anomaly is difficult to reconcile with the efficient market hypothesis. If the stock
+pricefullyreflectsallavailableinformation, thereisnologicalexplanationastowhystockswhichhave
+done well (poorly) in the recent past will continue to do well (poorly) in the ‘near term’. Explanations
+for the anomaly can be categorised into two broad themes:
+• Economic: the higher returns compensate the additional risk investors take when they invest
+in a momentum strategy (see Li, Miffre, Brooks, and O’Sullivan, 2008).
+1occasionally for extended periods: the value factor, for instance, has been under-performing for over a decade!
+2Israel, Jiang, and Ross (2017a) explore the targeting and capture of factor premia and suggest that execution and
+implementation choices may constitute a form of alpha which they call ‘craftmanship alpha’.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+• Behavioural: the price under- and over-reaction results from the cognitive errors investors
+make when incorporating information. For instance, investors have a conservatism bias - they
+areslowtoadjusttheirinvestmentviewswhenpresentedwithnew(andespeciallycontradictory)
+information. Or investors use the representativeness heuristic - they are too quick to conclude
+that a stock follows a particular ‘ideal type’. Citing evidence that over 3- to 5- year holding
+periods, stocks which performed poorly over the previous 3 to 5 years had higher returns than
+stocks that performed well over the same period, Bondt and Thaler (1985, 1987) argued that
+investorstendtooverreacttoinformation. Daniel,Hirshleifer,andSubrahmanyam(1998)builda
+behaviouralmodelbasedontheoverconfidenceofindividualstoexplainthemomentumanomaly.
+Barberis, Shleifer, and Vishny (1998) propose a model that is consistent with the empirical
+findings of pervasive under reaction of stock prices to news such as earnings announcements,
+and over reaction of stock prices to a series of good (bad) news. The behavioural attributes
+create momentum as stock prices react with delay to firm-specific information and subsequent
+reversion once deviations from equilibrium are acknowledged.
+Despite widespread empirical evidence3 for the momentum anomaly and some strong theoretical
+hypothesis to explain it, there remain serious debates around momentum investing. The most sig-
+nificant is whether the out-performance of such portfolios survive transaction costs in the real-world.
+The intuitive economic argument is simple. Investors will demand more of the stocks selected by the
+strategycreatingupwardpricepressurethatwill,inevitably,lowerexpectedreturns. Conversely,when
+investors exit existing positions, their selling lowers prices, reducing realized return. Unfortunately,
+these dynamics of demand and supply on capacity and costs are not easily observable.
+A number of studies have estimated capacity for factor-strategies (see Zhiwu Chen (2002), An-
+drea Frazzini (2012), Novy-Marx and Velikov (2014) and Ratcliffe et al. (2017)). Vogel (2017) surveys
+literature on both sides of the survival of momentum returns in the real world and concludes that the
+answer to the cost/capacity question depends on the assumptions and data used. Feifei, Tzee-Man,
+Pickard, and Garg (2019) build a model for the market impact of such costs for a number of factor-
+based strategies, including momentum. Israel, Ross, Moskowitz, and Serban (2017b) use the live track
+record of the implementation of momentum by AQR and ‘show that momentum is an implementable
+strategy and that the live experience of trading has not necessarily produced excessive turnover, large
+trading costs, or significant tax burdens. These results contradict common myths about momentum
+investing’. Frazzini, Israel, and Moskowitz (2018) using data from actual trading costs from a large
+institutional asset manager argue that actual costs from live trades are significantly lower than what
+academic studies suggest.
+Despite the ongoing debate on the survival of momentum returns in the real-world, there is unan-
+imous consensus that excessive transaction costs are a prime destroyer of excess returns. Novy-Marx
+andVelikov(2014)showthatmostofthefactorswithone-sidedmonthlyturnoverhigherthan50%are
+not profitable after trading costs. Transaction costs reduce the factor profitability and its associated
+statistical significance. For an investor, transaction costs are primarily brokerage, custody and taxes.
+Other than taxes, costs are being driven down by the increasing use of fintech, digitisation and digital-
+isation. Portfolio turnover remains an important determinant of whether a practical implementation
+is profitable.
+Unfortunately, similar studies on momentum cost/capacity do not exist for the Indian market.
+Kumar and Misra (2019) find ‘liquidity forms part of the systematic and idiosyncratic risk. Therefore,
+failure to incorporate it into portfolio formulation strategies may lead investors on NSE to take er-
+3across time, asset classes and geographies
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+roneous investment decisions’. Given these conceptual liquidity considerations, we choose to restrict
+our universe to the NIFTY100 stocks, thereby operating in the most liquid area of the market. Most
+retail trades are likely to be a small fraction of the overall daily volume traded for NIFTY100 con-
+stituents. Momentum strategies, therefore, should not suffer because of capacity constraints. Unlike
+the US, there are no publicly traded momentum exchange-traded funds (ETFs) in the Indian market.
+In theory, therefore, momentum stocks currently have little systematic demand.
+A word about long-short portfolios. These portfolios are long the preferred exposure and short
+the unwanted exposure in equal measure. For exposure to the momentum factor, the portfolio would
+buy stocks exhibiting strong positive momentum and sell stocks with strong negative momentum. In
+reality, it is far easier to buy stocks than it is to sell stocks that one does not own. The short leg is
+challenging at best and often impossible to execute. It should be no surprise that many of the factor
+ETFs listed in the US are actually long-only portfolios that are tilted toward or away from particular
+factor exposures. Long-only factor portfolios will not fully replicate the performance of long-short
+factors. Huij, Lansdorp, Blitz, and van Vliet (2014) examine the differences between long-only and
+long-short portfolios and find ‘that although a long-short approach is superior theoretically, a long-only
+approach seems to be the preferred alternative in most scenarios, after accounting for practical issues
+such as benchmark restrictions, implementation costs and factor decay’4.
+Accessing factors cheaply is impossible for most non-institutional investors in India. There are no
+ETFs offering specific factor exposure and neither do mutual funds give such targeted exposure. For a
+self-directedinvestor, anyDo-It-Yourselffactor-exposureportfoliowouldneedtobeeasytoadminister
+and cheap to execute. With the growth of discount brokers, transaction costs, like brokerage, have
+dropped significantly for all investors. Structured data is increasingly accessible at a reasonable cost.
+Retail investors can easily access and use data from financial reports and price data from exchanges
+to build and manage their investment portfolios.
+Given the constraints of short selling in India, the lack low-cost instruments that target factors,
+the low cost of brokerage and the increasingly easy access to structured data it seems appropriate,
+therefore, to examine the possibility of building a systematic long-only momentum portfolio. We look
+to build an easily understood and practically implementable strategy using ‘off-the-academic-shelf’
+measures. Our objective is to robustly examine the practical implementation of such a strategy. We
+recognize that there can be different implementation choices leading to different outcomes. We do not
+seek to optimize a strategy using data analysis and falling prey to data snooping5 and/or over-fitting.
+This paper attempts to translate factor theory into practice for the general self-directed investor
+and extends current thinking in at least three areas. First, geographically, we believe it is one of the
+early in-depth exploration of build practical momentum strategies within the Indian context. Second,
+quantitative, systematic strategies are still largely of interest amongst institutional investors. This
+paper is one of the early efforts to extend factor theory to non-institutional investors. We believe
+both areas require more research and debate to raise the standards of discussion amongst and choices
+of investment for the wider investment community. Third, the paper makes an essential distinction
+between the signal for portfolio construction and the execution price for rebalancing. Traditionally,
+most studies have not made this distinction, and we are one of the early papers to explore this aspect
+within an Indian context.
+The rest of the paper is set out as follows: Section 2 outlines the sample and data we use. Section
+4See also Cazalet and Roncalli (2014)
+5Data snooping refers to statistical inference performed by a researcher after looking at the data.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+3 is the main body of the paper which has a series of subsections: Section 3.1 defines our momentum
+measure; Section 3.2 decomposes momentum returns in more detail, specifically looking into the
+effects of long-only and size of firm; Section 3.3 examines our choice of the NIFTY100 index for any
+inherent biases using Fama French Factors; Section 3.4 examines the question of overnight risk for
+our implementation; Section 3.5 examines if momentum is persistent; Section 3.6 finally, analyses the
+returns of our strategy. Section 4 concludes.
+2 Sample and Data
+All data is from Refinitiv. Price data is daily close prices for the purposes of analysis and portfolio
+construction and daily open prices for investment/rebalancing. For stocks that have been delisted, we
+rely on price data available on Refinitiv6. All returns are price returns in INR unless stated otherwise.
+Our universe is the constituents stocks of the NIFTY100 Index (NIFTY100) during the period
+December 2010 through September 2019. NIFTY100 is a diversified ≈100 stock index representing
+major sectors of the Indian economy representing the (approximately) top 100 companies7 based on
+fullmarketcapitalisationfromNIFTY500. ThisindextracksthecombinedportfoliosoftheNIFTY50
+andtheNIFTYNEXT50indicesandmeasurestheperformanceoflargemarketcapitalisationcompa-
+nies (see Nifty Indices, 2019). The NIFTY 100 Index represents about 76.8% of the free float market
+capitalization of the stocks listed on NSE as on March 29, 2019. The total traded value for the last
+six months ending March 2019 of all index constituents is approximately 66.2% of the traded value
+of all stocks on the NSE (NSE India Website). The index is re-balanced semi-annually. We use the
+NIFTY100 Index constituents every month end.
+We use survivorship-bias adjusted data from IIM, Ahmedabad’s factor database (Agarwalla, Ja-
+cob, and Varma, 2013) for our analysis. The database runs from October 1993 to September 2019. In
+our analysis of the momentum factor we use this period. However, when we analyse the strategy or
+NIFTY100, we use the period from January 2010 to September 2019.
+We compute our first portfolio using data as of close on the last day of trading in December 2010
+- the first portfolio is created at open on the first trading day in January 2011. Our last portfolio
+analysis date is the last trading day of August 2019 (portfolio created on the first trading day of
+September 2019).
+3 Analysis
+3.1 Defining Momentum
+Momentum is commonly defined as the last 12 months of returns skipping the last month8. We define
+momentum for stock i as Equation 1
+(cid:32) (cid:33)
+Pi
+ri = log closet−1 (1)
+t Pi
+closet−12
+where ri is the momentum price return for stock i for month t, P is the closing price for stock i
+t closet−1
+on the last trading day of month t−1 and Pi is the closing price for stock i on the last trading
+closet−12
+6In most cases, the data is available. On the occasional instance where data is not available, we ignore the stock
+7The NIFTY100 has 101 constituents as of end September 2019
+8Jegadeesh and Titman (1993) and many other researchers also use a skip period (ranging from a week to a month)
+to avoid issues related to bid-ask spread, price pressure and lagged reaction effects.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+day month t−12.
+FollowingJegadeeshandTitman(1993)nomenclature, 119 monthsistheformationperiod(J)and
+the holding period (K) is for 1 calendar month for the strategy. At the end of the last trading day
+of each calendar month, we rank the returns based on closing prices for all the constituent stocks of
+the NIFTY100 for the month and choose a decile portfolio of stocks with the largest returns. These
+stocks are then rebalanced at the open price of the next trading day10 (the first trading day of the
+following month).
+Wechooseatop decile portfolio. Thisiseasytoexecute. Managinga10stockportfoliorequires
+little overhead by an investor in terms of administration and management. It is, however, a concen-
+trated portfolio and may not be appropriate for all investors. Investors should choose an appropriate
+number of stocks based on their individual risk appetite and loss aversion preferences.
+We choose an equal weight portfolio. This is intuitive and convenient. Other approaches to
+portfolio construction include mean-variance optimization, market cap weights.11
+We rebalance at the market open on first trading day of every month: it is systematic and
+convenient12.
+Our approach is different from the approach taken by Agarwalla, Jacob, and Varma (2013) in the
+construction of the Fama-French factors. We flag the differences:
+• Agarwalla et al. include in their universe all firms listed on the Bombay Stock Exchange (BSE)
+coveredintheCMIEProwessdatabasebetween1991-201113withvalidpricesandmeetaliquidity
+filter. They cover a total of 6,943 firms before their filters take effect. Agarwalla et al. report
+that the median number of firms they categorize into Big14 size momentum portfolios was 136.
+• Agarwalla et al. define momentum returns, like us, at the end of month t as the 11- month re-
+turnsfromtheendofmontht−12tot−1. However, theyusetotal returns (including dividends)
+at the end of each month to calculate momentum. We use price momentum. This difference
+could affect outcomes in at least two ways. First, the portfolio selected could change month on
+month depending on the payment of dividends. Second, if the market is not efficient, dividend
+information/expectations would not be fully reflected in the current price of the stock leading
+to differences in portfolio selection. We believe that the differences are minor and therefore do
+not affect the overall results.
+Agarwalla et al. estimate monthly returns even when a stock is traded only for a part of its first
+month of trading using the available daily returns. We ignore stocks that do not have 252 days
+of trading history. It is difficult to quantify this impact, but we believe that the difference, if
+any, will be negligible.
+• Agarwalla et al. group stocks using total momentum returns into two groups:
+912-months-skip-recent-month
+10This is a pragmatic and practical execution strategy - most online brokerages allow investors to place ‘at-market’
+or ‘without limit’ overnight orders which get placed into the pre-opening session of the exchange for execution. As the
+stocks in the NIFTY100 are liquid, the execution invariably happens at the open prices.
+11We do not consider the various weighting alternatives in this paper.
+12Calendar effects have been studied in many markets. (see, for instance Ariel, 1987)
+13The factor database is updated every month and so their universe remains current.
+14FirmswereclassifiedintoBig(B)andSmall(S)basedontheirmarketcapitalizationattheendofSeptembereach
+year. See table below.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+– a Winner (W) group consisting of the top 30% by the momentum return
+– a Loser (L) group consisting of the bottom 30% by the momentum return.
+We use deciles to construct our ‘winner’ group resulting in a more concentrated portfolio. A
+priori, we would expect our more concentrated portfolio to potentially have higher volatility
+than the Agarwalla et al. factor portfolio.
+Following Fama and French (2012), Agarwalla et al. orthogonalize their momentum portfolio to
+size. They create four size and momentum portfolios - WS, WB, LB and LB - every month
+(Table 1) and define ‘big firms (B) as the top 10% by market capitalization and classified the
+remaining firms as small firms (S)’. Further, Agarwalla et al. report that ‘The Indian market
+was dominated by a large number of small firms. For instance, the market capitalization of the
+90th percentile firm was around |0.7 billion in 1997, |7 billion in 2004 and |16 billion in 2012’.
+The NIFTY100 stocks are well in excess of the 90th percentile cut-off.
+Table1: Size-MomentumPortfoliosfromAgarwallaetal.
+Momentum
+Winner Loser
+(W) (L)
+eziS Big(B) WB LB
+Small(S) WS LS
+Table 2 reports the median number of firms in the size-momentum buckets in Agarwalla et al.
+(2013). For months when the number of stocks in any bucket were less than 5 they exclude the
+relevant sub-portfolio.
+Table2: Size-MomentumPortfoliosfromAgarwallaetal.
+Momentum
+Winner Loser
+(W) (L)
+eziS Big(B) 105 31
+Small(S) 669 726
+Our portfolio drawn from NIFTY100 will lie entirely in the Big (B) category.
+3.2 Decomposing momentum within the Indian context
+The momentum factor (WML15) is calculated by Agarwalla et al. (2013) following Fama and French
+(2012) as a simple average largely free of the influence of size of the firm (Equation 2).
+(WB−LB)+(WS −LS)
+WML = (2)
+2
+Does momentum beat the market? To explore this, we can use the traditional method of exam-
+ining excess return with respect to the CAPM one-factor model; and the Fama and French (1993)
+three-factor model, which includes the market factor MKT, the size factor SMB16 and the value factor
+15Winner-Minus-Loser is also referred to as UMD Up-Minus-Down. We will follow the WML nomenclature in this
+paper.
+16Small-minus-Big
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+HML17. The WML returns are treated as those from the investor’s portfolio. We look specifically for
+the intercept : a positive intercept reflects out-performance (more traditionally, α) in equation 3 with
+the first one or three right hand-side variables included:
+WML = α+β MKT +β SMB +β HML +(cid:15) (3)
+t MKT t SMB t HML t t
+whereWML isthereturnofthemomentumfactorforperiodt,MKT istheMarketexcessreturn
+t t
+for period t over the risk free rate for period t and SMB and HML are the Small-minus-Big (size)
+and High-minus-Low (value) factors for period t respectively. Note as WML is a market-neutral
+‘portfolio’, we do not calculate excess returns. Table 3 shows the results. Specifically, there is a
+significant positive intercept (CAPM: 22.74% and FF3: 23.85% annually), and the market returns are
+poorly correlated with WML returns. Of note, WML is negatively loaded to HML: momentum is
+inversely related to value (see, for instance Asness et al., 2013). And, the R2 is expectedly low since
+WML is market neutral.
+Table3: WML: CAPMandFF3Regressions
+CAPM FF3
+Co-eff t-stat pvalue Co-eff t-stat pvalue
+Intercept 1.90 4.59 0.00 1.99 4.83 0.00
+MKT -0.16 -2.85 0.00 -0.12 -2.11 0.04
+SMB -0.02 -0.22 0.82
+HML -0.16 -2.42 0.02
+AdjustedR2 0.02 0.00 0.04 0.00
+This table shows calendar-time portfolio returns. The dependent variable is the
+monthly returns of the momentum factor WML, the explanatory variables are
+excessreturnsofmarket(MKT),size(SMB)andbook-to-market(HML)portfolios
+fromAgarwallaetal.(2013). ThesampleperiodrunsfromOct1993toSeptember
+2019. ReturnsareinINR,donotincludecurrencyhedging,andexcessreturnsare
+over the risk-free rate computed using the 91-days T-bill rate (Agarwalla et al.,
+2013). Returnsandalphasareinmonthlypercentage,stderrors,t-statisticsand
+relatedpValuesareshownnexttothecoefficientestimates.
+The cumulative returns from WML and the market portfolios (r ) are shown in Figure 1. Table
+mkt
+4 shows the descriptive statistics. The data is from Agarwalla et al. (2013). The WML monthly
+distribution has a positive skew and a better raw sharpe than the market18. The evidence for the
+momentum anomaly is clear in the Indian market.
+Figure1: MarketandWMLmonthlyreturns Table4: MonthlyReturnsMarketandWML
+Market WML
+nobs 312.0000 312.0000
+min -0.2812 -0.2605
+max 0.3576 0.3450
+mean 0.0123 0.0179
+stddev 0.0756 0.0735
+skewness -0.0362 0.1017
+kurtosis 1.8147 3.0040
+rawSharpe(ann) 0.5633 0.8456
+ThistableshowsdescriptivestatisticsofthemonthlyreturnsoftheMar-
+ketandWMLfromAgarwallaetal.(2013). Wecomputethemonthly
+returnsforWMLfromdailyreturns.
+Note: monthlyreturnsfromsurvivorship-biasadjusteddata. Thecumula-
+tivereturnsarecumulativeproductofmonthlyreturnsfromOctober1993
+toSeptember2019
+Next, we examine both axes of the size-momentum universe. Tables 5 and 6 report the descriptive
+statistics for the monthly returns for WML and its four size momentum portfolios (from Table 1 :
+WB, WS, LB and LS) to end September 2019 both from inception and past 60 months. The con-
+tribution of the Winner portfolios (long only) is evident - the returns (means), risk-adjusted returns
+(raw sharpes) are far superior to the Loser portfolios (short only). Within Winner, the size effect
+17High-minus-Low
+18Note that the market is derived from Agarwalla et al. (2013) universe rather than any public benchmark.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+is more nuanced - both WB and WS have similar raw sharpes since inception. WS is a platykurtic
+distribution with a left tail similar to the less platykurtic WB since inception. More recently (past 60
+months), WB has the higher raw sharpe and is less left-skewed than WS. The Loser portfolios are, in
+general, similartoeachother-lowermeanreturns, platykurticandlongerleft-tailsthantheirWinner
+counterparts. Over the entire period, the Loser portfolios have detracted from WML performance,
+although in the past 60 months they have been strong contributors.
+Figures 2 and 3 show the histograms of monthly returns for WML and its components. The
+left tail risks of returns from these portfolios compared to the returns of WML portfolio are clearly
+visible. These left tail risks have been called “momentum crashes” by Daniel and Moskowitz (2016).
+TheLoser portfolios,irrespectiveofsize,havelongerlefttailsthantheirWinner counterparts. Within
+the Indian equities context, going short gives lower mean returns and has greater left-tail risk.
+Table5:MonthlyReturnsWMLandcomponents:sinceinception Table6:MonthlyReturnsWMLandcomponents:past60months
+WB WS LB LS WML WB WS LB LS WML
+nobs 312.0000 312.0000 312.0000 312.0000 312.0000 nobs 60.0000 60.0000 60.0000 60.0000 60.0000
+min -0.2983 -0.3057 -0.6014 -0.6972 -0.2605 min -0.0846 -0.1863 -0.1644 -0.1131 -0.0555
+max 0.3865 0.3601 0.3965 0.3375 0.3450 max 0.1176 0.1428 0.1901 0.1713 0.1291
+mean 0.0186 0.0200 -0.0047 -0.0034 0.0179 mean 0.0148 0.0130 0.0106 0.0094 0.0246
+stddev 0.0859 0.0931 0.1159 0.1134 0.0735 stddev 0.0460 0.0675 0.0684 0.0694 0.0389
+skewness 0.3042 0.0018 -0.5561 -1.0154 0.1017 skewness 0.0052 -0.4884 0.2941 0.3947 0.4174
+kurtosis 2.7433 0.9851 3.2323 4.7533 3.0040 kurtosis -0.4357 0.4244 0.3179 -0.5600 0.2836
+rawSharpe(ann) 0.7512 0.7448 -0.1417 -0.1045 0.8456 rawSharpe(ann) 1.1149 0.6658 0.5366 0.4666 2.1891
+ThistableshowsdescriptivestatisticsofthecomponentsofWML. Weconvertdailyre- ThistableshowsdescriptivestatisticsofthecomponentsofWML.Weconvertdaily
+turnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusing returnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthly
+cumulativeproducttobuildthetimeseries.TheLBandLSsignshavebeeninverted. seriesusingcumulativeproducttobuildthetimeseries. TheLBandLSsignshave
+beeninverted.
+To examine whether the distributions are similar, we run Kolmogorov-Smirnov (K-S) two sample
+tests on the monthly return series since inception for each pair of WML and its components. Tables
+7 and 8 shows the cross-tables of the Kolmogorov-Smirnov statistics and their associated p-values19
+for the pair-wise tests for the full time period. For WML and WB, the p-value is significant and
+therefore implies that the two distributions are similar. The two winner portfolios differentiated by
+size (WB and WS), have different return distributions given their p-value. The skewness and kurtosis
+of the two distributions are significantly different. Ceterius paribus, having a mix of WB and WS
+wouldbepreferredtohavingonlyWB inaportfoliogiventhediversificationbenefits. However, inthe
+Indian context, small market cap firms have very different risk profiles than large cap firms including
+liquidity/capacity and reporting and governance standards. These considerations, often difficult to
+quantify, are important in portfolio construction decisions. In our choice of the NIFTY100 as the
+universe, we do not include any Small companies by construction.
+Table 7: Kolmogorov-Smirnov statistic D for WML and Table 8: p-value of Kolmogorov-Smirnov statistic D for
+components: sinceinception WMLandcomponents: sinceinception
+WB WS LB LS WML WB WS LB LS WML
+WB 0.0000 0.0994 0.1891 0.1538 0.0513 WB 1.0000 0.0919 0.0000 0.0012 0.8074
+WS 0.0994 0.0000 0.1410 0.1314 0.1154 WS 0.0919 1.0000 0.0040 0.0091 0.0313
+LB 0.1891 0.1410 0.0000 0.0641 0.2019 LB 0.0000 0.0040 1.0000 0.5438 0.0000
+LS 0.1538 0.1314 0.0641 0.0000 0.1795 LS 0.0012 0.0091 0.5438 1.0000 0.0001
+WML 0.0513 0.1154 0.2019 0.1795 0.0000 WML 0.8074 0.0313 0.0000 0.0001 1.0000
+ThistableshowstheDn,mwherenandmareapairfromWB, Thistableshowsthep-valuefortheKSstatisticDn,m wheren
+WS,LB,LS,andWML andmareapairfromWB,WS,LB,LS,andWML
+Both the Loser portfolios, LB and LS, have significant p-values indicating that both return
+distributions are similar to each other and different to WML return distribution. Figure 2 shows the
+monthly returns distributions from inception graphically.
+(cid:113)
+19Forlargesamplesizes,theapproximatecriticalvalueD isgivenbyD =c(α) n+m wherec(α)isthecoefficient
+α α nm
+from the KS Two Sample table and n, m are sample sizes (n = m = 312). c(α) at 1% = 1.63 and at 5% = 1.36, so the
+D will be 0.1305 (1%) or 0.1089 (5%)
+α
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Figure2: DistributionofMonthlyReturns:WMLandcomponents: sinceinception
+Weconvertdailyreturnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusingcumulativeproducttobuildthetime
+series
+Next,toexaminethemorerecentperiod,wedothesameanalysisforthepast60months20 inTables
+9 and 10. This is a more noisy period as evident from Figure 3. All of the components have longer left
+tails and are more playtkurtic than historical averages. With this context, key points of note: First,
+WS-WML and WS-WB have significant p-values. However, WB and WML do not. Therefore, the
+logical conclusion that all three return distributions are similar fails21. WS-WB have a higher K-S
+p-value indicating that these two return distributions are closer. In the face of this conflicting result,
+we conclude that WB and WS have similar distributions but neither of the two is similar to WML.
+LS and LB continue to show similar distributions. The Loser portfolio has contributed to WML
+performance in this period. In both the longer sample and the truncated sample, LB and LS return
+distributionsaresimilarandremaindifferentfromWMLreturndistribution. Thelonglefttailsofthe
+loser portfolios remain irrespective of regime. The Winner portfolio is a significant driver of WML,
+while the Loser portfolio in general is a detractor, with occasional high contribution to WML.
+Table 9: Kolmogorov-Smirnov statistic D for WML and Table 10: p-value of Kolmogorov-Smirnov statistic D for
+components: past60months WMLandcomponents: past60months
+WB WS LB LS WML WB WS LB LS WML
+WB 0.0000 0.1167 0.1500 0.2000 0.2000 WB 1.0000 0.8133 0.5130 0.1821 0.1821
+WS 0.1167 0.0000 0.1333 0.1667 0.1667 WS 0.8133 1.0000 0.6648 0.3777 0.3777
+LB 0.1500 0.1333 0.0000 0.1000 0.2833 LB 0.5130 0.6648 1.0000 0.9284 0.0158
+LS 0.2000 0.1667 0.1000 0.0000 0.3000 LS 0.1821 0.3777 0.9284 1.0000 0.0087
+WML 0.2000 0.1667 0.2833 0.3000 0.0000 WML 0.1821 0.3777 0.0158 0.0087 1.0000
+ThistableshowstheDn,mwherenandmareapairfromWB, Thistableshowsthep-valuefortheKSstatisticDn,m wheren
+WS,LB,LS,andWML andmareapairfromWB,WS,LB,LS,andWML
+Figure3: DistributionofMonthlyReturns:WMLandcomponents: past60months
+Weconvertdailyreturnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusingcumulativeproducttobuildthetime
+series
+To explore the interactions further, we break down WML by Size (B and S) and then Momentum
+(W and L). For Size, Equation 2 can be re-written as :
+1 1
+WML = WML + WML (4)
+Big Small
+2 2
+20Note p-values change to 0.2976 (1%) and 0.2483 (5%), as the sample size is now 60
+21The logical statement : If A=B and B =C, then A=C.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+where WML and WML denote the returns from momentum portfolios created by size - Big
+Big Small
+and Small - respectively. Figure 4 shows the cumulative monthly returns since inception. While both
+Big and Small portfolios contribute to WML, Small clearly contributes significantly more across
+the entire period. This is line with evidence that Small firms demonstrate higher momentum effects.
+India being a growth economy, this result seems intuitive and aligned to the Size factor premium
+evidenced in the Indian market (see, for instance, Connor and Sehgal, 2001). Over the past 60 months
+(Figure 5), however, the contribution weights of Big and Small becomes more even. In 2019, Big
+contributes more to WML than Small. This, we hypothesise, is a result of the increased headwinds
+in the Indian economy - slowdown of economy and credit - leading to a flight to quality (the large cap,
+well established firms).
+Figure4: IndexedWML,WMLBig andWML Small sinceincep-Figure 5: Indexed WML, WMLBig and WML Small past 60
+tion months
+Note: monthlyreturnsfromsurvivorship-biasadjusteddata. ThecumulativereturnsarecumulativeproductofmonthlyreturnsfromtoSeptember
+2019. ForWBweconvertdailyreturnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusingcumulativeproductto
+buildthetimeseries
+Next, we look at Momentum. What is the contribution to WML from the Long (Winner) or
+Short (Loser) legs? We can re-write Equation 2 as:
+(WB+WS)−(LB+LS)
+WML =
+2
+1 1
+= Winner− Loser (5)
+2 2
+where Winner, the winners, reflect the returns of the longs and Loser, the losers, reflects the returns
+of the shorts. Figures 6 and 7 graphically illustrate cumulative returns for W and L across the two
+periods. Since, inception Winner has dominated. This is similar to results in other markets (see Huij
+et al., 2014; Griffin et al., 2004, amongst others). India’s growth bias is well reflected in this data - in
+a growing economy, buying growth has better returns than going short growth. Since 2018, however,
+Loser has contributed more to WML than historical mean contributions. This reflects, we argue, the
+currentconditionsoftheeconomyandtheequitymarket, withlargeswingstothedownside. Oncethe
+growth trajectory is re-established, the contributions from Winner and Loser will, we posit, revert
+to mean.
+Next,weisolatethecumulativereturnoftheSizecomponentsofWinnerinFigures8and9toshow
+their contribution (Winner and Winner respectively). Both WB and WS do contribute to
+Big Small
+WML. Aswesaidbefore, thereisclearlymerittoaddingSmall intoamomentumstrategydepending
+on the risk appetite/tolerance of the investor. Since 2018, WS has been a net detractor to WML’s
+performance - reflecting the flight to quality in the face of the recent economic conditions.
+HavingunderstoodinmoredetailthedriversforWML,importantly,givenourconstructionchoice
+of the NIFTY100 as our universe, does WB also outperform the market? Figure 10 and 11 shows
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Figure6: IndexedWML,W andLsinceinception Figure7: IndexedWML,W andLpast60months
+Note: monthlyreturnsfromsurvivorship-biasadjusteddata. ThecumulativereturnsarecumulativeproductofmonthlyreturnsfromtoSeptember
+2019. ForWBweconvertdailyreturnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusingcumulativeproductto
+buildthetimeseries
+Figure8: IndexedWML,WB andWS sinceinception Figure9: IndexedWML,WB andWS past60months
+Note: monthlyreturnsfromsurvivorship-biasadjusteddata. ThecumulativereturnsarecumulativeproductofmonthlyreturnsfromtoSeptember
+2019. ForWBweconvertdailyreturnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusingcumulativeproductto
+buildthetimeseries
+the trend of the cumulative returns of both return distributions. More formally, we examine excess
+returns of WB portfolio and look at the intercept (α) with respect to the CAPM one-factor model;
+the Fama and French (1993) three-factor model (FF3), which includes MKT, SMB and HML; and
+extending the Fama-French three-factor modelto include WML (FF4) (Jegadeesh andTitman (1993),
+Carhart (1997), Fama and French (2011)). The intercepts are from the regression equation 6 with the
+first one, three or four right hand-side variables included:
+[WB −RF ] = α+β MKT +β SMB +β HML +β WML +(cid:15) (6)
+t t MKT t SMB t HML t WML t t
+whereWB isthereturnoftheWB portfolioforperiodt,MKT istheMarketexcessreturnforperiod
+t t
+t, RF is the risk free rate for period t and SMB, HML and WML the size, value and momentum
+t
+factors for period t. Ss WB has market exposure, we calculate excess returns. Table 11 shows the
+results. Specifically, there is a significant positive alpha (CAPM: 7.34% and FF3: 7.75% annually)
+against CAPM and FF3. The α is less than that of WML as expected - but WB outperforms the
+market. WB is also negatively loaded to HML, though weaker than the market-neutral WML.
+Importantly, WB has a positive and significant coefficient to WML - the positive tilt to momentum
+is clear and evident with the WML. Further, the adjusted R2 with FF4 shows a significant jump
+from FF3 - the relationship between WML and WB is clear.
+As our universe is limited to Big and we are long only, the contributions, mainly from WS and
+occasionally from Loser components are missing. By excluding WS, a significant source of WML
+performance is being ignored. However, we argue, the WML returns are theoretical and will not
+survive a practical implementation. First, Loser portfolios are not possible to execute for the general
+investor. So the contribution will not translate in real portfolios. Executing shorts through futures is
+restrictive (as only a few stocks, mainly Big have liquid futures) and the costs will reduce the returns.
+Second, Winner returns are likely to not survive liquidity related slippages. Therefore, realized
+Small
+Winner and Loser portfolio returns are likely to be significantly different from what Agarwalla
+Small
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Table11: WB: CAPM,FF3,FF4Regressions
+CAPM FF3 FF4
+Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue
+Intercept 0.61 2.97 0.00 0.65 3.14 0.00 -0.17 -1.33 0.18
+MKT 1.03 38.09 0.00 1.05 37.45 0.00 1.10 64.76 0.00
+SMB -0.01 -0.13 0.90 0.00 0.05 0.96
+HML -0.06 -1.81 0.07 0.01 0.24 0.81
+WML 0.40 23.44 0.00
+AdjustedR2 0.82 0.00 0.82 0.00 0.94 0.00
+Thistableshowscalendar-timeportfolioreturns. ThedependentvariableisthemonthlyexcessreturnsoftheWB
+portfolio,theexplanatoryvariablesareexcessreturnsofmarket(MKT),size(SMB)andbook-to-market(HML)
+portfoliosfromAgarwallaetal.(2013). ThesampleperiodrunsfromOct1993toSeptember2019. Returnsarein
+INR,donotincludecurrencyhedging,andexcessreturnsareovertherisk-freeratecomputedusingthe91-days
+T-bill rate (Agarwalla et al., 2013). Returns and alphas are in monthly percentage, std errors, t-statistics and
+relatedpValuesareshownnexttothecoefficientestimates.
+et al. calculate. Winner portfolio returns are more translatable into a real strategy given the
+Big
+liquidity associated with the stocks. Importantly, Winner outperforming the market shows that a
+Big
+momentumtiltcouldformthebasisforaninvestortotranslateanon-investablefactortoaninvestable
+strategy and gain exposure to the momentum factor.
+Figure10: Market,WML,WBMonthlyReturnsFromInceptionFigure11: Market,WML,WBMonthlyReturnspast60months
+Note: monthlyreturnsfromsurvivorship-biasadjusteddata. ThecumulativereturnsarecumulativeproductofmonthlyreturnsfromtoSeptember
+2019. ForWBweconvertdailyreturnsfromsurvivorship-biasadjusteddata(Agarwallaetal.,2013)toamonthlyseriesusingcumulativeproductto
+buildthetimeseries
+One final point: the correlation between WB and WML. Figure 12 shows the rolling 252 day
+correlations between the daily returns of the two. Note the rather interesting cyclical trend of this
+correlation. What can be seen from the chart is the impact the composite WS and Loser portfolios
+have to WML. The correlation breaks down or reverses as we get into certain economic regimes when
+the returns of the short side increase (economic stress) or returns from the more nimble WS (parts
+of an economic expansion) contribute significantly to WML. More work is needed to understand this
+trend better.
+Figure12: 252dayRollingCorrelationsbetweenWMLandWB
+Inconclusion,decomposingWMLintothelongsandshortsandbysizehasshownthattheWinner
+portfolio (the long portfolio) contributes more than the Loser portfolio (the shorts). Theoretically,
+theWinner portfoliocontributessignificantlyalthoughthecontributioninrecentyearshasfallen
+Small
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+fromlongtermaverages. However, thesereturnsareunlikelytosurvivearealimplementationbecause
+of liquidity slippages. A long only momentum tilt should be attractive to an investor seeking to
+outperform the market over time. Our choice of NIFTY100 as the universe for constructing a long-
+only momentum tilt portfolio seems appropriate.
+3.3 NIFTY100 and Market
+Agarwalla et al. (2013) calculate market returns from a significantly larger base of stocks than the
+NIFTY100. We need to ensure that the choice of our universe does not have an inherent momentum
+bias. To explore this, we examine excess return with respect to the CAPM, FF3 and FF4 models.
+The alphas are the intercepts from the regression (Equation 7) with the first one, three or four right-
+hand-side variables included:
+[r −RF ] = α+β MKT +β SMB +β HML +β WML +(cid:15) (7)
+NIFTY100t t MKT t SMB t HML t WML t t
+where r is the monthly return of NIFTY100 for period t, RF the risk-free rate for period t,
+NIFTY100t t
+MKT is the Market excess returns and SMB , HML and WML are the respective factor returns
+t t t t
+for period t, α, the intercept and β being the respective betas for period t. For the various factors in
+Equation 7, we use the dataset from Agarwalla et al. (2013)22. Our analysis period is January 2011
+through September 2019. Table 12 shows the results.
+Table12: NIFTY100: CAPM,FF3ANDFF4Regressions
+CAPM FF3 FF4
+Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue
+Intercept -0.08 -0.65 0.52 -0.10 -1.14 0.26 -0.13 -1.25 0.22
+MKT 0.98 37.59 0.00 1.03 43.73 0.00 1.04 41.04 0.00
+SMB -0.15 -5.84 0.00 -0.15 -5.84 0.00
+HML -0.09 -4.71 0.00 -0.09 -4.53 0.00
+WML 0.01 0.52 0.60
+AdjustedR2 0.95 0.00 0.97 0.00 0.97 0.00
+Thistableshowsmonthlyreturns. ThedependentvariableisthemonthlyexcessreturnsofNIFTY100usingclosing
+prices. Theexplanatoryvariablesarethereturnsofthemarket(MKT),size(SMB),book-to-market(HML),and
+momentum(WML)portfoliosfromAgarwallaetal.(2013). ThesampleperiodrunsfromJan2011toSeptember
+2019. ReturnsareinINR,donotincludecurrencyhedging,andexcessreturnsareovertherisk-freeratecomputed
+usingthe91-daysT-billrate(Agarwallaetal.,2013). Returnsandalphasareinmonthlypercentage,stderrors,
+t-statisticsandrelatedpValuesareshownnexttothecoefficientestimates.
+The CAPM β of the NIFTY100 is 0.981. We expect the β would be slightly different from 1 given
+the differences in the universes so this minor variation is unsurprising. Also expectedly the adjusted
+R2 increases between the CAPM and FF3 regressions. The Adjusted R2 are high - the market cap
+weighted NIFTY100 is a good reflection of the broader market. More interesting are the loadings of
+the factors. Both SMB and HML are significant and negatively loaded. As the NIFTY100 comprises
+of the largest firms in the market, the negative loading is what we would expect. The NIFTY100
+constituents are not chosen based on value - just on market cap. The negative loading, the opposite
+of value, implies that larger firms are more expensive and have higher Market to Book multiples23.
+Finally, and most importantly for our purposes, one cannot get exposure to momentum simply by
+taking exposure to the NIFTY100 - the WML coefficient is small and not statistically significant. In
+addition, FF4 does not improve the R2 further from FF3. Our choice of universe as the NIFTY100
+does not create any systemic bias of momentum.
+22There are issues in the use of non-U.S factor datasets. See Bru¨ckner et al. (2015). While we recognize that caution
+should be applied, we believe that it is important to use the data sets to explore the use of factor theory in non-US
+markets.
+23Thelongtailofratherilliquidsmallcapscouldbethereasonforthisloading-butwewillnotformallyseekareason
+in this paper.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+3.4 Overnight Risk - does our execution strategy make a difference to expected
+returns
+Traditionally, the calculation of factors ignores the fact that all stock exchanges allow trading only for
+a limited number of hours and generally choose closing prices for the calculations. This has immediate
+real world issues : an investor cannot use the closing prices to analyse the universe and simultane-
+ously make the investment. Closing prices are the last traded price before the market closes, and the
+probability of being the last trade is very low. While the skip-month deals with the signal and execu-
+tion challenge, we believe that a more pragmatic option is to use the closing prices for the portfolio
+construction, and use open prices for execution24.
+Using closing prices for portfolio construction and opening prices for execution raises the issue of
+‘overnight’ risk : open prices are not the same as the closing prices of the previous trading day. With
+many corporate announcements done after the stock exchange is closed and an increasing number of
+firms with businesses that are transnational, the ‘overnight period’25 is a source of price jump risk.
+At the open of a new trading day, the ‘overnight’ information is reflected in the opening price for the
+stock. Oldfield and Rogalski (1980) developed the hypothesis that the return distributions for trading
+andnon-tradingperiodswereindeeddistinct. HongandWang(2000)buildamodelthatdemonstrates
+that ‘open-to-open returns are more volatile than close-to-close returns and intraday trading volume is
+U-shaped’ reflecting empirical evidence. Liu and Tse (2016) show ‘overnight returns of US exchange-
+traded index funds and most international index futures are significantly positive, while returns during
+trading hours are negative’. Ahoniemi and Lanne (2013) examine a number of solutions to deal with
+the volatility of overnight returns.
+Open prices are usually determined by the pre-open session where an ‘equilibrium’ price becomes
+theofficialopenprice. Intheeventthatthereisnopricediscoveryinthepre-opensession,thepricefor
+the first trade in the normal market serves as the opening price. For our analysis, we will use the data
+from the NIFTY100 index rather than averaging the prices of individual stocks. We do this to illus-
+tratetheprincipleandoutlinetheframework for analysis. Ananalysisforindividualstockstoidentify
+potential stock-specific idiosyncrasies may need to be incorporated in a more detailed implementation.
+The NIFTY100 closing prices are calculated by taking the last half an hour weighted average clos-
+ing prices of the constituents of the index. At open, NIFTY100 opening prices are calculated from
+the opening prices of the constituents of the index. It is possible, therefore, for stale prices to be part
+of the calculation of both the open and close prices for the index.
+The impact of execution using open prices of the next trading day could be modelled as Equation
+8
+(cid:32) (cid:33)
+Pricei
+ri = log open tˆ
+t Pricei
+closet−1
+(cid:32) (cid:33)
+= log
+Pricei
+closet ×
+Pricei
+open tˆ (8)
+Pricei Pricei
+closet−1 closet
+(cid:16) (cid:17)
+= log (cid:0) ri (cid:1) +log ri
+close:t,t−1 open
+tˆ
+,closet
+where ri is the log return for stock i at period t, ri is the log return for stock i using the
+t close:t,t−1
+24Bystayingwithaliquidlargecapuniverse,weavoidtheissueofliquidityconstraintsandslippagestoalargeextent.
+25This includes weekends and public holidays when exchanges are closed
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+closing prices between periods t and t−1, and ri is the log ‘return’ arising from executing
+open
+tˆ
+,closet
+the portfolio actions at the open price on the next trading day (tˆ) after running the analysis on t.
+This stylized model will help us in exploring the question ‘what is the opportunity loss (or gain) by
+executing at open on the next trading day’. To answer the question, we first need to explore whether
+the distribution of daily returns using closing prices is the same as the distribution of returns using
+opening prices. If the distributions are indeed the same, execution at open would not be systemically
+different from executing at close. Returns are defined as log returns (Equation 9):
+(cid:18) Pi (cid:19)
+ri = log t (9)
+t Pi
+t−1
+where, ri is the return for stock i for period t and P is the relevant price.
+t
+Figures 13 and 14 show the shape of the two distributions and the associated descriptive statistics
+respectively. Thep-valuefortheKolmogorov-Smirnov(K-S)testontwosamplesis26.30%, indicating
+that the return distributions are identical. This is important : statistically the underlying distribution
+of returns between returns using day close and returns using day open are similar. So constructing
+the portfolio using day close and executing rebalancing/investment at next day open prices should not
+materially affect the returns of the portfolio just because of the choice of execution price.
+Figure13: DistributionofdailyreturnsusingOpen,ClosePrices Figure14: DescriptiveStatisticsforDistributionofDaily
+Returns
+Close Open
+min -0.1264 -0.1408
+max 0.1594 0.1100
+mean(%) 0.0447 0.0446
+stddev(%) 1.3906 1.4709
+skewness -0.1037 -0.4695
+kurtosis 10.6211 8.2297
+This table shows descriptive statistics of the log daily returns
+usingCloseandOpenPricesoftheNIFTY100.
+Next, we turn to the distribution of overnight gap. We define a log-return distribution between the
+close price (C) of stock i on period t and the open price (O) of i on the next trading day tˆ(Equation
+10):
+(cid:18) (cid:19)
+O
+ri = log tˆi (10)
+tˆ Ci
+t
+By definition, a positive return implies an opportunity loss for the investor since the entry price
+was higher than the signal price. Figures 15 and 16 show the shape of the distributions and the
+associated descriptive statistics respectively.
+Figure15: DistributionofovernightreturnsusingCloseandOpen Figure16: DescriptiveStatisticsforDistribu-
+(nextday)Prices tionofOvernightReturns
+Overnight
+min -0.0579
+max 0.0953
+mean(%) 0.1140
+stddev(%) 0.6618
+skewness -0.3089
+kurtosis 21.6555
+This table shows descriptive statistics of the log
+daily returns using Close price on day t and Open
+PricesonthenexttradingdayoftheNIFTY100.
+Is the overnight distribution normally distributed? Figure 16 does not seem to indicate so - the
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+distribution is leptokurtic. This is intuitively what one would expect - news flow overnight will, on
+occasion, move prices significantly. The quantile on quantile plot (Figure 17) shows this visually.
+Figure17: QQPlotforreturnsusingCloseandOpen(nextday)Prices
+We run a series of statistical tests to check whether the distribution is normal : Shapiro-Wilk,
+Kolmogorov–Smirnov, Anderson-Darling, and D’Agostino’s K2. All indicate the same outcome : the
+distribution is not normal (Table 13). The leptokurtic distribution does have a positive mean - there
+is a bias for open prices to be higher than closing prices. However, an investor can get whipsawed
+by the occasional large loss. A quantitative strategy using open prices for investment/rebalancing
+executions is potentially exposed to increased volatility while having a small bias over a theoretical
+(andimpractical)executionstrategythatusesclosepricesasbothsignalandportfolioexecutionprice.
+Table13: OutcomesofTestsforNormalDistribution
+nobs stat SigLevel pvalue remarks
+Test
+Shapiro-Wilk 3482 0.83 0.00 SampledoesnotlookGaussian(rejectH0)
+Kolmogorov–Smirnov 3482 0.83 0.00 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 3482 122.23 15.00 0.57 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 3482 122.23 10.00 0.66 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 3482 122.23 5.00 0.79 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 3482 122.23 2.50 0.92 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 3482 122.23 1.00 1.09 SampledoesnotlookGaussian(rejectH0)
+D’Agostino’sKˆ2 3482 944.15 0.00 SampledoesnotlookGaussian(rejectH0)
+ThistableshowssummaryoutcomesofstatisticalteststocheckwhetherthedistributionofthelogdailyreturnsusingClose
+priceondaytandOpenPricesonthenexttradingdayoftheNIFTY100arenormallydistributed.
+Does the overnight risk increase at month-ends? There is evidence of seasonal anomalies (see Ariel
+(1987), Thaler (1987), Lakonishok and Smidt (1988) amongst others). We run a similar analysis as
+above for the overnight gaps on the last trading day of a month (Figures 18 and 19).
+Figure18: DistributionofovernightreturnsusingCloseandOpen Figure19: DescriptiveStatisticsforDistribu-
+(nextday)Pricesatmonth-end tionofOvernightReturnsatmonth-end
+Overnight
+min -0.0284
+max 0.0368
+mean(%) 0.2084
+stddev(%) 0.6371
+skewness 0.3555
+kurtosis 8.6297
+This table shows descriptive statistics of the log
+daily returns using Close price on month-end t
+and Open Prices on the next trading day of the
+NIFTY100.
+This sub-set does seem to have different distribution characteristics than the full sample. The
+two sample K-S test p-value of 0.2133 statistically rejects the null hypothesis of similar distributions
+between the overnight gap at month-end with the broader daily overnight gap26. Our choice of using
+26The number of observations is different for the two series. nobs = 3482 and nobs = 170 which gives
+daily monthend
+0.1068 at the critical value for 5% significance level.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+month-ends does have a specific impact on the returns of the strategy. The series of tests to check for
+normal distribution also rejects the hypothesis of a normal distribution of returns for the overnight
+gap at month end (Table 14).
+Table14: OutcomesofTestsforNormalDistributionforovernightriskatmonth-end
+nobs stat SigLevel pvalue remarks
+Test
+Shapiro-Wilk 170 0.86 0.00 SampledoesnotlookGaussian(rejectH0)
+Kolmogorov–Smirnov 170 0.86 0.00 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 170 5.57 15.00 0.56 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 170 5.57 10.00 0.64 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 170 5.57 5.00 0.77 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 170 5.57 2.50 0.90 SampledoesnotlookGaussian(rejectH0)
+Anderson-Darling 170 5.57 1.00 1.07 SampledoesnotlookGaussian(rejectH0)
+D’Agostino’sKˆ2 170 42.33 0.00 SampledoesnotlookGaussian(rejectH0)
+ThistableshowssummaryoutcomesofstatisticalteststocheckwhetherthedistributionofthelogdailyreturnsusingClose
+priceondaytandOpenPricesonthenexttradingdayoftheNIFTY100arenormallydistributed.
+For the specific period under study, we estimate that the month-end overnight risk would make a
+small but measurable difference to the return of the portfolio. Crudely, the risk bias could translate
+into an opportunity lost for the investor of around 3 bps per year27. Further, the distribution of
+month-end gap is right-skewed. However, for all practical purposes, the impact of the overnight gap
+is small. Therefore, the choice of execution prices is both practical and does not make a material
+difference to the realized returns of an investable momentum strategy. Our analysis also shows that
+investors can execute systematic strategies using closing prices of one day and execute at open on
+the next day, subject to capacity. Other solutions like averaging prices for small durations during the
+trading day are also possible but these give rise to execution uncertainties.
+3.5 Is Momentum Persistent?
+Having shown that a long only portfolio of large-cap stocks does demonstrate momentum premium,
+the NIFTY100 does not have an inherent momentum bias and executing rebalancing at the opening
+priceofthefirsttradingdayofthefollowingmonthdoesnotreducereturnsinanymeaningfulmanner,
+we turn to evaluating whether momentum is persistent i.e. by selecting stocks that have momentum
+in the recent past, are we successfully selecting stocks that persist inthe same direction for the future?
+JegadeeshandTitman(1993)hadshownthatmomentumpersistsinthenearterm. Beyond12months,
+theperformancedissipates. Examiningpersistenceisimportanttodeterminepossibleholdingperiods.
+Our strategy is a top decile of momentum price winners chosen from the NIFTY100 constituents
+usinga12-month-skip-most-recentmonthusingclosepricesofthelasttradingdayofacalendarmonth,
+executedontheopenpricesofthefirsttradingdayofthefollowingmonth. Toexaminethepersistence
+of momentum from this strategy, we build two portfolios every month using our strategy: an equally
+weighted Winner portfolio consisting of constituent stocks with the highest momentum score, and an
+equally weighted Loser portfolio consisting of constituent stocks with the lowest momentum scores for
+theperiod. Astheseportfoliosarethetopandbottomdeciles,weassignascoreof1(10)foreachofthe
+stocksinthewinner(loser)portfolio. Themeanscoresfortheportfolios, byconstruction, are1and10
+at inception. We then compute the average mean momentum score for this portfolio from time of the
+portfolioformation(timet)andineachofthesubsequent12months(timest+1,t+2,t+3,... ,t+12).
+Momentum scores by construction vary monotonically between the two portfolios at the time of
+portfolio formation. We use the mean scores as a proxy for persistence. The average scores trace how
+the portfolios track momentum over time. If momentum dissipates for our winner portfolio, its mean
+27the mean overnight gap at month end × 12.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+score will increase from 1 over time as the individual stocks fall from top decile. If momentum holds,
+the mean score will stay around 1 as stocks remain in the top decile. Table 15 shows that, on average,
+and subject to survival of a stock, momentum does persist in the near term but dissipates over time.
+Table15: PersistenceofMomentum
+Winner Loser W-L W-L W-L
+Portfolio Portfolio t-stat p-val
+t 1.000 10.000 -9.000 0.000
+t+1 1.450 9.609 -8.159 -190.589 0.000
+t+2 1.765 9.337 -7.572 -85.146 0.000
+t+3 2.064 9.024 -6.960 -51.156 0.000
+t+4 2.383 8.661 -6.278 -31.105 0.000
+t+5 2.707 8.286 -5.579 -23.380 0.000
+t+6 3.025 7.910 -4.885 -16.870 0.000
+t+7 3.375 7.505 -4.130 -13.088 0.000
+t+8 3.755 7.067 -3.312 -9.286 0.000
+t+9 4.103 6.672 -2.569 -6.942 0.000
+t+10 4.494 6.299 -1.805 -4.349 0.000
+t+11 4.860 5.900 -1.039 -2.332 0.020
+t+12 4.997 5.828 -0.831 -1.676 0.094
+Thistableshowsaveragemomentumscores. Eachcalendarmonth,constituentstocksarerankedinascendingorderonthebasisoftheir
+momentumscore. Therankedstocksareassignedtotwoportfolios: aWinnerportfolioconsistingofthetoprankedstocksbymomentum,
+aLoserportfolioconsistingofthebottomrankedstocks. Thistablereportseachportfolio’squalityscoreatportfolioformation(datet)
+uptothesubsequent12months(datet+12months). Wereportthetimeseriesaverageoftheequal-weightedcross-sectionalmeans. The
+sampleperiodrunsfromfromJan2011toSep2019. Standarderrorsareadjustedforheteroskedasticityandautocorrelationwithalag
+lengthofequivalentto50%oftheperiod(NeweyandWest(1987). Soatt+6,thelagis3andfort+12itis6.).
+Subject to survival, winner portfolios at portfolio formation keep losing their momentum ‘gains’
+and loser portfolios recover their momentum relatively over the subsequent months. In the near term,
+the evidence for separation is clear. By the end of the year, however, there is little to separate the
+original winners and losers. Statistically, the difference by t+12 is not significant at a 5% level.
+Our results are similar to Jegadeesh and Titman (1993). We believe that this reflects the be-
+havioural hypothesis of investors over-reacting to information (Bondt and Thaler, 1985, 1987) and
+their near-term overconfidence (Daniel et al., 1998). The data shows a loss (gain) of one decile for
+winner (loser) portfolios every passing quarter. This trend is a proxy, we argue, of the evolving reac-
+tion of investors to the newsflow over time. In conclusion, momentum does persist in the near
+term, and dissipates beyond 12 months28 Investors are well advised to review their portfolios
+frequently so that inherent biases are addressed.
+3.6 Analysis of Momentum Returns
+We finally turn to examining the returns of our long only monthly rebalanced strategy. As we did in
+analyzing the NIFTY100, we examine excess returns of our strategy with respect to the CAPM, FF3
+and FF4. The alphas are the intercepts from the regression (Equation 11) with the first one, three or
+four right-hand-side variables included:
+r = α+β MKT +β SMB +β HML +β WML+(cid:15) (11)
+t MKT t SMB t HML t WML t
+where r is the monthly excess portfolio return over the risk-free rate of the portfolio.
+t
+We start by first exploring the difference between the Winner and Loser portfolio. Table 16 shows
+the results. The results show a sharp difference in outcomes for the two portfolios. The Winner port-
+folio has significantly higher raw excess excess returns, CAPM and FF3 Alphas. FF4 alphas are not
+significant for both portfolios. The Winner portfolio has a significantly lower beta and significantly
+higher Information Ratio and raw sharpe. The Winner Portfolio has a moderate FF4 Adjusted R2
+indicating that FF4 cannot fully explain the excess returns of our Winner portfolio.
+28For a portfolio with a 1 month hold and a look back period of 12-skip-1 month.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Table16: ReturnsofMomentum: WinnerandLoserPortfolios
+LoserPortfolio WinnerPortfolio
+Co-eff stderr t-stat pvalue Co-eff stderr t-stat pvalue
+ExcessReturn -0.85 -0.99 0.93 2.02
+CAPMAlpha -1.21 0.47 -2.55 0.01 0.75 0.30 2.50 0.01
+FF3FactorAlpha -1.07 0.47 -2.28 0.02 0.80 0.30 2.64 0.01
+FF4FactorAlpha 0.18 0.40 0.45 0.65 0.20 0.29 0.67 0.51
+Beta 1.62 0.80
+InformationRatio -0.38 0.88
+RawSharpe -0.00 1.08
+FF4AdjustedR2 0.82 0.00 0.66 0.00
+Thistableshowscalendar-timeportfoliomonthlyreturns. Eachcalendarmonth,theconstituentsof
+theNIFTY100indexarerankedinascendingorderonthebasisoftheirmomentumscore. Theranked
+stocksareassignedtooneoftwoportfolios-aLoserportfolioconsistingofthelowestscoringstocks
+andaWinnerportfolioconsistingofthehighestscoringstocks. Alphaistheinterceptinatimeseries
+regressionofmonthlyexcessreturn. Theexplanatoryvariablesarethereturnsofthemarket(MKT),
+size(SMB),book-to-market(HML),andmomentum(WML)portfoliosfromAgarwallaetal.(2013).
+ThesampleperiodrunsfromJan2011toSeptember2019. ReturnsareinINR,donotincludecurrency
+hedging,andexcessreturnsareovertherisk-freeratecomputedusingthe91-daysT-billrate(Agarwalla
+etal.,2013). Returnsandalphasareinmonthlypercentage,stderrors,t-statisticsandrelatedpValues
+are shown next to the coefficient estimates. Beta is the realized coefficient on the market portfolio.
+RawSharpeandInformationRatiosaremonthly. AdjustedR2iscomputedforthe4factorregression.
+We next look at the factor loadings for the Winner portfolio. Table 17 summarizes the regression
+output. First, movingfromtheonefactor, CAPM,tothefourfactor, FF4, theexplanatorypower(the
+adjusted R2) of the dependent variables increases. The Winner portfolio has a CAPM β (0.80) lower
+than the broad market or the NIFTY100 index (0.981). For CAPM and FF3, the winner portfolio has
+a positive (and significant) alpha. Note that the α is moderately higher than the intercept for the WB
+portfolio against the market. The MKT coefficient is lower for our portfolio than WB - the strategy
+has less exposure to the market. The lower-than-market beta and a positive alpha are encouraging.
+Table17: ReturnsofMomentum: WinnerPortfolio
+CAPM FF3 FF4
+Co-eff t-stat pvalue Co-eff t-stat pvalue Co-eff t-stat pvalue
+Intercept 0.75 2.50 0.01 0.80 2.64 0.01 0.20 0.67 0.51
+MKT 0.80 11.85 0.00 0.74 9.05 0.00 0.89 11.40 0.00
+SMB -0.01 -0.08 0.94 0.01 0.10 0.92
+HML 0.09 1.32 0.19 0.14 2.25 0.03
+WML 0.29 5.24 0.00
+AdjustedR2 0.58 0.00 0.57 0.00 0.66 0.00
+This table shows calendar-time portfolio monthly returns. Each calendar month, the constituents of
+theNIFTY100indexarerankedinascendingorderonthebasisoftheirmomentumscore. Thehighest
+ranked stock decile make our Winner portfolio. Alpha is the intercept in a time series regression of
+monthly excess return. The explanatory variables are the returns of the market (MKT), size (SMB),
+book-to-market (HML), and momentum (WML) portfolios from Agarwalla et al. (2013). The sample
+periodrunsfromJan2011toSeptember2019. ReturnsareinINR,donotincludecurrencyhedging,and
+excessreturnsareovertherisk-freeratecomputedusingthe91-daysT-billrate(Agarwallaetal.,2013).
+Returns and alphas are in monthly percentage, std errors, t-statistics and related p Values are shown
+nexttothecoefficientestimates.
+Factor loadings with FF3 are what we expect. The coefficients for SMB and HML are not sig-
+nificant. Our construction of the portfolio was purely on momentum and did not have size or value
+selection criteria. And the WML coefficient from the FF4 regression is both positive and statistically
+significant - a clear indication of the momentum tilt for our long-only portfolio. Recall, our universe
+(NIFTY100) does not have a momentum bias. Agarwalla et al. (2013) size and momentum portfo-
+lios are based on top and bottom 30% of stocks. Our strategy, using a decile cut-off, is a sub-set of
+their WB portfolio, and has a momentum coefficient of 0.294 - capturing a significant portion of the
+broader WB portfolio’s coefficient to momentum 0.4017.
+Our winner portfolio has a positive and significant (at 5%) loading to HML. NIFTY100 had a
+negative coefficient for this factor. Our winner portfolio seems to be biased towards selecting value
+stocks within the NIFTY100. We are not sure why this should be the case. Recall, NIFTY100 itself
+was biased towards growth. In addition, there are studies that show that there is a negative relation
+between value and momentum (for instance, see Asness et al., 2013; Cakici et al., 2016). Finally, we
+had expected a bias towards Big in SMB but the realized loading is not significant.
+We can examine the relationship between the excess returns of our winner portfolio and the excess
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+returns of the WB portfolio from Agarwalla et al. (2013) to determine how much of the WB effect the
+portfolioiscapturing. Aswehaveseen,ourNIFTY100isasubsetoftheBig(B)portfolio. Equation12
+showstheregressionweusetodeterminethesignificanceoftherelationshipbetweenthetwovariables.
+[r −RF ] = α+β [r −RF ]+(cid:15) (12)
+winnert t WB WBt t t
+where r and r are the raw returns for the winner portfolio and the WB portfolio for
+winnert WBt
+month t respectively and RF is the risk-free rate for month t. Table 18 shows the results. The
+t
+regression has a high R2 of 0.72 and the winner portfolio captures about 93.35% of WB return effect.
+This shows that the smaller NIFTY100 portfolio does capture a large part of the WB portfolio’s
+returns. By restricting our universe, we do not lose a lot of the characteristics of the larger universe.
+Pragmatically, we have simplified the execution mechanics of converting a non-investable factor index
+into an investable strategy.
+Table18: WinnerportfolioandWB portfolio
+Co-eff t-stat pvalue
+Intercept 0.298 1.204 0.231
+WB-RF 0.933 16.256 0.000
+AdjustedR2 0.719 0.000
+Thistableshowscalendar-timeportfoliomonthlyreturns. Eachcalendarmonth,theconstituentsoftheNIFTY100
+index are ranked in ascending order on the basis of their momentum score. The highest ranked stock decile make
+ourWinnerportfolio. Alphaistheinterceptinatimeseriesregressionofmonthlyexcessreturn. Theexplanatory
+variablesaretheexcessreturnsoftheWinnerBig(WB)portfoliosfromAgarwallaetal.(2013). Thesampleperiod
+runsfromJan2011toSeptember2019. ReturnsareinINR,donotincludecurrencyhedging,andexcessreturnsare
+over the risk-free rate computed using the 91-days T-bill rate (Agarwalla et al., 2013). Returns and alphas are in
+monthlypercentage,stderrors,t-statisticsandrelatedpValuesareshownnexttothecoefficientestimates.
+Having determined that a systematic long-only winner momentum strategy earns excess returns,
+has better risk adjusted return characteristics when compared to loser portfolio and that it captures
+a large component of the WB portfolio’s effects, we finally turn to examine performance of our mo-
+mentum winner portfolio against the NIFTY100. While there are listed NIFTY100 ETFs available
+for investors, these do not have the historical track record going back to January 2011. So we use the
+raw NIFTY100 index prices as our comparison benchmark.
+We compute price returns on an open-to-open basis. We ignore trading and custody costs and
+any taxes - in the current context, these costs are fairly small (many discount brokers today offer
+‘brokerage-free’ trading of stocks)29 and do not impair the overall results. We ignore dividends and,
+therefore, total returns in our calculations.
+Some comments on the costs of implementing such a strategy to determine whether there will be
+a significant deterioration after costs are in order. Total trading costs include brokerage, applicable
+taxes and potential bid-ask spreads. With the growth of strong discount brokers in India, general
+investors are able to execute trades at low or no brokerage fees. India has a range of small charges
+including taxes (Securities Transaction Tax 0.1% on purchase and sale and Goods and Service Tax
+at 18% on brokerage and transaction charges), transaction charges by the stock exchanges, SEBI
+Turnover Charges (0.00015% of the transaction value) and some taxes levied by state governments.
+These costs are slightly in excess of 0.1 bps per leg. Using a discount broker with free/low brokerage,
+then, will not reduce the performance materially. Discount brokers, generally, have better technology
+platforms than traditional brokers making it more convenient for investors to place overnight orders.
+Figures20,21and22summarisetheperformanceofthemomentumportfolioversustheNIFTY100
+29Outside, the brokerage costs, other associated costs and taxes are less than 5 bps. In comparison, ETFs tracking
+the NIFTY100 have a Total Expense Ratios between 26 and 48 bps. The cost of running a 10 stock portfolio with very
+high monthly turnover should be comparable to these costs under the current discount brokerage cost structure.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+since 1 January 2011.
+Figure20: SystematicINMomentumStrategyvsNIFTY100MonthlyPriceReturnAnalysisMonthStarttoMonthStart
+Figure 21: Systematic IN Momentum Strategy Return Analysis: Figure 22: Systematic IN Momentum Strategy Summary Statis-
+MonthStarttoMonthStart tics
+Stat TopINMonthlyMomentum ˆCNX100
+Start 2011-01-03 2011-01-03
+End 2019-09-30 2019-09-30
+Risk-freerate 0.00% 0.00%
+TotalReturn 338.90% 91.81%
+CAGR 18.44% 7.74%
+MaxDrawdown -24.59% -26.12%
+1Y 8.76% 3.76%
+3Y(ann.) 18.18% 9.83%
+5Y(ann.) 19.55% 8.10%
+SinceIncep.(ann.) 18.44% 7.74%
+DailySharpe 1.02 0.55
+DailySortino 1.68 0.93
+DailyInfoRatio 0.48 -
+CalmarRatio 0.75 0.30
+DailyMean(ann.) 19.20% 8.99%
+DailyVol(ann.) 18.84% 16.25%
+BestDay 5.39% 7.35%
+WorstDay -7.77% -5.59%
+MonthlySharpe 1.08 0.55
+MonthlySortino 2.35 1.14
+MonthlyInfoRatio 0.88 -
+MonthlyMean(ann.) 18.44% 8.67%
+MonthlyVol(ann.) 17.01% 15.62%
+BestMonth 17.62% 12.88%
+WorstMonth -11.42% -10.43%
+YearlySharpe 0.84 0.47
+YearlySortino 2.64 1.06
+YearlyInfoRatio 0.93 -
+YearlyMean 20.17% 9.10%
+YearlyVol 24.04% 19.27%
+BestYear 53.52% 32.60%
+WorstYear -22.97% -26.03%
+Avg.Drawdown -3.19% -3.03%
+Avg.DrawdownDays 28.73 46.08
+Avg.UpMonth 4.55% 4.05%
+Avg.DownMonth -3.37% -3.08%
+ThelongtermCAGRof18.44%paforourmomentumstrategyversus7.74%pafortheNIFTY100
+over the period, a spread of over 10.70% pa, indicates that investing in a systematic momentum strat-
+egy does payoff over the long term. Monthly raw sharpe’s of the portfolio (1.08) is 1.95x the raw
+sharpe of the NIFTY100 (0.55), demonstrating superior risk adjusted return characteristics of the
+momentum portfolio. A priori, we expected that our momentum portfolio will have higher volatility
+than the NIFTY100. Overall monthly volatility for the momentum strategy (17.01%) is indeed higher
+than the monthly volatility of the broader NIFTY100 index (15.62%).
+Rather than “point-in-time” results anchored by the end of a calendar period like a month or year,
+rolling returns account for the fact that investors can invest at any point in time and typically do not
+investatthebeginningofthecurrentone-, three-orfive-yearperiod. Rollingreturnsarereturnstaken
+over a continuous period of time : a particular period of returns, say 1 year, is taken every day over
+the period of time under analysis. This gives an indication of the range of outcomes for an investor
+across a period of time. Rolling returns provide a robust analytical tool for evaluating performance.
+This is especially important during volatile periods when entering a strategy a few months forward or
+backward from any given date can deliver vastly different returns. We show rolling returns in Figure
+23. We use a standard box plot to show the variation (max, min, mean, inter quartile range) over 1,
+3 and 5 year periods. We compare the rolling returns of the strategy with those of NIFTY100.
+We flag a few points. First, momentum strategy returns are more volatile in an absolute sense
+than the index returns in the short term. It is, therefore, not a strategy for investors who do not
+have adequate risk appetite for volatility. Over longer periods, the variation of performance shrinks.
+Second, over time, while short run horizons do show the impact of momentum crashes, the data shows
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Figure23: INMomentumStrategy&NIFTY100RollingReturns
+that recovery from crashes is fairly quick. Third, the out-performance of momentum as a strategy
+is more evident the longer one is invested. This reflects the old market adage : time in the market
+is better than timing the market. Momentum investors need to have conviction and stay the course
+despite short-term volatility.
+We finally look at portfolio turnover. The turnover of a portfolio is an important consideration for
+a retail investor. This is true despite the low/no brokerage costs for execution. The administrative
+overhead of managing a high turnover portfolio can be onerous. Our portfolio is rebalanced monthly:
+a priori, momentum should have a high turnover. The profile of the rolling monthly turnover30 of the
+Winner portfolio is shown in Figure 24 (with a max of 60.00%, a min of 0.00%, a mean of 32.10%
+and a mode of 20.00%). This turnover profile is higher than reported by say Babbar and Sehgal
+(2018) (who report an average annual turnover of 89% in their study of 237 mutual funds in India
+between 2007 and March 2013) or Israel et al. (2017b) (who report annualized one sided turnover
+numbers between 79% (US Small Cap) and 89.9% (International) for AQR Momentum Strategies
+between July 2009 and December 2016.). These studies have looked at well diversified portfolios with
+large number of stocks. Our portfolio has 10 stocks and therefore, should report higher turnover rates
+relativetoportfolioswithlargernumberofstock. Portfolioturnovercanbereducedthroughanumber
+of strategies, including lengthening holding periods, having range bands of momentum scores before
+stocks are dropped from the portfolio. We do not explore these in this paper as we believe that the
+portfolio turnover is administratively manageable for an investor and the low implementation costs
+will not detract from the strategy’s performance.
+4 Conclusion
+We show that the momentum anomaly is strong in the Indian equity market and analyse the compo-
+nents of momentum. In general, Winners contribute more than Losers and Winner contributes
+Small
+significantly to the momentum premium. Winner contributes steadily to WML. In more recent
+Big
+history, Winner hasperformedthanWinner . Loser portfolios, irrespectiveofsize, contribute
+Big Small
+only occasionally during periods of broader economic stress. In general, short portfolios have been
+net detractors to momentum performance. Momentum is subject to occasional, significant momen-
+tum crashes, both in the Big and Small size portfolios and generally, more for Loser portfolios than
+Winner portfolios. We show that momentum has persistence in the near term which dissipates over
+30Wecalculatetheturnoveroverpreviousmonth. Webelievethisisthemostrepresentativeforaninvestormeasuring
+turnover for portfolios rebalanced monthly.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Figure24: TurnoverofWinnerportfolio
+12 months. This requires investors who want to invest in momentum to do near-term rebalancing but
+stay invested in the momentum factor over the long term.
+Given the restriction (prohibition) of shorting stocks in the Indian market, and the potential for
+degradation of theoretical returns from Small companies arising from liquidity and capacity, we con-
+struct a systematic, monthly-rebalanced, long-only momentum portfolio using ‘off-the-shelf’ criteria
+based on the most liquid NIFTY100 constituents and show that such a strategy outperforms the
+NIFTY100 on both nominal and risk adjusted returns. Such a portfolio also captures a large portion
+ofthereturnsfromWinner portfoliodespitehavingasmallernumberofstocksinboththeuniverse
+Big
+and the portfolio. We show a practical, easy-to-adopt implementation strategy which gives general
+investors exposure to the momentum tilt. The costs of such a strategy are also nominal - and the out
+performance of the momentum tilt does survive real-world implementation. We demonstrate that the
+results are robust over time. In the absence of liquid ETFs in the Indian market, general investors
+looking for exposure to the momentum factor would be able to construct low cost, administratively
+easy to manage factor-tilt long only portfolios.
+Alogicalextensionofthisworkwouldbetoexploretheinclusionofasub-setofSmall sizefirmsto
+the portfolio subject to the associated capacity/liquidity and slippage risks. A more formal estimation
+of capacity and liquidity related costs is another area to be explored.
+References
+SobheshK.Agarwalla,JoshyJacob,andJayanthR.Varma. FourfactormodelinIndianEquitiesMarket. WorkingPaper,2013.
+KatjaAhoniemiandMarkkuLanne. OvernightStockReturnsandRealizedVolatility. SSRN eJournal, Mar2013. doi: 10.2139/
+ssrn.1945687. URLhttps://ssrn.com/abstract=1945687.
+Tobias J. Moskowitz Andrea Frazzini, Ronen Israel. Trading Costs of Asset Pricing Anomalies. SSRN Electronic Journal, Dec
+2012. doi: 10.2139/ssrn.2294498. URLhttps://papers.ssrn.com/abstract=2294498.
+ValeedAhmadAnsariandSohaKhan. Momentumanomaly: evidencefromIndia. Managerial Finance,38(2):206–223,Jan2012.
+Robert A. Ariel. A monthly effect in stock returns. Journal of Financial Economics, 18(1):161 – 174, Mar 1987. ISSN
+0304-405X. doi: https://doi.org/10.1016/0304-405X(87)90066-3. URLhttp://www.sciencedirect.com/science/article/pii/
+0304405X87900663.
+CliffordS.Asness,TobiasJ.Moskowitz,andLasseHejePedersen. ValueandMomentumEverywhere. TheJournalofFinance,68
+(3):929–985,Jun2013.
+Sonal Babbar and Sanjay Sehgal. Mutual Fund Characteristics and Investment Performance in India. Management and Labour
+Studies,43(1-2):1–30,2018. doi: 10.1177/0258042X17745183. URLhttp://doi.org/10.1177/0258042X17745183.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+Nicholas Barberis, Andrei Shleifer, and Robert Vishny. A model of investor sentiment. Journal of Financial Economics, 49(3):
+307–343,Sep1998. ISSN0304-405X. doi: https://doi.org/10.1016/S0304-405X(98)00027-0. URLhttp://www.sciencedirect.
+com/science/article/pii/S0304405X98000270.
+WernerF.M.DeBondtandRichardH.Thaler. DoestheStockMarketOverreact? The Journal of Finance,40(3):793–805,Dec
+1985. doi: 10.1111/j.1540-6261.1985.tb05004.x. URLhttp://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1985.
+tb05004.x.
+Werner F. M. De Bondt and Richard H. Thaler. Further Evidence on Investor Overreaction and Stock Market Seasonality. The
+Journal of Finance,42(3):557–581,Jul1987. ISSN00221082,15406261. URLhttp://www.jstor.org/stable/2328371.
+RomanBru¨ckner,PatrickLehmann,MartinH.Schmidt,andRichardStehle.Non-U.S.Multi-FactorDataSetsShouldbeUsedwith
+Caution. SSRNElectronicJournal,Nov2015. doi: http://dx.doi.org/10.2139/ssrn.2390063. URLhttp://ssrn.com/abstract=
+2390063.
+NusretCakici,YiTang,andAnYan.Dothesize,value,andmomentumfactorsdrivestockreturnsinemergingmarkets? Journalof
+InternationalMoneyandFinance,69:179–204,Dec2016.ISSN0261-5606.doi: https://doi.org/10.1016/j.jimonfin.2016.06.001.
+URLhttp://www.sciencedirect.com/science/article/pii/S026156061630047X. SI-TributeJimLothian.
+Mark M. Carhart. On Persistence in Mutual Fund Performance. The Journal of Finance, 52(1):57–82, 1997. doi: 10.1111/j.
+1540-6261.1997.tb03808.x. URLhttp://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1997.tb03808.x.
+Z´eliaCazaletandThierryRoncalli. Factsandfantasiesaboutfactorinvesting. SSRN Electronic Journal,page112,102014. doi:
+10.2139/ssrn.2524547. URLhttp://ssrn.com/abstract=2524547.
+GregoryConnorandSanjaySehgal. TestsoftheFamaandFrenchmodelinIndia. 2001.
+Kent Daniel and Tobias J. Moskowitz. Momentum crashes. Journal of Financial Economics, 122(2):221 – 247, Nov 2016. ISSN
+0304-405X. doi: https://doi.org/10.1016/j.jfineco.2015.12.002. URL http://www.sciencedirect.com/science/article/pii/
+S0304405X16301490.
+KentDaniel,DavidHirshleifer,andAvanidharSubrahmanyam. Investorpsychologyandsecuritymarketunder-andoverreactions.
+The Journal of Finance,53(6):1839–1885,Dec1998. doi: 10.1111/0022-1082.00077. URLhttps://onlinelibrary.wiley.com/
+doi/abs/10.1111/0022-1082.00077.
+EugeneF.FamaandKennethR.French.Commonriskfactorsinthereturnsonstocksandbonds.JournalofFinancialEconomics,
+33(1):3–56,1993. doi: 10.1016/0304-405x(93)90023-5.
+EugeneF.FamaandKennethR.French. Size,Value,andMomentuminInternationalStockReturns. SSRN Electronic Journal,
+Jun2011. doi: 10.2139/ssrn.1720139. URLhttp://ssrn.com/abstract=1720139.
+Eugene F. Fama and Kenneth R. French. Size, value, and momentum in international stock returns. Journal of Financial
+Economics, 105(3):457–472, May 2012. doi: 10.1016/j.jfineco.2012.05.011. URL http://www.sciencedirect.com/science/
+article/pii/S0304405X12000931.
+LiFeifei,ChowTzee-Man,AlexPickard,andYadwinderGarg. TransactionCostsofFactorInvestingStrategies. FinancialAnalysts
+Journal,75(2):62–78,2019. doi: 10.1080/0015198X.2019.1567190. URLhttp://doi.org/10.1080/0015198X.2019.1567190.
+AndreaFrazzini,RonenIsrael,andTobiasJ.Moskowitz. TradingCosts. SSRN Electronic Journal,Apr2018. doi: http://dx.doi.
+org/10.2139/ssrn.3229719. URLhttps://papers.ssrn.com/abstract_id=3229719#.
+JohnGriffin,SusanJi,andJ.Martin. GlobalMomentumStrategies: APortfolioPerspective. SSRN Electronic Journal,page34,
+Feb2004. doi: 10.2139/ssrn.492804.
+Harrison Hong and Jiang Wang. Trading and Returns under Periodic Market Closures. The Journal of Finance, 55(1):297–354,
+2000. ISSN00221082,15406261. URLhttp://www.jstor.org/stable/222557.
+Joop Huij, Simon Lansdorp, David Blitz, and Pim van Vliet. Factor Investing: Long-Only versus Long-Short. SSRN Electronic
+Journal,page19,Mar2014. doi: 10.2139/ssrn.2417221. URLhttps://papers.ssrn.com/abstract=2417221.
+RonenIsrael,SarahJiang,andAdrienneRoss. CraftsmanshipAlpha: AnApplicationtoStyleInvesting. TheJournalofPortfolio
+Management,44(2):23–39,Dec2017a. doi: 10.3905/jpm.2017.2017.1.075.
+RonenIsrael,AdrienneRoss,TobiasJ.Moskowitz,andLauraSerban. ImplementingMomentum: WhatHaveWeLearned? SSRN
+Electronic Journal,Dec2017b. doi: 10.2139/ssrn.3081165. URLhttps://papers.ssrn.com/abstract=3081165.
+Narasimhan Jegadeesh and Sheridan Titman. Returns to Buying Winners and Selling Losers: Implications for Stock Market
+Efficiency. The Journal of Finance,48(1):65,1993. doi: 10.2307/2328882.
+GauravKumarandArunKumarMisra. Liquidity-adjustedCAPM—AnempiricalanalysisonIndianstockmarket. CogentEco-
+nomics & Finance, 7(1):1573471, Jan 2019. doi: 10.1080/23322039.2019.1573471. URL https://doi.org/10.1080/23322039.
+2019.1573471.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433
+JosefLakonishokandSeymourSmidt.AreSeasonalAnomaliesReal? ANinety-YearPerspective.TheReviewofFinancialStudies,
+1(4):403–425,Winter1988. ISSN08939454,14657368. URLhttp://www.jstor.org/stable/2962097.
+Xiafei Li, Jo¨elle Miffre, Chris Brooks, and Niall O’Sullivan. Momentum profits and time-varying unsystematic risk. Journal of
+Banking & Finance, 32(4):541 – 558, Apr 2008. ISSN 0378-4266. doi: https://doi.org/10.1016/j.jbankfin.2007.03.014. URL
+http://www.sciencedirect.com/science/article/pii/S0378426607001872.
+QingfuLiuandYiumanTse. OvernightReturnsofStockIndexes: EvidencefromETFsandFutures. SSRN eJournal, Feb2016.
+URLhttps://ssrn.com/abstract=2921758.
+SupriyaMaheshwariandRajS.Dhankar. MarketStateandInvestmentStrategies: EvidencefromtheIndianStockMarket. IIM
+Kozhikode Society & Management Review, 7(2):154–170, 2018. doi: 10.1177/2277975218769501. URL https://doi.org/10.
+1177/2277975218769501.
+Whitney K. Newey and Kenneth D. West. A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent
+CovarianceMatrix. Econometrica,55(3):703,1987. doi: 10.2307/1913610.
+NiftyIndices. Nifty100,Dec2019. URLhttp://niftyindices.com/indices/equity/broad-based-indices/nifty-100.
+RobertNovy-MarxandMihailVelikov.ATaxonomyofAnomaliesandtheirTradingCosts.WorkingPaper20721,NationalBureau
+ofEconomicResearch,December2014. URLhttp://www.nber.org/papers/w20721.
+NSEIndiaWebsite. Nseindiawebsite. URLhttp://nseindia.com/products/content/equities/indices/nifty_100.htm.
+George S. Oldfield and Richard J. Rogalski. A Theory of Common Stock Returns Over Trading and Non-Trading Periods. The
+Journal of Finance,35(3):729–751,1980. ISSN00221082,15406261. URLhttp://www.jstor.org/stable/2327495.
+RonaldRatcliffe,PaoloMiranda,andAndrewAng. CapacityofSmartBetaStrategiesfromaTransactionCostPerspective. The
+Journal of Index Investing, 8(3):39–50, 2017. ISSN2154-7238. doi: 10.3905/jii.2017.8.3.039. URLhttps://jii.pm-research.
+com/content/8/3/39.
+K.GeertRouwenhorst.InternationalMomentumStrategies.TheJournalofFinance,53(1):267–284,1998.doi: 10.1111/0022-1082.
+95722. URLhttps://onlinelibrary.wiley.com/doi/abs/10.1111/0022-1082.95722.
+K.GeertRouwenhorst. LocalReturnFactorsandTurnoverinEmergingStockMarkets. TheJournalofFinance,54(4):1439–1464,
+1999. doi: 10.1111/0022-1082.00151. URLhttps://onlinelibrary.wiley.com/doi/abs/10.1111/0022-1082.00151.
+RichardThaler. Anomalies: SeasonalMovementsinSecurityPricesII:Weekend,Holiday,TurnoftheMonth,andIntradayEffects.
+The Journal of Economic Perspectives, 1(2):169–177, Autumn 1987. ISSN 08953309. URL http://www.jstor.org/stable/
+1942989.
+JackVogel,November2017. URLhttps://alphaarchitect.com/2017/11/28/factor-investing-and-trading-costs/.
+MasahiroWatanabeZhiwuChen,WernerStanzl. PriceImpactCostsandtheLimitofArbitrage. SSRN eJournal,Jul2002. doi:
+10.2139/ssrn.302065. URLhttps://papers.ssrn.com/abstractid=302065.
+Nothing herein is investment advice in any form, it does not take into account your personal investment objectives or financial
+situation and makes no representation and assumes no liability as to the accuracy or completeness of the information.
+Electronic copy available at: https://ssrn.com/abstract=3510433

@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Secrets and env
+.env
+.env.local
+
+# Data and generated outputs
+data_cache/
+live/state/
+live/logs/
+*.log
+
+# Large output files (can be regenerated)
+*_equity_curve.csv
+*_trades.csv
+portfolio_blend_variations.csv
+portfolio_blend_variations_monthly.csv
+signal_blend_variations.csv
+
+# Jupyter
+.ipynb_checkpoints/

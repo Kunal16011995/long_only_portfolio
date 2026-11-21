@@ -1,0 +1,59 @@
+INDIAN LONG-ONLY QUALITY STRATEGY REPORT
+==================================================
+Full period: 2012-06-30 to 2026-09-30
+In-Sample: 2015-01-01 to 2019-12-31
+Out-of-Sample: 2020-01-01 to 2026-11-21
+Top N stocks: 10
+Cost: 0.10% one-way
+Note: ESG excluded; uses simplified quality proxy from yfinance
+
+FULL PERIOD PERFORMANCE
+--------------------------------------------------
+Total return        : 812.49%
+CAGR                : 16.78%
+Max drawdown        : -28.22%
+Quarterly vol (ann.): 21.06%
+Sharpe (ann.)       : 0.85
+Avg quarterly ret.  : 4.48%
+
+BENCHMARK (^CNX100)
+--------------------------------------------------
+Total return        : 358.13%
+CAGR                : 11.27%
+Max drawdown        : -29.09%
+Sharpe (ann.)       : 0.73
+Excess CAGR         : 5.51%
+
+IN-SAMPLE PERFORMANCE
+--------------------------------------------------
+Total return        : 74.02%
+CAGR                : 12.36%
+Max drawdown        : -6.89%
+Quarterly vol (ann.): 12.50%
+Sharpe (ann.)       : 1.00
+Avg quarterly ret.  : 3.13%
+
+BENCHMARK (^CNX100)
+--------------------------------------------------
+Total return        : 44.47%
+CAGR                : 8.05%
+Max drawdown        : -8.24%
+Sharpe (ann.)       : 0.87
+Excess CAGR         : 4.31%
+
+OUT-OF-SAMPLE PERFORMANCE
+--------------------------------------------------
+Total return        : 227.69%
+CAGR                : 20.03%
+Max drawdown        : -25.74%
+Quarterly vol (ann.): 27.33%
+Sharpe (ann.)       : 0.81
+Avg quarterly ret.  : 5.55%
+
+BENCHMARK (^CNX100)
+--------------------------------------------------
+Total return        : 171.21%
+CAGR                : 16.59%
+Max drawdown        : -12.68%
+Sharpe (ann.)       : 0.57
+Excess CAGR         : 3.44%
